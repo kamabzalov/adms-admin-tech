@@ -9,7 +9,7 @@ import IUser from './types/user.type';
 
 import Login from "./components/Login";
 import Home from "./components/Home";
-
+import Macroservices from "./components/Macroservices";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -71,24 +71,35 @@ const App: React.FC = () => {
 
         {currentUser ? (
           <div className="navbar-nav ml-auto">
+            
             <li className="nav-item">
               <Link to={"/profile"} className="nav-link">
                 {currentUser.username}
               </Link>
             </li>
             <li className="nav-item log-in-out">
-              <a href="/login" className="nav-link" onClick={logOut}>
+              <a href="/login" className="nav-link log-in-out" onClick={logOut}>
                 LogOut
               </a>
             </li>
+            
           </div>
         ) : (
-          <div className="navbar-nav ml-auto log-in-out">
+          
+          <div className="navbar-nav ml-auto">
+            
             <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+              <Link to={"/macroservices"} className="nav-link">
+                Macroservices
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link log-in-out">
                 Login
               </Link>
             </li>
+            
 
             {/*<li className="nav-item">
               <Link to={"/register"} className="nav-link">
@@ -104,6 +115,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/macroservices" element={<Macroservices />} />
         </Routes>
       </div>
     </div>
