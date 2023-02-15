@@ -38,6 +38,6 @@
 }
 
 .log-in-out {
-  position: absolute;
+  position:fixed ;
   right: 10px;
 }
