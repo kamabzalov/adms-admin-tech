@@ -45,7 +45,9 @@ const App: React.FC = () => {
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
-        
+            <Link to={"/"} className="navbar-brand">
+              Dashboard
+            </Link>
         <div className="navbar-nav mr-auto">
          {/*<li className="nav-item">
             <Link to={"/home"} className="nav-link">
@@ -73,9 +75,7 @@ const App: React.FC = () => {
         {currentUser ? (
           
           <div className="navbar-nav ml-auto">
-            <Link to={"/"} className="navbar-brand">
-              Dashboard
-            </Link>
+            
 
             <li className="nav-item">
               <Link to={"/macroservices"} className="nav-link">
@@ -101,7 +101,7 @@ const App: React.FC = () => {
 
             <li className="nav-item">
               <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
+                Admin
               </Link>
             </li>
             <li className="nav-item log-in-out">
@@ -114,9 +114,7 @@ const App: React.FC = () => {
         ) : (
           
           <div className="navbar-nav ml-auto">
-            <Link to={"/"} className="navbar-brand">
-              Dashboard
-            </Link>
+            
             
             <li className="nav-item">
               <Link to={"/login"} className="nav-link log-in-out">
