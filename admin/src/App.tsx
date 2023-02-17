@@ -115,7 +115,12 @@ const App: React.FC = () => {
           
           <div className="navbar-nav ml-auto">
             
-            
+            <li className="nav-item">
+              <Link to={"/macroservices"} className="nav-link">
+                Macroservices
+              </Link>
+            </li>
+
             <li className="nav-item">
               <Link to={"/login"} className="nav-link log-in-out">
                 Login
