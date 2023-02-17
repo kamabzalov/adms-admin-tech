@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.log-in-out {
+  position:fixed ;
+  right: 10px;
+  top: 8px;
+}

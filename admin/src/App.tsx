@@ -9,7 +9,10 @@ import IUser from './types/user.type';
 
 import Login from "./components/Login";
 import Home from "./components/Home";
-
+import Macroservices from "./components/Macroservices";
+import Users from "./components/Users";
+import Audit from "./components/Audit";
+import Data from "./components/Data";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -42,15 +45,15 @@ const App: React.FC = () => {
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <Link to={"/"} className="navbar-brand">
-          Dashboard
-        </Link>
+            <Link to={"/"} className="navbar-brand">
+              Dashboard
+            </Link>
         <div className="navbar-nav mr-auto">
-          <li className="nav-item">
+         {/*<li className="nav-item">
             <Link to={"/home"} className="nav-link">
               Home
             </Link>
-          </li>
+          </li>*/}
 
           {showAdminBoard && (
             <li className="nav-item">
@@ -70,31 +73,55 @@ const App: React.FC = () => {
         </div>
 
         {currentUser ? (
+          
           <div className="navbar-nav ml-auto">
+            
+
             <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
+              <Link to={"/macroservices"} className="nav-link">
+                Macroservices
               </Link>
             </li>
             <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
+              <Link to={"/users"} className="nav-link">
+                Users
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/audit"} className="nav-link">
+                Audit
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/data"} className="nav-link">
+                Data
+              </Link>
+            </li>
+
+
+            <li className="nav-item">
+              <Link to={"/profile"} className="nav-link">
+                Admin
+              </Link>
+            </li>
+            <li className="nav-item log-in-out">
+              <a href="/login" className="nav-link log-in-out" onClick={logOut}>
                 LogOut
               </a>
             </li>
+            
           </div>
         ) : (
+          
           <div className="navbar-nav ml-auto">
+            
+            
             <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+              <Link to={"/login"} className="nav-link log-in-out">
                 Login
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
           </div>
         )}
       </nav>
@@ -104,6 +131,10 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/macroservices" element={<Macroservices />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/audit" element={<Audit />} />
+          <Route path="/data" element={<Data />} />
         </Routes>
       </div>
     </div>
