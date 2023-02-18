@@ -83,11 +83,6 @@ const App: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/users"} className="nav-link">
-                Users
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/audit"} className="nav-link">
                 Audit
               </Link>
@@ -114,7 +109,11 @@ const App: React.FC = () => {
         ) : (
           
           <div className="navbar-nav ml-auto">
-            
+            <li className="nav-item">
+              <Link to={"/users"} className="nav-link">
+                Users
+              </Link>
+            </li>
             
             <li className="nav-item">
               <Link to={"/login"} className="nav-link log-in-out">
