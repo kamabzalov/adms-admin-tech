@@ -1,31 +1,43 @@
 import React from "react";
 import "./styles/macroservices.css"
 
-const Macroservices: React.FC = () => {
-    
-    const OneCard = () => {
-        return(
-        <div>
-            <div className="card mc-cards">
-                <div className="card-body">
-                    <h5 className="card-title">Macroservice #1</h5>
-                    <p className="card-text">This label for small description for this current MC</p>
-                    <div className="form-check form-switch">
-                        <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    </div>
+interface LayoutProps {
+    number: string;
+    description: string;
+}
+
+const OneCard: React.FC<LayoutProps> = ({ number, description }) => {
+    return(
+        <>
+        <div className="card mc-cards">
+            <div className="card-body">
+                <h5 className="card-title">Macroservice #{number}</h5>
+                <p className="card-text">{description}</p>
+                <div className="form-check form-switch">
+                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
                 </div>
             </div>
         </div>
-        )
-    }
+        </>
+    )
+}
+
+function All() {
+    return(
+    <>
+        <OneCard number="1" description="Description of first macroservice" />
+        <OneCard number="2" description="Description of second macroservice" />
+        <OneCard number="3" description="Description of third macroservice" />
+    </>
+    )
+}
+
+const Macroservices: React.FC = () => {
 
     return(
         <>
-        <h1>This is Macroservices</h1>
-            <OneCard />
-            <OneCard />
-            <OneCard />
-            <OneCard />
+            <h1>Here are Macroservices</h1>
+            <All />
         </>
     )
 }
