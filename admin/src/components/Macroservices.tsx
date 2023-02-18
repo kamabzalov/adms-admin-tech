@@ -1,43 +1,28 @@
 import React from "react";
 import "./styles/macroservices.css"
+import { Card } from "./small-components/CardComponent";
 
-interface LayoutProps {
-    number: string;
-    description: string;
-}
+//MC means macroservices
 
-const OneCard: React.FC<LayoutProps> = ({ number, description }) => {
-    return(
-        <>
-        <div className="card mc-cards">
-            <div className="card-body">
-                <h5 className="card-title">Macroservice #{number}</h5>
-                <p className="card-text">{description}</p>
-                <div className="form-check form-switch">
-                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                </div>
-            </div>
-        </div>
-        </>
-    )
-}
-
-function All() {
+// Adding cards and names and descriptions for them
+function MCCard() {
     return(
     <>
-        <OneCard number="1" description="Description of first macroservice" />
-        <OneCard number="2" description="Description of second macroservice" />
-        <OneCard number="3" description="Description of third macroservice" />
+        <Card name="First MC" description="Description of first macroservice" />
+        <Card name="Second MC" description="Description of second macroservice" />
+        <Card name="Third MC" description="Description of third macroservice" />
     </>
     )
 }
 
+
+// MCs page component
 const Macroservices: React.FC = () => {
 
     return(
         <>
             <h1>Here are Macroservices</h1>
-            <All />
+            <MCCard />
         </>
     )
 }
