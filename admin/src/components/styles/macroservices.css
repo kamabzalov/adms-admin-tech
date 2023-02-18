@@ -1,3 +1,9 @@
 .mc-cards {
-    width: 350px;
+    width: 300px;
+    float: left;
+    margin: 10px;
+}
+
+.form-check {
+    margin-left: 45%;
 }

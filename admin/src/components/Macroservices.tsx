@@ -6,7 +6,6 @@ const Macroservices: React.FC = () => {
     const OneCard = () => {
         return(
         <div>
-            <h1>This is Macroservices</h1>
             <div className="card mc-cards">
                 <div className="card-body">
                     <h5 className="card-title">Macroservice #1</h5>
@@ -22,6 +21,10 @@ const Macroservices: React.FC = () => {
 
     return(
         <>
+        <h1>This is Macroservices</h1>
+            <OneCard />
+            <OneCard />
+            <OneCard />
             <OneCard />
         </>
     )
