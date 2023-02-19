@@ -93,8 +93,8 @@ const App: React.FC = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/macroservices"} className="nav-link">
-                Macroservices
+              <Link to={"/users"} className="nav-link">
+                Users
               </Link>
             </li>
 
@@ -113,20 +113,12 @@ const App: React.FC = () => {
           </div>
         ) : (
           
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/users"} className="nav-link">
-                Users
-              </Link>
-            </li>
-            
-
+          <div className="navbar-nav ml-auto">            
             <li className="nav-item">
               <Link to={"/login"} className="nav-link log-in-out">
                 Login
               </Link>
             </li>
-
           </div>
         )}
       </nav>
