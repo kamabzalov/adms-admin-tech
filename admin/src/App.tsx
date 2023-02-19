@@ -27,13 +27,13 @@ const App: React.FC = () => {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-
     // EventBus.on("logout", logOut);
 
     // return () => {
     //   EventBus.remove("logout", logOut);
     // };
   }, []);
+
 
   const logOut = () => {
     AuthService.logout();
@@ -125,8 +125,11 @@ const App: React.FC = () => {
 
       <div className="container mt-3">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          {currentUser ? (
+            <Route path="/" element={<Macroservices />} />
+          ) : (
+            <Route path="/" element={<Login />} />
+          )}
           <Route path="/login" element={<Login />} />
           <Route path="/macroservices" element={<Macroservices />} />
           <Route path="/users" element={<Users />} />
