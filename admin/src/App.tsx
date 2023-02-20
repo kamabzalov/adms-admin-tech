@@ -24,6 +24,7 @@ const App: React.FC = () => {
 
     if (user) {
       setCurrentUser(user);
+      // curently commented out due to the lack of data info
       //setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       //setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
