@@ -13,6 +13,7 @@ import Macroservices from "./components/Macroservices";
 import Users from "./components/Users";
 import Audit from "./components/Audit";
 import Data from "./components/Data";
+import { Nav } from "reactstrap";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -45,7 +46,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <Nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
               Dashboard
             </Link>
@@ -57,72 +58,51 @@ const App: React.FC = () => {
           </li>*/}
 
           {showAdminBoard && (
-            <li className="nav-item">
               <Link to={"/admin"} className="nav-link">
                 Admin Board
               </Link>
-            </li>
           )}
 
           {currentUser && (
-            <li className="nav-item">
               <Link to={"/user"} className="nav-link">
                 User
               </Link>
-            </li>
           )}
         </div>
 
         {currentUser ? (
           
           <div className="navbar-nav ml-auto">
-            
-
-            <li className="nav-item">
               <Link to={"/macroservices"} className="nav-link">
                 Macroservices
               </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/audit"} className="nav-link">
                 Audit
               </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/data"} className="nav-link">
                 Data
               </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/users"} className="nav-link">
                 Users
               </Link>
-            </li>
 
-
-            <li className="nav-item">
               <Link to={"/profile"} className="nav-link">
                 Admin
               </Link>
-            </li>
-            <li className="nav-item log-in-out">
-              <a href="/login" className="nav-link log-in-out" onClick={logOut}>
+              <Link to="/login" className="nav-link log-in-out" onClick={logOut}>
                 LogOut
-              </a>
-            </li>
+              </Link>
             
           </div>
         ) : (
           
-          <div className="navbar-nav ml-auto">            
-            <li className="nav-item">
+          <div className="navbar-nav ml-auto">     
               <Link to={"/login"} className="nav-link log-in-out">
                 Login
               </Link>
-            </li>
           </div>
         )}
-      </nav>
+      </Nav>
 
       <div className="container mt-3">
         <Routes>
