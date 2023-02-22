@@ -6,7 +6,6 @@ import "./styles/table.css"
 const Users: React.FC = () => {
     return(
         <>
-            <h1>Here are users</h1>
             <table>
                 <TableHead firstRow="Full Name" secondRow="Role" />
                 <UsersTableBody number="1" fullName="Zeratul" role="Admin" />

@@ -21,7 +21,6 @@ const Macroservices: React.FC = () => {
 
     return(
         <>
-            <h1>Here are Macroservices</h1>
             <MCCard />
         </>
     )
