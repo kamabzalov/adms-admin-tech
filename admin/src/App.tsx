@@ -13,6 +13,8 @@ import Macroservices from "./components/Macroservices";
 import Users from "./components/Users";
 import Audit from "./components/Audit";
 import Data from "./components/Data";
+import { Nav } from "reactstrap";
+import { NavigationLink } from "./components/small-components/NavigationLink";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -24,8 +26,9 @@ const App: React.FC = () => {
 
     if (user) {
       setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+      // curently commented out due to the lack of data info
+      //setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      //setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
     // EventBus.on("logout", logOut);
 
@@ -44,10 +47,8 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <Link to={"/"} className="navbar-brand">
-              Dashboard
-            </Link>
+      <Nav className="navbar navbar-expand navbar-dark bg-dark">
+            <NavigationLink link={"/"} text={"Dashboard"}/>
         <div className="navbar-nav mr-auto">
          {/*<li className="nav-item">
             <Link to={"/home"} className="nav-link">
@@ -56,72 +57,33 @@ const App: React.FC = () => {
           </li>*/}
 
           {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
+            <NavigationLink link={"/admin"}  text={"Admin Board"}/>
           )}
 
           {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
-              </Link>
-            </li>
+            <NavigationLink link={"/user"}  text={"User"}/>
           )}
         </div>
 
         {currentUser ? (
           
           <div className="navbar-nav ml-auto">
-            
+             <NavigationLink link={"/macroservices"}  text={"Macroservices"}/>
+             <NavigationLink link={"/audit"}  text={"Audit"}/>
+             <NavigationLink link={"/data"}  text={"Data"}/>
+             <NavigationLink link={"/users"} text={"Users"}/>
+             <NavigationLink link={"/profile"} text={"Admin"}/>
 
-            <li className="nav-item">
-              <Link to={"/macroservices"} className="nav-link">
-                Macroservices
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/audit"} className="nav-link">
-                Audit
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/data"} className="nav-link">
-                Data
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={"/users"} className="nav-link">
-                Users
-              </Link>
-            </li>
-
-
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                Admin
-              </Link>
-            </li>
-            <li className="nav-item log-in-out">
-              <a href="/login" className="nav-link log-in-out" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
+             <NavigationLink link={"/login"} text={"LogOut"} onClick={logOut}/>
             
           </div>
         ) : (
           
-          <div className="navbar-nav ml-auto">            
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link log-in-out">
-                Login
-              </Link>
-            </li>
+          <div className="navbar-nav ml-auto">   
+            <NavigationLink link={"/login"} text={"Login"}/>  
           </div>
         )}
-      </nav>
+      </Nav>
 
       <div className="container mt-3">
         <Routes>
