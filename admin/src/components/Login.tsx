@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import "./styles/login.css"
+import "./styles/login.css";
 
 import { login } from "../services/auth.service";
 
-type Props = {}
+type Props = { onLogin: () => void };
 
-const Login: React.FC<Props> = () => {
+const Login: React.FC<Props> = ({ onLogin }) => {
   let navigate: NavigateFunction = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,11 +33,16 @@ const Login: React.FC<Props> = () => {
 
     setMessage("");
     setLoading(true);
-
-    login(username, password).then(
-      () => {
-        navigate("/profile");
+    const prms = login(username, password);
+    prms.then(
+      (response) => {
+        if (response.data.token) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+        //navigate("/profile");
         window.location.reload();
+        onLogin();
+        return response.data;
       },
       (error) => {
         const resMessage =
@@ -57,7 +62,8 @@ const Login: React.FC<Props> = () => {
     <div className="col-md-12">
       <div className="card card-container">
         <div className="authCard">
-          <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          <img
+            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
             alt="profile-img"
             className="profile-img-card"
           />
@@ -79,7 +85,11 @@ const Login: React.FC<Props> = () => {
               <div className="form-group">
                 <label htmlFor="password">Password</label>
 
-                <Field name="password" type="password" className="form-control" />
+                <Field
+                  name="password"
+                  type="password"
+                  className="form-control"
+                />
                 <ErrorMessage
                   name="password"
                   component="div"
@@ -88,7 +98,11 @@ const Login: React.FC<Props> = () => {
               </div>
 
               <div className="form-group">
-                <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block"
+                  disabled={loading}
+                >
                   {loading && (
                     <span className="spinner-border spinner-border-sm"></span>
                   )}
