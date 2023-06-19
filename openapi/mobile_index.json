@@ -1,0 +1,1564 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "ADMSS mobile API",
+        "description": "web API for mobile client"
+    },
+    "servers": 
+    [{
+        "url": "localhost:6786"
+    },
+    {
+        "url": "http://app.admss.com:8088"
+    }],
+    "paths": {
+        "/api/v1/mobile/{itemId}/info": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the user",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Read user related info",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/locations": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the user",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Read user related info",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/inventory": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the inventory item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Read item related info",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Update or create item related info",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/meta": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the inventory item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Read inventory item related metadata",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Update or create inventory item related metadata",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/media": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the media item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Read inventory related media item",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "image/jpeg": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MediaInfo"
+                                }
+                            },
+                            "video/mp4": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MediaInfo"
+                                }
+                            },
+                            "audio/mp3": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MediaInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Update or create inventory related media data",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/jpeg": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/mp4": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/mp3": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/preview": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of media item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get media item image preview (thumbnail)",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/vin": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The Inventory related VIN number",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get extended info from VIN (vin-decoder)",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile": {
+            "post": {
+                "summary": "login to backend",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginInfo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/logout": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "userID of registered user",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "logout from backend and delete session",
+                "responses": {
+                    "200": {
+                        "description": "The actual data"
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/delete": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "inventory record itemID",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "delete inventory record",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/deleteitem": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "inventory related media item itemID",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "delete inventory related media item",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/vinimage": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the media item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "Decode VIN from image (jpeg)",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/contact": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "set or update contact info",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactInfo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/dlfront": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the contact item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "set or update drivers license front image",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{itemId}/dlback": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the contact item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "set or update drivers license back image",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/list/options": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/bodytypes": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/exteriorcolors": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/interiorcolors": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/cylinders": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/driveline": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/engine": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/expensetypes": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/fueltypes": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/transmissiontypes": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/automakes": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/category": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/status": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },        
+        "/api/v1/mobile/list/group": {
+            "get": {
+                "summary": "Get static data for UI",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "itemId": {
+                "description": "The unique identifier of an item",
+                "type": "string"
+            },
+            "Info": {
+                "type": "object",
+                "required": [
+                    "status",
+                    "info"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "info": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ContactInfo": {
+                "type": "object",
+                "required": [
+                    "status",
+                    "info"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "info": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MediaInfo": {
+                "type": "string",
+                "format": "binary"
+            },
+            "ListInfo": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "index",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "index": {
+                        "type": "integer"
+                    },
+                    "info": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginInfo": {
+                "type": "object",
+                "required": [
+                    "user",
+                    "secret",
+                    "magic"
+                ],
+                "properties": {
+                    "user": {
+                        "type": "string"
+                    },
+                    "secret": {
+                        "type": "string"
+                    },
+                    "magic": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AccessInfo": {
+                "type": "object",
+                "required": [
+                    "token",
+                    "sessionuid",
+                    "useruid"
+                ],
+                "properties": {
+                    "token": {
+                        "type": "string"
+                    },
+                    "sessionuid": {
+                        "type": "string"
+                    },
+                    "useruid": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "A human readable error message",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "ApiKey": []
+        }
+    ]
+}
