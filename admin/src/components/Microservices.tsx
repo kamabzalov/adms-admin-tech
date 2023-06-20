@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./styles/microservices.css";
 import { Card } from "./small-components/CardComponent";
 import * as MicroservicesService from "./../services/microservices.service";
+import { getAuthenticatedUser, listUsers } from "../services/user.service";
 
 //MC means microservices
 interface MCCardProps {
@@ -52,10 +53,17 @@ const Microservices: React.FC = () => {
       );
     }
   }, [listOfServices]);
-
+  /*const onButtonPressed = useCallback(() => {
+    const response = getAuthenticatedUser().then((response) => {
+      console.warn(response);
+      console.warn(response.data);
+      return response.data;
+    });
+  }, []);*/
   return (
     <>
       <h1>Here are microservices</h1>
+      {/*<button onClick={onButtonPressed}>Button</button>*/}
       <MCCard services={listOfServices} />
     </>
   );
