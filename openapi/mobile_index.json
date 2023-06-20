@@ -920,6 +920,141 @@
                 }
             }
         },
+        "/api/v1/mobile/{itemId}/validate": {
+            "parameters": [
+                {
+                    "name": "itemId",
+                    "description": "The unique identifier of the contact item",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "post": {
+                "summary": "validate values or combination of parameters",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/validate": {
+            "post": {
+                "summary": "validate values or combination of parameters",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/mobile/list/options": {
             "get": {
                 "summary": "Get static data for UI",
