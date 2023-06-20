@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:6788/api/v1/";
+const API_URL = "http://app.admss.com:8088/api/v1/";
 
 const smapleData = {
   id: 0,
