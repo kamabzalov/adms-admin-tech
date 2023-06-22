@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ADMSS web API",
-    "version": "0.1.4"
+    "version": "0.1.5"
   },
   "servers": 
     [{
@@ -560,7 +560,7 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "List users.",
         "responses": {
           "200": {
@@ -617,7 +617,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "string"
             }
           }
         ],
@@ -729,7 +729,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique user identifier.",
+            "description": "Unique session identifier.",
             "required": true,
             "schema": {
               "type": "string"
@@ -797,6 +797,103 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/validate": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/validate": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
                 }
               }
             }
@@ -1493,7 +1590,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListContactInfo"
+                  "$ref": "#/components/schemas/ContactListInfo"
                 }
               }
             }
@@ -1551,7 +1648,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContactTypeInfo"
+                  "$ref": "#/components/schemas/ListInfo"
                 }
               }
             }
@@ -1606,6 +1703,103 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/validate": {
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/validate": {
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
                 }
               }
             }
@@ -2191,6 +2385,103 @@
         }
       }
     },    
+    "/api/v1/deals/{uid}/validate": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/validate": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/deals/{uid}/dealstatus": {
       "post": {
         "tags": ["Deals"],
@@ -2627,7 +2918,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListInventoryInfo"
+                  "$ref": "#/components/schemas/InventoryListInfo"
                 }
               }
             }
@@ -2656,7 +2947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListExpenceInfo"
+                  "$ref": "#/components/schemas/ExpenceListInfo"
                 }
               }
             }
@@ -2685,7 +2976,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListOptionsInfo"
+                  "$ref": "#/components/schemas/OptionsListInfo"
                 }
               }
             }
@@ -3078,8 +3369,114 @@
             }
           }
         }
+      },
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
-    },    
+    },  
+    "/api/v1/inventory/{uid}/validate": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/validate": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/inventory/{uid}/expence": {
       "post": {
         "tags": ["Inventory"],
@@ -3582,6 +3979,722 @@
   },
   "components": {
     "schemas": {
+      "Info": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaData": {
+        "type": "string",
+        "format": "binary",
+        "nullable": true
+      },
+      "AccountInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "DealInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "salesperson1uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "salesperson2uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealtype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "saletype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dealstatus": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "inventorystatus": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "filepath": {
+            "type": "string",
+            "nullable": true
+          },
+          "mediatype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "datasize": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "InventoryInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "ContactDLInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dluidfront": {
+            "type": "string",
+            "nullable": true
+          },          
+          "dluidback": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "ContactInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "QuoteInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProfileInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "profile": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SettingsInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionInfo": {
+        "type": "object",
+        "properties": {
+          "sessionuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "started": {
+            "type": "string",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SessionInfo"
+        },            
+        "nullable": true
+      },
+      "LoginsListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SessionInfo"
+        },            
+        "nullable": true
+      },
+      "SubusersListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserInfo"
+        },            
+        "nullable": true
+      },
+      "SalespersonListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserInfo"
+        },            
+        "nullable": true
+      },
+      "ContactListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContactInfo"
+        },            
+        "nullable": true
+      },
+      "InventoryListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/InventoryInfo"
+        },            
+        "nullable": true
+      },
+      "ExpenceInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "type_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "value_text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExpenceListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExpenceInfo"
+        },            
+        "nullable": true
+      },
+      "OptionsListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ListInfo"
+        },            
+        "nullable": true
+      },
+      "ValidationInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "form": {
+            "type": "object",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/validationValue"
+            },            
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "validationValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ServiceOut": {
         "type": "object",
         "properties": {
