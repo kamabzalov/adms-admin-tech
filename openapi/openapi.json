@@ -4700,7 +4700,11 @@
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int32",
+            "format": "int64",
+            "nullable": true
+          },
+          "uid": {
+            "type": "string",
             "nullable": true
           },
           "type": {
@@ -4708,125 +4712,32 @@
             "format": "uuid",
             "nullable": true
           },
-          "uid": {
-            "type": "string",
-            "nullable": true
-          },
-          "display_name": {
-            "type": "string",
-            "nullable": true
-          },
           "name": {
             "type": "string",
             "nullable": true
           },
-          "description": {
+          "version": {
             "type": "string",
             "nullable": true
           },
-          "archive_url": {
+          "started": {
             "type": "string",
             "nullable": true
           },
-          "avatar_url": {
+          "status": {
             "type": "string",
-            "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "created_by_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "created_by": {
-            "$ref": "#/components/schemas/UserOut"
-          },
-          "modified_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "modified_by_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "modified_by": {
-            "$ref": "#/components/schemas/UserOut"
-          },
-          "member_count": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberOut"
-            },
-            "nullable": true
-          },
-          "is_starred": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_trashed": {
-            "type": "boolean",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
       "ServicesOutPagedListOut": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceOut"
-            },
-            "nullable": true
-          },
-          "start": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true,
-            "readOnly": true
-          },
-          "end": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true,
-            "readOnly": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ServiceOut"
+        },            
+        "nullable": true
+      },      
       "LogsOut": {
         "type": "object",
         "properties": {
