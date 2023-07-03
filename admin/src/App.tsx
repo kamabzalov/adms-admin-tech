@@ -71,8 +71,8 @@ const App: React.FC = () => {
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <NavigationLink link={"/Microservices"} text={"Microservices"} />
-            <NavigationLink link={"/audit"} text={"Audit"} />
-            <NavigationLink link={"/data"} text={"Data"} />
+            {/*<NavigationLink link={"/audit"} text={"Audit"} />
+            <NavigationLink link={"/data"} text={"Data"} />*/}
             <NavigationLink link={"/users"} text={"Users"} />
             <NavigationLink link={"/profile"} text={"Admin"} />
 
@@ -92,7 +92,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login onLogin={onLogin} />} />
           <Route path="/microservices" element={<Microservices />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/audit" element={<Audit />} />
+          {/*<Route path="/audit" element={<Audit />} />*/}
           <Route path="/data" element={<Data />} />
         </Routes>
       </div>

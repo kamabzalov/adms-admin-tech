@@ -4,13 +4,14 @@
     "title": "ADMSS web API",
     "version": "0.1.5"
   },
-  "servers": 
-    [{
-        "url": "localhost:6786"
+  "servers": [
+    {
+      "url": "localhost:6786"
     },
     {
-        "url": "http://app.admss.com:8088"
-    }],
+      "url": "http://app.admss.com:8088"
+    }
+  ],
   "paths": {
     "/api/v1/services": {
       "get": {
@@ -749,7 +750,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/user/{uid}/set": {
       "post": {
         "tags": ["User"],
@@ -1064,7 +1065,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/user/{uid}/locations": {
       "post": {
         "tags": ["User"],
@@ -1145,7 +1146,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/user/{uid}/profile": {
       "post": {
         "tags": ["User"],
@@ -1655,7 +1656,7 @@
           }
         }
       }
-    }, 
+    },
     "/api/v1/contacts/{uid}/set": {
       "post": {
         "tags": ["Contact"],
@@ -2330,7 +2331,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/set": {
       "post": {
         "tags": ["Deals"],
@@ -2384,7 +2385,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/validate": {
       "post": {
         "tags": ["Deals"],
@@ -2535,7 +2536,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/inventorystatus": {
       "post": {
         "tags": ["Deals"],
@@ -2589,7 +2590,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/dealtype": {
       "post": {
         "tags": ["Deals"],
@@ -2643,7 +2644,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/saletype": {
       "post": {
         "tags": ["Deals"],
@@ -2697,7 +2698,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/quote": {
       "post": {
         "tags": ["Deals"],
@@ -2751,7 +2752,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/deletequote": {
       "post": {
         "tags": ["Deals"],
@@ -2780,7 +2781,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/delete": {
       "post": {
         "tags": ["Deals"],
@@ -2809,7 +2810,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/deals/{uid}/undelete": {
       "post": {
         "tags": ["Deals"],
@@ -3235,7 +3236,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/media": {
       "post": {
         "tags": ["Inventory"],
@@ -3316,7 +3317,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/set": {
       "post": {
         "tags": ["Inventory"],
@@ -3379,7 +3380,7 @@
           }
         }
       }
-    },  
+    },
     "/api/v1/inventory/{uid}/validate": {
       "post": {
         "tags": ["Inventory"],
@@ -3530,7 +3531,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/delete": {
       "post": {
         "tags": ["Inventory"],
@@ -3559,7 +3560,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/undelete": {
       "post": {
         "tags": ["Inventory"],
@@ -3588,7 +3589,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/deleteexpence": {
       "post": {
         "tags": ["Inventory"],
@@ -3617,7 +3618,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/undeleteexpence": {
       "post": {
         "tags": ["Inventory"],
@@ -3646,7 +3647,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/deletemedia": {
       "post": {
         "tags": ["Inventory"],
@@ -3675,7 +3676,7 @@
           }
         }
       }
-    },    
+    },
     "/api/v1/inventory/{uid}/undeletemedia": {
       "post": {
         "tags": ["Inventory"],
@@ -3767,7 +3768,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/MediaData"
                 }
-              }              
+              }
             }
           }
         }
@@ -3858,7 +3859,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/MediaData"
                 }
-              }              
+              }
             }
           }
         }
@@ -3975,7 +3976,7 @@
           }
         }
       }
-    }      
+    }
   },
   "components": {
     "schemas": {
@@ -4052,7 +4053,7 @@
           "accountuid": {
             "type": "string",
             "nullable": true
-          }          
+          }
         },
         "additionalProperties": false
       },
@@ -4202,7 +4203,7 @@
             "type": "integer",
             "format": "int64",
             "nullable": true
-          }          
+          }
         },
         "additionalProperties": false
       },
@@ -4245,7 +4246,7 @@
           "itemuid": {
             "type": "string",
             "nullable": true
-          }          
+          }
         },
         "additionalProperties": false
       },
@@ -4275,11 +4276,11 @@
           "dluidfront": {
             "type": "string",
             "nullable": true
-          },          
+          },
           "dluidback": {
             "type": "string",
             "nullable": true
-          }          
+          }
         },
         "additionalProperties": false
       },
@@ -4322,7 +4323,7 @@
           "contactuid": {
             "type": "string",
             "nullable": true
-          }          
+          }
         },
         "additionalProperties": false
       },
@@ -4519,42 +4520,42 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/SessionInfo"
-        },            
+        },
         "nullable": true
       },
       "LoginsListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/SessionInfo"
-        },            
+        },
         "nullable": true
       },
       "SubusersListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/UserInfo"
-        },            
+        },
         "nullable": true
       },
       "SalespersonListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/UserInfo"
-        },            
+        },
         "nullable": true
       },
       "ContactListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/ContactInfo"
-        },            
+        },
         "nullable": true
       },
       "InventoryListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/InventoryInfo"
-        },            
+        },
         "nullable": true
       },
       "ExpenceInfo": {
@@ -4630,14 +4631,14 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/ExpenceInfo"
-        },            
+        },
         "nullable": true
       },
       "OptionsListInfo": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/ListInfo"
-        },            
+        },
         "nullable": true
       },
       "ValidationInfo": {
@@ -4667,7 +4668,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/validationValue"
-            },            
+            },
             "nullable": true
           }
         },
@@ -4739,9 +4740,9 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/ServiceOut"
-        },            
+        },
         "nullable": true
-      },      
+      },
       "LogsOut": {
         "type": "object",
         "properties": {
@@ -6067,8 +6068,8 @@
     }
   },
   "security": [
-        {
-            "ApiKey": []
-        }
-    ]
+    {
+      "ApiKey": []
+    }
+  ]
 }
