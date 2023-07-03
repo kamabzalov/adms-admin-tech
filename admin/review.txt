@@ -1,0 +1,13 @@
+1. Remove unused code
+2. What are the docs and openapi folders? Do we use it in project?
+3. API_URL + "user" - use template strings
+4. What is config folder?
+5. const API_URL is in several files
+6. <Link with onClick is bad practise. onClick is good for buttons
+7. <Route path="/" element={<Home />} /> <Route path="/home" element={<Home />} /> - why we use the same component for two routes
+8. const validationSchema = Yup.object().shape({
+       username: Yup.string().required("This field is required!"),
+       password: Yup.string().required("This field is required!"),
+     }); - is it enough for validation? If I enter spaces or emoji?
+9. small-components is bad name. Let's rename it to common components
+10. I believe back works locally? How to start backend server in my computer (add steps to readme.md)
