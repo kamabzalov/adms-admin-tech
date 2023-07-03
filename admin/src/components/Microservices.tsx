@@ -68,26 +68,19 @@ const Microservices: React.FC = () => {
 
   const onChangeServiceState = useCallback((id: number, state: boolean) => {
     if (!state) {
-      console.warn("Start service" + " " + id);
       const response = MicroservicesService.startService(id).then(
         (response) => {
-          console.warn(response);
-          console.warn(response.data);
           return response.data;
         }
       );
     } else {
-      console.warn("Stop service" + " " + id);
       const response = MicroservicesService.stopService(id).then((response) => {
-        console.warn(response);
-        console.warn(response.data);
         return response.data;
       });
     }
     setStateChanged((prev) => !prev);
   }, []);
 
-  console.warn(listOfServices);
   return (
     <>
       <h1>Here are microservices</h1>

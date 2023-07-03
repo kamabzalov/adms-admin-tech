@@ -59,8 +59,6 @@ export default function CardMenu({ id }: CardMenuProps) {
   const getLogs = useCallback(async () => {
     const logs = await MicroservicesService.getServiceLogs(id).then(
       (response) => {
-        console.warn("logs");
-        console.warn(response.data);
         return response.data;
       }
     );
@@ -71,8 +69,6 @@ export default function CardMenu({ id }: CardMenuProps) {
   const getAudit = useCallback(async () => {
     const audit = await MicroservicesService.getServiceAudit(id).then(
       (response) => {
-        console.warn("audit");
-        console.warn(response.data);
         return response.data;
       }
     );
@@ -83,8 +79,6 @@ export default function CardMenu({ id }: CardMenuProps) {
   const getAllerts = useCallback(async () => {
     const allerts = await MicroservicesService.getServiceAllerts(id).then(
       (response) => {
-        console.warn("allerts");
-        console.warn(response.data);
         return response.data;
       }
     );
@@ -95,8 +89,6 @@ export default function CardMenu({ id }: CardMenuProps) {
   const getCounters = useCallback(async () => {
     const counters = await MicroservicesService.getServiceCounters(id).then(
       (response) => {
-        console.warn("counters");
-        console.warn(response.data);
         return response.data;
       }
     );
