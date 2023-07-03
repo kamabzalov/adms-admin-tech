@@ -2,8 +2,15 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ADMSS web API",
-    "version": "0.1.2"
+    "version": "0.1.5"
   },
+  "servers": 
+    [{
+        "url": "localhost:6786"
+    },
+    {
+        "url": "http://app.admss.com:8088"
+    }],
   "paths": {
     "/api/v1/services": {
       "get": {
@@ -97,35 +104,6 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceOut"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/services/{uid}": {
-      "get": {
-        "tags": ["Services"],
-        "summary": "Get service by uid.",
-        "parameters": [
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "Unique identifier of the service.",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -529,18 +507,13 @@
         }
       }
     },
-    "/api/v1/users": {
+    "/api/v1/user": {
       "post": {
-        "tags": ["Users"],
-        "summary": "Create a user.",
+        "tags": ["User"],
+        "summary": "Login",
         "requestBody": {
           "description": "",
           "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserIn"
-              }
-            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserIn"
@@ -550,17 +523,12 @@
               "schema": {
                 "$ref": "#/components/schemas/UserIn"
               }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserIn"
-              }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "Login",
             "content": {
               "application/json": {
                 "schema": {
@@ -592,83 +560,8 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "List users.",
-        "parameters": [
-          {
-            "name": "DirectoryId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Suspended",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "Q",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Tag",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Trashed",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "OrderBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Top",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Skip",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Count",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "CountOnly",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -683,10 +576,10 @@
         }
       }
     },
-    "/api/v1/users/{id}": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get a user.",
+    "/api/v1/user/{id}/logout": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Logout a user. End session",
         "parameters": [
           {
             "name": "id",
@@ -694,176 +587,6 @@
             "description": "Id of user.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "trashed",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserOut"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": ["Users"],
-        "summary": "Update a user.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUp"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUp"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUp"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUp"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users/{uid}": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get a user.",
-        "parameters": [
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "Unique user identifier.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "trashed",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserOut"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/user": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get the authenticated user.",
-        "parameters": [
-          {
-            "name": "userName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "userToken",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "isNew",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "Q",
-            "in": "query",
-            "schema": {
               "type": "string"
             }
           }
@@ -874,7 +597,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserOut"
+                  "$ref": "#/components/schemas/Info"
                 }
               }
             }
@@ -882,9 +605,9 @@
         }
       }
     },
-    "/api/v1/users/{id}/trash": {
+    "/api/v1/user/{id}/delete": {
       "post": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Move a user to the trash.",
         "parameters": [
           {
@@ -894,7 +617,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "string"
             }
           }
         ],
@@ -904,7 +627,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserOut"
+                  "$ref": "#/components/schemas/Info"
                 }
               }
             }
@@ -942,9 +665,9 @@
         }
       }
     },
-    "/api/v1/users/{id}/restore": {
+    "/api/v1/user/{id}/undelete": {
       "post": {
-        "tags": ["Users"],
+        "tags": ["User"],
         "summary": "Restore a user from the trash.",
         "parameters": [
           {
@@ -953,8 +676,7 @@
             "description": "Id of the user to restore.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
@@ -964,7 +686,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserOut"
+                  "$ref": "#/components/schemas/Info"
                 }
               }
             }
@@ -972,36 +694,45 @@
         }
       }
     },
-    "/api/v1/users/autocomplete": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "List users based on autocomplete search.",
+    "/api/v1/user/{id}/session": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Kill user's session.",
         "parameters": [
           {
-            "name": "q",
-            "in": "query",
-            "description": "The search phrase to use.",
+            "name": "id",
+            "in": "path",
+            "description": "Id of the session to stop.",
+            "required": true,
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "top",
-            "in": "query",
-            "description": "Max number of items to return.",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
             }
-          },
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Check if session is valid",
+        "parameters": [
           {
             "name": "id",
-            "in": "query",
-            "description": "Optional app id. When set, the result contains a property indicating wheter the user is a member of the specified app or not.",
+            "in": "path",
+            "description": "Unique session identifier.",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
@@ -1011,18 +742,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AutocompleteUserOutPagedListOut"
+                  "$ref": "#/components/schemas/Info"
                 }
               }
             }
           }
         }
       }
-    },
-    "/api/v1/users/{uid}/tokens": {
+    },    
+    "/api/v1/user/{uid}/set": {
       "post": {
-        "tags": ["Users"],
-        "summary": "Issue an access token for the specified user. Creates the user if it does not exists.",
+        "tags": ["User"],
+        "summary": "Set user data",
         "parameters": [
           {
             "name": "uid",
@@ -1035,26 +766,26 @@
           }
         ],
         "requestBody": {
-          "description": "Optional profile data to set when creating the user.",
+          "description": "Optional data to set when creating the user.",
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenUserIn"
+                "$ref": "#/components/schemas/UserInfo"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenUserIn"
+                "$ref": "#/components/schemas/UserInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenUserIn"
+                "$ref": "#/components/schemas/UserInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenUserIn"
+                "$ref": "#/components/schemas/UserInfo"
               }
             }
           }
@@ -1065,21 +796,226 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenOut"
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/validate": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/validate": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/user": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to set when creating the user.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/permissions": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user permissions",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
                 }
               }
             }
           }
         }
       },
-      "delete": {
-        "tags": ["Users"],
-        "summary": "Revoke all access tokens for the specified user.",
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user permissions",
         "parameters": [
           {
             "name": "uid",
             "in": "path",
-            "description": "",
+            "description": "Unique user identifier.",
             "required": true,
             "schema": {
               "type": "string"
@@ -1088,20 +1024,3687 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
           }
         }
       }
-    }
+    },
+    "/api/v1/user/{uid}/info": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get extended user info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/user/{uid}/locations": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Set locations for user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user related locations",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user related locations",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/user/{uid}/profile": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Set user profile",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user profile",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user profile",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/settings": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Set user settings",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user settings",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user settings",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/token": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Check if token is valid",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique token identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/sessions": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List sessions",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/logins": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List logins",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginsListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/subusers": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List secondary users, subusers",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubusersListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/salespersons": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List sales persons related to user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalespersonListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/username": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user short info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/listpermissions": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List all available permissions for UI",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{uid}/listusertypes": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List all available user types for UI",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/info": {
+      "get": {
+        "tags": ["Сontacts"],
+        "summary": "Get contact info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/list": {
+      "get": {
+        "tags": ["Сontacts"],
+        "summary": "List contacts related to user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/contactname": {
+      "get": {
+        "tags": ["Сontacts"],
+        "summary": "Get short info on contact",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/listtypes": {
+      "get": {
+        "tags": ["Сontacts"],
+        "summary": "List available contact types for UI",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "/api/v1/contacts/{uid}/set": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Create or update new contact",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user profile",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/validate": {
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/validate": {
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/dlicense": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Set drivers license metadata for contact",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set user profile",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactDLInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactDLInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactDLInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactDLInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/delete": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Delete contact record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/undelete": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Undelete contact record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{uid}/deletedlicense": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Delete contact related drivers license info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique contact identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/info": {
+      "get": {
+        "tags": ["Accounts"],
+        "summary": "Get account info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique account identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/list": {
+      "get": {
+        "tags": ["Accounts"],
+        "summary": "List accounts related to user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/set": {
+      "post": {
+        "tags": ["Accounts"],
+        "summary": "Create or Update account record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set account",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/status": {
+      "post": {
+        "tags": ["Accounts"],
+        "summary": "Set account status",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique account identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set account status",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/delete": {
+      "post": {
+        "tags": ["Accounts"],
+        "summary": "Delete account",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique account identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{uid}/undelete": {
+      "post": {
+        "tags": ["Accounts"],
+        "summary": "Undelete account",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique account identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/{uid}/info": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "Get deal info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/{uid}/list": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List deals related to user",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique user identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/{uid}/quotes": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List qoutes related to deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/listdealtypes": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List deal types for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/listsaletypes": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List sale types for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/listdealstatuses": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List deal statuses for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/listinventorystatuses": {
+      "get": {
+        "tags": ["Deals"],
+        "summary": "List inventory statuses for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/set": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "Create or Update deal record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set deal record",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/validate": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/validate": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/deals/{uid}/dealstatus": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "set deal status",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set deal record",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/inventorystatus": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "set inventory status for deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set inventory status",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/dealtype": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "set type of the deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set deal type",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/saletype": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "set sale type of the deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set sale type",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DealInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/quote": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "set quote info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set quote",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/deletequote": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "delete quote",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique quote identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/delete": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "delete deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/deals/{uid}/undelete": {
+      "post": {
+        "tags": ["Deals"],
+        "summary": "delete deal",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique deal identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/info": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get inventory info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/name": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get inventory short info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/list": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List inventory for current location",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique location identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/expences": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List inventory related expences",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenceListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/options": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List inventory related options",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptionsListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/options": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List options for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/bodytypes": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List bodytypes for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/exteriorcolors": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List exteriorcolors for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/interiorcolors": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List exteriorcolors for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/cylinders": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List cylinders for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/driveline": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List driveline for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/engine": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List engine for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/expensetypes": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List expensetypes for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/fueltypes": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List fueltypes for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/transmissiontypes": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List transmissiontypes for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/automakes": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List automakes for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/category": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List category for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/status": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List status for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/list/constants/group": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List group for UI",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/media": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Set media for inventory",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set media item info for inventory",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get item related media metadata",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/set": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Set inventory data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set inventory data",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },  
+    "/api/v1/inventory/{uid}/validate": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Validate data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/validate": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Validate data",
+        "requestBody": {
+          "description": "Data to be validated",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/{uid}/expence": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Set expence data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique expence identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set expence data",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/delete": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Delete inventory record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/undelete": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Undelete inventory record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique inventory identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/deleteexpence": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Delete expence record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique expence identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/undeleteexpence": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Undelete expence record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique expence identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/deletemedia": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Delete media",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },    
+    "/api/v1/inventory/{uid}/undeletemedia": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Undelete media",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/data": {
+      "get": {
+        "tags": ["Media"],
+        "summary": "Get media info",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/preview": {
+      "get": {
+        "tags": ["Media"],
+        "summary": "Get media preview",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              },
+              "video/mp4": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              },
+              "audio/mp3": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              }              
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/media": {
+      "post": {
+        "tags": ["Media"],
+        "summary": "Set media data",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set media data",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Media"],
+        "summary": "Get media item",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              },
+              "video/mp4": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              },
+              "audio/mp3": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaData"
+                }
+              }              
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/meta": {
+      "post": {
+        "tags": ["Media"],
+        "summary": "Set metadata for media record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Set media metadata",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MediaInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/delete": {
+      "post": {
+        "tags": ["Media"],
+        "summary": "Delete media record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/media/{uid}/undelete": {
+      "post": {
+        "tags": ["Media"],
+        "summary": "Undelete media record",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "Unique media identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          }
+        }
+      }
+    }      
   },
   "components": {
     "schemas": {
+      "Info": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaData": {
+        "type": "string",
+        "format": "binary",
+        "nullable": true
+      },
+      "AccountInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "DealInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "salesperson1uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "salesperson2uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealtype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "saletype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dealstatus": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "inventorystatus": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MediaInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "filepath": {
+            "type": "string",
+            "nullable": true
+          },
+          "mediatype": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "datasize": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "InventoryInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "ContactDLInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dluidfront": {
+            "type": "string",
+            "nullable": true
+          },          
+          "dluidback": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "ContactInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          }          
+        },
+        "additionalProperties": false
+      },
+      "QuoteInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProfileInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "profile": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SettingsInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "index": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionInfo": {
+        "type": "object",
+        "properties": {
+          "sessionuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "started": {
+            "type": "string",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SessionInfo"
+        },            
+        "nullable": true
+      },
+      "LoginsListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SessionInfo"
+        },            
+        "nullable": true
+      },
+      "SubusersListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserInfo"
+        },            
+        "nullable": true
+      },
+      "SalespersonListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserInfo"
+        },            
+        "nullable": true
+      },
+      "ContactListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContactInfo"
+        },            
+        "nullable": true
+      },
+      "InventoryListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/InventoryInfo"
+        },            
+        "nullable": true
+      },
+      "ExpenceInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "inventoryuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "type_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "value_text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExpenceListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExpenceInfo"
+        },            
+        "nullable": true
+      },
+      "OptionsListInfo": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ListInfo"
+        },            
+        "nullable": true
+      },
+      "ValidationInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "form": {
+            "type": "object",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/validationValue"
+            },            
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "validationValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ServiceOut": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int32",
+            "format": "int64",
+            "nullable": true
+          },
+          "uid": {
+            "type": "string",
             "nullable": true
           },
           "type": {
@@ -1109,125 +4712,32 @@
             "format": "uuid",
             "nullable": true
           },
-          "uid": {
-            "type": "string",
-            "nullable": true
-          },
-          "display_name": {
-            "type": "string",
-            "nullable": true
-          },
           "name": {
             "type": "string",
             "nullable": true
           },
-          "description": {
+          "version": {
             "type": "string",
             "nullable": true
           },
-          "archive_url": {
+          "started": {
             "type": "string",
             "nullable": true
           },
-          "avatar_url": {
+          "status": {
             "type": "string",
-            "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "created_by_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "created_by": {
-            "$ref": "#/components/schemas/UserOut"
-          },
-          "modified_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "modified_by_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "modified_by": {
-            "$ref": "#/components/schemas/UserOut"
-          },
-          "member_count": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberOut"
-            },
-            "nullable": true
-          },
-          "is_starred": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_trashed": {
-            "type": "boolean",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
       "ServicesOutPagedListOut": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceOut"
-            },
-            "nullable": true
-          },
-          "start": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true,
-            "readOnly": true
-          },
-          "end": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true,
-            "readOnly": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ServiceOut"
+        },            
+        "nullable": true
+      },      
       "LogsOut": {
         "type": "object",
         "properties": {
@@ -2389,97 +5899,21 @@
         "required": ["uid"],
         "type": "object",
         "properties": {
-          "uid": {
+          "user": {
             "maxLength": 256,
             "minLength": 0,
             "type": "string"
           },
-          "username": {
-            "maxLength": 32,
+          "secret": {
+            "maxLength": 64,
             "minLength": 0,
-            "pattern": "^[a-zA-Z0-9_]+$",
             "type": "string",
             "nullable": true
           },
-          "email": {
+          "magic": {
             "maxLength": 256,
             "minLength": 0,
             "type": "string",
-            "format": "email",
-            "nullable": true
-          },
-          "given_name": {
-            "maxLength": 64,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "middle_name": {
-            "maxLength": 64,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "maxLength": 256,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "family_name": {
-            "maxLength": 64,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "nickname": {
-            "maxLength": 32,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "phone_number": {
-            "maxLength": 32,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "picture": {
-            "type": "string",
-            "nullable": true
-          },
-          "directory": {
-            "type": "string",
-            "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "is_suspended": {
-            "type": "boolean"
-          },
-          "is_admin": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_manager": {
-            "type": "boolean",
             "nullable": true
           }
         },
@@ -2488,118 +5922,16 @@
       "UserOut": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "uid": {
+          "useruid": {
             "type": "string",
             "nullable": true
           },
-          "display_name": {
+          "sessionuid": {
             "type": "string",
             "nullable": true
           },
-          "username": {
+          "token": {
             "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "given_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "middle_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "family_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "nickname": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone_number": {
-            "type": "string",
-            "nullable": true
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "directory": {
-            "$ref": "#/components/schemas/DirectoryOut"
-          },
-          "directory_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "picture": {
-            "$ref": "#/components/schemas/BlobOut"
-          },
-          "picture_id": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "avatar_url": {
-            "type": "string",
-            "nullable": true
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "modified_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "is_admin": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_manager": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_superuser": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_suspended": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_trashed": {
-            "type": "boolean",
             "nullable": true
           }
         },
@@ -2729,5 +6061,10 @@
         "additionalProperties": false
       }
     }
-  }
+  },
+  "security": [
+        {
+            "ApiKey": []
+        }
+    ]
 }

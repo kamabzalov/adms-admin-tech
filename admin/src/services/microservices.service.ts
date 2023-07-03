@@ -5,7 +5,6 @@ import authHeader from "./auth.header";
 const API_URL = "http://app.admss.com:8088/api/v1/";
 
 export const listServices = () => {
-  console.warn(authHeader());
   return axios.get(API_URL + "services", {
     headers: authHeader(),
   });
@@ -42,13 +41,13 @@ export const getServiceCounters = (id: number) => {
 };
 
 export const startService = (id: number) => {
-  return axios.post(API_URL + "services/" + id.toString() + "/start", {
+  return axios.get(API_URL + "services/" + id + "/start", {
     headers: authHeader(),
   });
 };
 
 export const stopService = (id: number) => {
-  return axios.post(API_URL + "services/" + id.toString() + "/stop", {
+  return axios.get(API_URL + "services/" + id + "/stop", {
     headers: authHeader(),
   });
 };
