@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ADMSS web API",
-    "version": "0.1.5"
+    "version": "0.1.7"
   },
   "servers": [
     {
@@ -922,22 +922,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserCreationInfo"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserCreationInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserCreationInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserCreationInfo"
               }
             }
           }
@@ -976,22 +976,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserPermissionsInfo"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserPermissionsInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserPermissionsInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserPermissionsInfo"
               }
             }
           }
@@ -4468,25 +4468,175 @@
         },
         "additionalProperties": false
       },
-      "UserInfo": {
+      "UserCreationInfo": {
         "type": "object",
         "properties": {
-          "status": {
+          "loginname": {
             "type": "string",
             "nullable": true
           },
-          "error": {
-            "type": "string",
-            "nullable": true
-          },
-          "info": {
-            "type": "string",
-            "nullable": true
-          },
-          "message": {
+          "loginpassword": {
             "type": "string",
             "nullable": true
           }
+        },
+        "additionalProperties": false
+      },
+      "UserPermissionsInfo": {
+        "type": "object",
+        "properties": {
+            "uaSystemAdmin": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaManager": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaClientAdmin": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaLocationAdmin": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaSalesPerson": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaViewInventory": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAddInventory": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditInventory": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaViewCostsAndExpenses": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAddExpenses": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditExpenses": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaDeleteInventory": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaViewContacts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAddContacts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditContacts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaDeleteContacts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaViewDeals": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAddDeals": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditDeals": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditInsuranceOnly": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaPrintDealsForms": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditDealWashout": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditPaidComissions": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaDeleteDeal": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaViewAccounts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditPayments": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaDeletePayments": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAddCreditsAndFees": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaDeleteAccounts": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaChangePayments": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowBackDatingPayments": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowPartialPayments": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaCreateUsers": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaEditSettings": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowPaymentCalculator": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowPaymentQuote": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowReports": {
+              "type": "integer",
+              "nullable": true
+            },
+            "uaAllowPrinting": {
+              "type": "integer",
+              "nullable": true
+            }
         },
         "additionalProperties": false
       },
@@ -4640,6 +4790,28 @@
           "$ref": "#/components/schemas/ListInfo"
         },
         "nullable": true
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ValidationInfo": {
         "type": "object",
