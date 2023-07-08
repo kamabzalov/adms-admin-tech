@@ -606,19 +606,18 @@
         }
       }
     },
-    "/api/v1/user/{id}/delete": {
+    "/api/v1/user/{uid}/delete": {
       "post": {
         "tags": ["User"],
         "summary": "Move a user to the trash.",
         "parameters": [
           {
-            "name": "id",
+            "name": "uid",
             "in": "path",
-            "description": "Id of the user to trash.",
+            "description": "uid of the user to trash.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "string"
+              "type": "string"
             }
           }
         ],
@@ -666,15 +665,15 @@
         }
       }
     },
-    "/api/v1/user/{id}/undelete": {
+    "/api/v1/user/{uid}/undelete": {
       "post": {
         "tags": ["User"],
         "summary": "Restore a user from the trash.",
         "parameters": [
           {
-            "name": "id",
+            "name": "uid",
             "in": "path",
-            "description": "Id of the user to restore.",
+            "description": "uid of the user to restore.",
             "required": true,
             "schema": {
               "type": "string"
@@ -771,22 +770,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserGeneralInfo"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserGeneralInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserGeneralInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserInfo"
+                "$ref": "#/components/schemas/UserGeneralInfo"
               }
             }
           }
@@ -4808,6 +4807,79 @@
           },
           "message": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserGeneralInfo":{
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "updated": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "streetAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "ZIP": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone1": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone2": {
+            "type": "string",
+            "nullable": true
+          },
+          "email1": {
+            "type": "string",
+            "nullable": true
+          },
+          "email2": {
+            "type": "string",
+            "nullable": true
+          },
+          "messager1": {
+            "type": "string",
+            "nullable": true
+          },
+          "messager2": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },
