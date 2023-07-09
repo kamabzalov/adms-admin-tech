@@ -4665,6 +4665,34 @@
         },
         "additionalProperties": false
       },
+      "LoginRecordInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "useruid": {
+            "type": "string",
+            "nullable": true
+          },
+          "sessionuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "info": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SessionListInfo": {
         "type": "array",
         "items": {
@@ -4675,7 +4703,7 @@
       "LoginsListInfo": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/SessionInfo"
+          "$ref": "#/components/schemas/LoginRecordInfo"
         },
         "nullable": true
       },
