@@ -33,7 +33,6 @@ function MCCard({ services, onChangeState }: MCCardProps) {
 const Microservices: React.FC = () => {
   const [listOfServices, setListOfServices] = useState<any[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [stateChanged, setStateChanged] = useState<boolean>(false);
   useEffect(() => {
     if (!loaded) {
       const microservices = MicroservicesService.listServices().then(
@@ -78,7 +77,6 @@ const Microservices: React.FC = () => {
         return response.data;
       });
     }
-    setStateChanged((prev) => !prev);
   }, []);
 
   return (
