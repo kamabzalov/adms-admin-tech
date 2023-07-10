@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ADMSS web API",
-    "version": "0.1.7"
+    "version": "0.1.8"
   },
   "servers": [
     {
@@ -13,11 +13,20 @@
     }
   ],
   "paths": {
-    "/api/v1/services": {
+    "/api/v1/services/{uid}/list": {
       "get": {
         "tags": ["Services"],
         "summary": "List services",
         "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "uid of user. Optional, may use 0",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "Type",
             "in": "query",
@@ -559,10 +568,23 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/user/{uid}/list": {
       "get": {
         "tags": ["User"],
         "summary": "List users.",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "uid of user. Optional, may use 0",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
