@@ -109,6 +109,102 @@
                 }
             }
         },
+        "/api/v1/mobile/{userid}/items": {   
+            "parameters": [
+                {
+                    "name": "userid",
+                    "description": "The unique identifier of the user",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "get user's inventory list",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{id}/contacts": {   
+            "parameters": [
+                {
+                    "name": "userid",
+                    "description": "The unique identifier of the user",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "get user's contact list",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/mobile/{itemId}/inventory": {
             "parameters": [
                 {
