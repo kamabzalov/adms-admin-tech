@@ -5026,6 +5026,15 @@
           "status": {
             "type": "string",
             "nullable": true
+          },
+          "ipv4": {
+            "type": "string",
+            "nullable": true
+          },
+          "port": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
