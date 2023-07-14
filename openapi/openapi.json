@@ -602,6 +602,35 @@
         }
       }
     },
+    "/api/v1/user/{uid}/listdeleted": {
+      "get": {
+        "tags": ["User"],
+        "summary": "List deleted users.",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "uid of user. Optional, may use 0",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOutPagedListOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/user/{id}/logout": {
       "post": {
         "tags": ["User"],
