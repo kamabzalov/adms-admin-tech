@@ -66,16 +66,24 @@ export const listUsers = () => {
 
 // Move a user to the trash.
 export const deleteUser = (uid: string) => {
-  return axios.post(API_URL + "user/" + uid + "/delete", {
-    headers: authHeader(),
-  });
+  return axios.post(
+    API_URL + "user/" + uid + "/delete",
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
 };
 
 // Restore a user from the trash.
 export const undeleteUser = (uid: string) => {
-  return axios.post(API_URL + "user/" + uid + "/undelete", {
-    headers: authHeader(),
-  });
+  return axios.post(
+    API_URL + "user/" + uid + "/undelete",
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
 };
 
 // Set user permissions.
@@ -130,13 +138,9 @@ export const getUserProfile = (uid: string) => {
 
 // Set user settings.
 export const setUserSettings = (uid: string, data: any) => {
-  return axios.post(
-    API_URL + "user/" + uid + "/settings",
-    { ...data },
-    {
-      headers: authHeader(),
-    }
-  );
+  return axios.post(API_URL + "user/" + uid + "/settings", data, {
+    headers: authHeader(),
+  });
 };
 
 // Get user settings.
