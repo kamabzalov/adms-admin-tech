@@ -259,7 +259,7 @@
                         "content": {
                         "application/json-patch+json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Info"
+                                "$ref": "#/components/schemas/InventoryInfo"
                             }
                         },
                         "application/json": {
@@ -1694,14 +1694,178 @@
             "ContactInfo": {
                 "type": "object",
                 "required": [
-                    "status",
-                    "info"
+                    "useruid",
+                    "contactuid",
+                    "userName",
+                    "firstName",
+                    "lastName",
+                    "streetAddress",
+                    "state",
+                    "ZIP",
+                    "phone1",
+                    "phone2",
+                    "email1",
+                    "email2",
+                    "messager1",
+                    "messager2",
+                    "companyName",
+                    "type",
+                    "dluidfront",
+                    "dluidback"
                 ],
                 "properties": {
-                    "status": {
+                    "useruid": {
                         "type": "string"
                     },
-                    "info": {
+                    "contactuid": {
+                        "type": "string"
+                    },
+                    "userName": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "streetAddress": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "ZIP": {
+                        "type": "string"
+                    },
+                    "phone1": {
+                        "type": "string"
+                    },
+                    "phone2": {
+                        "type": "string"
+                    },
+                    "email1": {
+                        "type": "string"
+                    },
+                    "email2": {
+                        "type": "string"
+                    },
+                    "messager1": {
+                        "type": "string"
+                    },
+                    "messager2": {
+                        "type": "string"
+                    },
+                    "companyName": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "dluidfront": {
+                        "type": "string"
+                    },
+                    "dluidback": {
+                        "type": "string"
+                    }
+                }
+            },
+            "InventoryInfo": {
+                "type": "object",
+                "required": [
+                    "itemuid",
+                    "useruid",
+                    "name",
+                    "VIN",
+                    "VINimageUID",
+                    "StockNo",
+                    "Category",
+                    "mileage",
+                    "Year",
+                    "Make",
+                    "ExteriorColor",
+                    "InteriorColor",
+                    "BodyStyle",
+                    "Transmission", 
+                    "TypeOfFuel",
+                    "DriveLine",
+                    "Cylinders",
+                    "Engine",
+                    "Status",
+                    "Options",
+                    "GroupClass"
+                ],
+                "properties": {
+                    "locationuid": {
+                        "type": "string"
+                    },
+                    "itemuid": {
+                        "type": "string"
+                    },
+                    "useruid": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "VIN": {
+                        "type": "string"
+                    },
+                    "VINimageUID": {
+                        "type": "string"
+                    },
+                    "StockNo": {
+                        "type": "string"
+                    },
+                    "Category": {
+                        "type": "string"
+                    },
+                    "mileage": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "Year": {
+                        "type": "string"
+                    },
+                    "Make": {
+                        "type": "string"
+                    },
+                    "ExteriorColor": {
+                        "type": "string"
+                    },
+                    "InteriorColor": {
+                        "type": "string"
+                    },
+                    "BodyStyle": {
+                        "type": "string"
+                    },
+                    "Transmission": {
+                        "type": "string"
+                    },
+                    "TypeOfFuel": {
+                        "type": "string"
+                    },
+                    "DriveLine": {
+                        "type": "string"
+                    },
+                    "Cylinders": {
+                        "type": "string"
+                    },
+                    "Engine": {
+                        "type": "string"
+                    },
+                    "Status": {
+                        "type": "string"
+                    },
+                    "Options": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "GroupClass": {
+                        "type": "string"
+                    },
+                    "Notes": {
                         "type": "string"
                     }
                 }
