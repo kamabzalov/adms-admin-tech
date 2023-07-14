@@ -6,26 +6,28 @@ import * as MicroservicesService from "./../services/microservices.service";
 //MC means microservices
 interface MCCardProps {
   services: any[];
-  onChangeState: (id: number, state: boolean) => void;
+  onRestartSerice: (id: number) => void;
 }
 // Adding cards and names and descriptions for them
-function MCCard({ services, onChangeState }: MCCardProps) {
+function MCCard({ services, onRestartSerice }: MCCardProps) {
   return (
-    <>
+    <div>
       {services &&
         services.map((service, index) => {
           return (
             <Card
               key={index}
               name={service.name}
-              state={(service.status as string).toUpperCase().includes("OK")}
               description={"Service started: " + service.started}
+              ipv4={"Ipv4: " + service.ipv4}
+              port={"Port: " + service.port}
               index={service.index}
-              onChange={onChangeState}
+              uid={service.uid}
+              onRestartSerice={onRestartSerice}
             />
           );
         })}
-    </>
+    </div>
   );
 }
 
@@ -55,36 +57,20 @@ const Microservices: React.FC = () => {
       );
     }
   }, [listOfServices]);
-  /*const onButtonPressed = useCallback(() => {
-    const response = MicroservicesService.getServiceState(1).then(
+
+  const onRestartSerice = useCallback((id: number) => {
+    const response = MicroservicesService.restartService(id).then(
       (response) => {
-        console.warn(response);
-        console.warn(response.data);
         return response.data;
       }
     );
-  }, []);*/
-
-  const onChangeServiceState = useCallback((id: number, state: boolean) => {
-    if (!state) {
-      const response = MicroservicesService.startService(id).then(
-        (response) => {
-          return response.data;
-        }
-      );
-    } else {
-      const response = MicroservicesService.stopService(id).then((response) => {
-        return response.data;
-      });
-    }
   }, []);
 
   return (
-    <>
+    <div>
       <h1>Here are microservices</h1>
-      {/*<button onClick={onButtonPressed}>Button</button>*/}
-      <MCCard onChangeState={onChangeServiceState} services={listOfServices} />
-    </>
+      <MCCard onRestartSerice={onRestartSerice} services={listOfServices} />
+    </div>
   );
 };
 

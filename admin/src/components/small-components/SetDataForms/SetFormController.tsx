@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { SetDataType } from "../UserMenu";
-import { UserDataForm } from "./UserDataForm";
+import { UserPasswordForm } from "./UserPasswordForm";
 import { KillSessionForm } from "./KillSessionForm";
 import { PermissionsForm } from "./PermissionsForm";
 import { UserOptionalDataForm } from "./UserOptionalDataForm";
@@ -24,9 +24,9 @@ export const SetFormController: React.FC<SetFormControllerProps> = ({
 }): JSX.Element => {
   if (!openDialog) return <></>;
   switch (type) {
-    case "User data":
+    case "User password":
       return (
-        <UserDataForm
+        <UserPasswordForm
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
           handleUploadData={handleUploadData}
@@ -38,10 +38,9 @@ export const SetFormController: React.FC<SetFormControllerProps> = ({
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
           handleUploadData={handleUploadData}
+          userUid={uid}
         />
       );
-    case "Locations":
-      return <></>;
     case "Permissions":
       return (
         <PermissionsForm
@@ -57,6 +56,7 @@ export const SetFormController: React.FC<SetFormControllerProps> = ({
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
           handleUploadData={handleUploadData}
+          uid={uid}
         />
       );
     case "Settings":
@@ -74,13 +74,8 @@ export const SetFormController: React.FC<SetFormControllerProps> = ({
           openDialog={openDialog}
           handleCloseDialog={handleCloseDialog}
           handleUploadData={handleUploadData}
-          uid={uid}
         />
       );
-    case "Validate":
-      return <></>;
-    case "Validate with uid":
-      return <></>;
     default:
       return <>not implemented yet</>;
   }

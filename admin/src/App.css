@@ -38,7 +38,11 @@
 }
 
 .log-in-out {
-  position:fixed ;
+  position: fixed;
   right: 10px;
   top: 8px;
+}
+
+body {
+  background-color: #cfcfcf; /* Replace with your desired background color */
 }

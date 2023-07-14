@@ -11,14 +11,14 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import * as UserService from "./../../../services/user.service";
 import { useCallback, useEffect, useState } from "react";
-interface KillSessionFormProps {
+interface CheckSessionFormProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
   handleUploadData: (data: any) => void;
   userUid: string;
 }
 
-export const KillSessionForm: React.FC<KillSessionFormProps> = ({
+export const CheckSessionForm: React.FC<CheckSessionFormProps> = ({
   openDialog,
   handleCloseDialog,
   handleUploadData,
@@ -34,7 +34,7 @@ export const KillSessionForm: React.FC<KillSessionFormProps> = ({
 
   const onSubmit = useCallback(() => {
     if (sessionUid) {
-      handleUploadData({ id: sessionUid });
+      handleUploadData(sessionUid);
       handleCloseDialog();
     }
   }, [sessionUid]);
@@ -65,7 +65,7 @@ export const KillSessionForm: React.FC<KillSessionFormProps> = ({
   if (loaded && !sessions.length) {
     return (
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Input session to kill</DialogTitle>
+        <DialogTitle>Input session to check</DialogTitle>
         <DialogContent>No sessions were found</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
@@ -76,7 +76,7 @@ export const KillSessionForm: React.FC<KillSessionFormProps> = ({
   return (
     <div>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Input session to kill</DialogTitle>
+        <DialogTitle>Input session to check</DialogTitle>
         <DialogContent>
           <FormControl required fullWidth>
             <InputLabel id="demo-simple-select-label">Session uid</InputLabel>
@@ -100,7 +100,7 @@ export const KillSessionForm: React.FC<KillSessionFormProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={onSubmit}>Kill Session</Button>
+          <Button onClick={onSubmit}>Check Session</Button>
         </DialogActions>
       </Dialog>
     </div>

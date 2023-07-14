@@ -29,10 +29,11 @@ const Transition = React.forwardRef(function Transition(
 
 interface CardMenuProps {
   id: number;
+  uid: string;
 }
-type ServiceDataType = "Logs" | "Audit" | "Allerts" | "Counters";
+type ServiceDataType = "State" | "Logs" | "Audit" | "Allerts" | "Counters";
 
-export default function CardMenu({ id }: CardMenuProps) {
+export default function CardMenu({ id, uid }: CardMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dataType, setDataType] = useState<ServiceDataType>("Logs");
@@ -55,6 +56,16 @@ export default function CardMenu({ id }: CardMenuProps) {
   const handleCloseDialog = useCallback(() => {
     setOpenDialog(false);
   }, []);
+
+  const getState = useCallback(async () => {
+    const state = await MicroservicesService.getServiceState(uid).then(
+      (response) => {
+        return response.data;
+      }
+    );
+    setData(state);
+    setDataType("State");
+  }, [uid]);
 
   const getLogs = useCallback(async () => {
     const logs = await MicroservicesService.getServiceLogs(id).then(
@@ -119,12 +130,17 @@ export default function CardMenu({ id }: CardMenuProps) {
         <MenuItem
           onClick={() => {
             handleClickOpenDialog();
+            getState();
+          }}
+        >
+          <ListItemText>Get State</ListItemText>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClickOpenDialog();
             getLogs();
           }}
         >
-          <ListItemIcon>
-            <ListIcon fontSize="small" />
-          </ListItemIcon>
           <ListItemText>Get Logs</ListItemText>
         </MenuItem>
         <MenuItem
@@ -133,9 +149,6 @@ export default function CardMenu({ id }: CardMenuProps) {
             getAudit();
           }}
         >
-          <ListItemIcon>
-            <ReceiptIcon fontSize="small" />
-          </ListItemIcon>
           <ListItemText>Get Audit</ListItemText>
         </MenuItem>
         <MenuItem
@@ -144,9 +157,6 @@ export default function CardMenu({ id }: CardMenuProps) {
             getAllerts();
           }}
         >
-          <ListItemIcon>
-            <WarningIcon fontSize="small" />
-          </ListItemIcon>
           <ListItemText>Get Allerts</ListItemText>
         </MenuItem>
         <MenuItem
@@ -155,9 +165,6 @@ export default function CardMenu({ id }: CardMenuProps) {
             getCounters();
           }}
         >
-          <ListItemIcon>
-            <FormatListNumberedIcon fontSize="small" />
-          </ListItemIcon>
           <ListItemText>Get Counters</ListItemText>
         </MenuItem>
       </Menu>

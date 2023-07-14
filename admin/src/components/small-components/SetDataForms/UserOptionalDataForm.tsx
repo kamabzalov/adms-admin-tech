@@ -6,24 +6,23 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useCallback, useEffect, useState } from "react";
-import * as UserService from "./../../../services/user.service";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface UserOptionalDataFormProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
   handleUploadData: (data: any) => void;
-  uid: string;
 }
 
 export const UserOptionalDataForm: React.FC<UserOptionalDataFormProps> = ({
   openDialog,
   handleCloseDialog,
   handleUploadData,
-  uid,
 }): JSX.Element => {
   const [optionalData, setOptionalData] = useState<any>({
-    created: 0,
-    updated: 0,
     userName: "",
     firstName: "",
     lastName: "",
@@ -40,13 +39,21 @@ export const UserOptionalDataForm: React.FC<UserOptionalDataFormProps> = ({
     type: 0,
   });
 
+  const handleChange = useCallback(
+    (event: SelectChangeEvent) => {
+      setOptionalData({
+        ...optionalData,
+        ["type"]: event.target.value as unknown as number,
+      });
+    },
+    [optionalData]
+  );
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setOptionalData({
         ...optionalData,
-        [name]:
-          name === "created" || name === "updated" ? parseInt(value) : value,
+        [name]: value,
       });
     },
     [optionalData]
@@ -57,31 +64,6 @@ export const UserOptionalDataForm: React.FC<UserOptionalDataFormProps> = ({
     handleCloseDialog();
   }, [optionalData]);
 
-  /*useEffect(() => {
-    if (!loaded) {
-      const response = UserService.getUserExtendedInfo(uid).then(
-        (response) => {
-          const { status, useruid, error, info, message, ...optionalData } =
-            response.data;
-          setOptionalData(optionalData);
-          setLoaded(true);
-          return response.data;
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          //setLoading(false);
-          //setMessage(resMessage);
-        }
-      );
-    }
-  }, [uid]);*/
-
   return (
     <div>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -89,26 +71,41 @@ export const UserOptionalDataForm: React.FC<UserOptionalDataFormProps> = ({
         <DialogContent>
           {optionalData &&
             Object.keys(optionalData).map((property) => {
-              return (
-                <TextField
-                  fullWidth
-                  margin="dense"
-                  autoFocus
-                  variant="standard"
-                  key={property}
-                  label={property}
-                  name={property}
-                  type={
-                    property === "type" ||
-                    property === "created" ||
-                    property === "updated"
-                      ? "number"
-                      : "text"
-                  }
-                  value={optionalData[property]}
-                  onChange={handleInputChange}
-                />
-              );
+              if (property !== "type") {
+                return (
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    autoFocus
+                    variant="standard"
+                    key={property}
+                    label={property}
+                    name={property}
+                    type={"text"}
+                    value={optionalData[property]}
+                    onChange={handleInputChange}
+                  />
+                );
+              } else {
+                return (
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={optionalData.type}
+                      label="Type"
+                      type="number"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={0}>Admin</MenuItem>
+                      <MenuItem value={1}>Manager</MenuItem>
+                      <MenuItem value={2}>General</MenuItem>
+                      <MenuItem value={3}>Salesperson</MenuItem>
+                    </Select>
+                  </FormControl>
+                );
+              }
             })}
         </DialogContent>
         <DialogActions>

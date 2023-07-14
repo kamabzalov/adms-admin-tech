@@ -39,8 +39,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
         if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
-        //navigate("/profile");
-        window.location.reload();
+        navigate("/");
         onLogin();
         return response.data;
       },
