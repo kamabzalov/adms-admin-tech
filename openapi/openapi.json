@@ -6,10 +6,13 @@
   },
   "servers": [
     {
-      "url": "localhost:6786"
+      "url": "http://app.admss.com:8088"
     },
     {
-      "url": "http://app.admss.com:8088"
+      "url": "https://app.admss.com"
+    },
+    {
+      "url": "localhost:6786"
     }
   ],
   "paths": {
