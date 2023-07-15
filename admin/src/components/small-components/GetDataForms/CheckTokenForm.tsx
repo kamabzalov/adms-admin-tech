@@ -4,52 +4,50 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { SetDataType } from "../UserMenu";
 import { useCallback, useState } from "react";
-interface UserDataFormProps {
+interface CheckTokenFormProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
   handleUploadData: (data: any) => void;
 }
 
-export const UserDataForm: React.FC<UserDataFormProps> = ({
+export const CheckTokenForm: React.FC<CheckTokenFormProps> = ({
   openDialog,
   handleCloseDialog,
   handleUploadData,
 }): JSX.Element => {
-  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [token, setToken] = useState<string>("");
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordInput(event.target.value);
+    setToken(event.target.value);
   };
 
   const onSubmit = useCallback(() => {
-    handleUploadData({ password: passwordInput });
+    handleUploadData(token);
     handleCloseDialog();
-  }, [passwordInput]);
+  }, [token]);
 
   return (
     <div>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Update password</DialogTitle>
+        <DialogTitle>Input token to check</DialogTitle>
         <DialogContent>
           <TextField
-            value={passwordInput}
+            value={token}
             onChange={handlePasswordChange}
             autoFocus
             margin="dense"
             id="password"
-            label="Password"
-            type="password"
+            label="token"
+            type="text"
             fullWidth
             variant="standard"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={onSubmit}>Create</Button>
+          <Button onClick={onSubmit}>Check</Button>
         </DialogActions>
       </Dialog>
     </div>

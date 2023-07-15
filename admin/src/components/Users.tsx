@@ -43,6 +43,7 @@ const Users: React.FC = () => {
       return response.data;
     });
     setData(response);
+    window.location.reload();
   }, [loginInput, passwordInput]);
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const Users: React.FC = () => {
         }
       );
     }
-  }, [users]);
+  }, [users, data]);
 
   return (
     <>

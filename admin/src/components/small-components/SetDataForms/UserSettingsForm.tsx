@@ -5,9 +5,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useCallback, useEffect, useState } from "react";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import * as UserService from "../../../services/user.service";
 import { TextField } from "@mui/material";
 
@@ -81,7 +78,11 @@ export const UserSettingsForm: React.FC<UserSettingsFormProps> = ({
             Object.keys(settings).map((property) => {
               return (
                 <TextField
-                  disabled={property === "useruid"}
+                  disabled={
+                    property === "useruid" ||
+                    property === "created" ||
+                    property === "updated"
+                  }
                   fullWidth
                   margin="dense"
                   autoFocus

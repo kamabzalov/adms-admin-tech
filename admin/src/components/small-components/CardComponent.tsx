@@ -1,23 +1,28 @@
 import React, { useCallback } from "react";
 import CardMenu from "./CardMenu";
+import { Button } from "@mui/material";
 
 interface CardLayoutProps {
   name: string;
   description: string;
-  state: boolean;
+  ipv4: string;
+  port: string;
   index: number;
-  onChange: (id: number, state: boolean) => void;
+  uid: string;
+  onRestartSerice: (id: number) => void;
 }
 
 export const Card: React.FC<CardLayoutProps> = ({
   name,
   description,
-  state,
-  onChange,
+  onRestartSerice,
   index,
+  ipv4,
+  port,
+  uid,
 }) => {
-  const change = useCallback(() => {
-    onChange(index, state);
+  const restart = useCallback(() => {
+    onRestartSerice(index);
   }, []);
   return (
     <>
@@ -25,17 +30,10 @@ export const Card: React.FC<CardLayoutProps> = ({
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
           <p className="card-text">{description}</p>
-          <CardMenu id={index} />
-          <div className="form-check form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={state}
-              onChange={change}
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
+          <p className="card-text">{ipv4}</p>
+          <p className="card-text">{port}</p>
+          <CardMenu id={index} uid={uid} />
+          <Button onClick={restart}>Restart</Button>
         </div>
       </div>
     </>

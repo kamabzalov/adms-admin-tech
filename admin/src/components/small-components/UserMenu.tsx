@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { ListItemIcon, ListItemText } from "@mui/material";
-import ListIcon from "@mui/icons-material/List";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { useCallback, useState } from "react";
@@ -16,9 +15,11 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import * as UserService from "../../services/user.service";
 import { SetFormController } from "./SetDataForms/SetFormController";
+import { CheckFormController } from "./GetDataForms/CheckFormController";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -36,14 +37,11 @@ interface UserMenuProps {
 
 export type SetDataType =
   | "Permissions"
-  | "User data"
+  | "User password"
   | "User optional data"
   | "Kill session"
-  | "Locations"
   | "Profile"
-  | "Settings"
-  | "Validate"
-  | "Validate with uid";
+  | "Settings";
 
 type GetDataType =
   | "Permissions"
@@ -51,7 +49,6 @@ type GetDataType =
   | "Locations"
   | "Profile"
   | "Settings"
-  | "Check Token"
   | "Sessions"
   | "Logins"
   | "Subusers"
@@ -70,6 +67,11 @@ interface GetDataDict {
   text: string;
 }
 
+interface CheckDataDict {
+  type: "Session" | "Token";
+  text: string;
+}
+
 export default function UserMenu({ uid, username }: UserMenuProps) {
   const getDataDict = [
     { type: "Permissions", text: "Get permissions" },
@@ -77,7 +79,6 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
     { type: "Locations", text: "Get user locations" },
     { type: "Profile", text: "Get user profile" },
     { type: "Settings", text: "Get user settings" },
-    { type: "Check Token", text: "Check if token is valid" },
     { type: "Sessions", text: "List sessions" },
     { type: "Logins", text: "List logins" },
     { type: "Subusers", text: "List secondary users, subusers" },
@@ -89,15 +90,17 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
 
   const setDataDict = [
     { type: "Permissions", text: "Set user permissions" },
-    { type: "User data", text: "Set user data" },
+    { type: "User password", text: "Set user password" },
     { type: "User optional data", text: "Set user optional data" },
     { type: "Kill session", text: "Kill user's session." },
-    { type: "Locations", text: "Set locations for user" },
     { type: "Profile", text: "Set user profile" },
     { type: "Settings", text: "Set user settings" },
-    { type: "Validate", text: "Validate data" },
-    { type: "Validate with uid", text: "Validate data with uid" },
   ] as SetDataDict[];
+
+  const checkDataDict = [
+    { type: "Session", text: "Check if session is valid" },
+    { type: "Token", text: "Check if token is valid" },
+  ] as CheckDataDict[];
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [downloadAnchorEl, setDownloadAnchorEl] = useState<null | HTMLElement>(
@@ -106,8 +109,10 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
   const [uploadAnchorEl, setUploadAnchorEl] = useState<null | HTMLElement>(
     null
   );
+  const [checkAnchorEl, setCheckAnchorEl] = useState<null | HTMLElement>(null);
   const [openSetDialog, setOpenSetDialog] = useState<boolean>(false);
   const [openGetDialog, setOpenGetDialog] = useState<boolean>(false);
+  const [openCheckDialog, setOpenCheckDialog] = useState<boolean>(false);
   const [dataType, setDataType] = useState<string>("Data type is undefined");
   const [responseData, setResponseData] = useState<JSON>();
 
@@ -115,6 +120,7 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
 
   const openDownloadMenuBool = Boolean(downloadAnchorEl);
   const openUploadMenuBool = Boolean(uploadAnchorEl);
+  const openCheckMenuBool = Boolean(checkAnchorEl);
 
   const openBasicMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -124,6 +130,7 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
     setAnchorEl(null);
     setDownloadAnchorEl(null);
     setUploadAnchorEl(null);
+    setCheckAnchorEl(null);
   }, []);
 
   const openDownloadMenu = (event: React.MouseEvent<HTMLLIElement>) => {
@@ -136,9 +143,18 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
     setUploadAnchorEl(event.currentTarget);
   };
 
+  const openCheckMenu = (event: React.MouseEvent<HTMLLIElement>) => {
+    handleClose();
+    setCheckAnchorEl(event.currentTarget);
+  };
+
   const handleClickOpenSetDialog = useCallback(() => {
     handleClose();
     setOpenSetDialog(true);
+  }, []);
+
+  const handleCloseSetDialog = useCallback(() => {
+    setOpenSetDialog(false);
   }, []);
 
   const handleClickOpenGetDialog = useCallback(() => {
@@ -146,17 +162,25 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
     setOpenGetDialog(true);
   }, []);
 
-  const handleCloseSetDialog = useCallback(() => {
-    setOpenSetDialog(false);
-  }, []);
-
   const handleCloseGetDialog = useCallback(() => {
     setOpenGetDialog(false);
   }, []);
 
-  const setUserDataType = useCallback((type: SetDataType) => {
-    setDataType(type);
+  const handleClickOpenCheckDialog = useCallback(() => {
+    handleClose();
+    setOpenCheckDialog(true);
   }, []);
+
+  const handleCloseCheckDialog = useCallback(() => {
+    setOpenCheckDialog(false);
+  }, []);
+
+  const setUserDataType = useCallback(
+    (type: SetDataType | "Session" | "Token") => {
+      setDataType(type);
+    },
+    []
+  );
 
   const setUserData = useCallback(
     async (data: any) => {
@@ -190,7 +214,7 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
             }
           );
           break;
-        case "User data":
+        case "User password":
           response = await UserService.updateUser(
             uid,
             username,
@@ -209,7 +233,7 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
       setDataType(dataType);
       handleClickOpenGetDialog();
     },
-    [dataType]
+    [dataType, uid]
   );
 
   const getUserData = useCallback(
@@ -244,11 +268,6 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
           break;
         case "Settings":
           response = await UserService.getUserSettings(uid).then((response) => {
-            return response.data;
-          });
-          break;
-        case "Check Token":
-          response = await UserService.checkUserToken(uid).then((response) => {
             return response.data;
           });
           break;
@@ -301,7 +320,27 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
     },
     [uid]
   );
-
+  const checkData = useCallback(
+    async (data: string) => {
+      let response: any;
+      switch (dataType as "Session" | "Token") {
+        case "Session":
+          response = await UserService.checkSession(data).then((response) => {
+            return response.data;
+          });
+          break;
+        case "Token":
+          response = await UserService.checkToken(data).then((response) => {
+            return response.data;
+          });
+          break;
+      }
+      setResponseData(response);
+      setDataType(dataType);
+      handleClickOpenGetDialog();
+    },
+    [dataType, uid]
+  );
   return (
     <div style={{ flex: 3, width: "33%" }}>
       <Button
@@ -335,6 +374,12 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
           </ListItemIcon>
           <ListItemText>Get data</ListItemText>
         </MenuItem>
+        <MenuItem onClick={openCheckMenu}>
+          <ListItemIcon>
+            <CheckBoxIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Check data</ListItemText>
+        </MenuItem>
       </Menu>
 
       <Menu
@@ -350,7 +395,7 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
           setDataDict.map((element, index) => {
             return (
               <MenuItem
-                key={index + "_GetMenuItem"}
+                key={index + "_SetMenuItem"}
                 onClick={() => {
                   handleClickOpenSetDialog();
                   setUserDataType(element.type);
@@ -387,6 +432,31 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
           })}
       </Menu>
 
+      <Menu
+        id="check-menu"
+        anchorEl={checkAnchorEl}
+        open={openCheckMenuBool}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {checkDataDict.length &&
+          checkDataDict.map((element, index) => {
+            return (
+              <MenuItem
+                key={index + "_CheckMenuItem"}
+                onClick={() => {
+                  handleClickOpenCheckDialog();
+                  setUserDataType(element.type);
+                }}
+              >
+                <ListItemText>{element.text}</ListItemText>
+              </MenuItem>
+            );
+          })}
+      </Menu>
+
       <SetFormController
         openDialog={openSetDialog}
         handleCloseDialog={handleCloseSetDialog}
@@ -394,7 +464,13 @@ export default function UserMenu({ uid, username }: UserMenuProps) {
         type={dataType as SetDataType}
         uid={uid}
       />
-
+      <CheckFormController
+        openDialog={openCheckDialog}
+        handleCloseDialog={handleCloseCheckDialog}
+        handleUploadData={checkData}
+        type={dataType as "Session" | "Token"}
+        uid={uid}
+      />
       <Dialog
         fullScreen
         open={openGetDialog}
