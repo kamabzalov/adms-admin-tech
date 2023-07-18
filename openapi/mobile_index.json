@@ -630,6 +630,102 @@
                 }
             }
         },
+        "/api/v1/mobile/{taskuid}/vindecoder": {
+            "parameters": [
+                {
+                    "name": "taskuid",
+                    "description": "task UID assigned by decoder service",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get extended info from VIN (vin-decoder)",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InventoryInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/{taskuid}/barcode": {
+            "parameters": [
+                {
+                    "name": "taskuid",
+                    "description": "task UID assigned by decoder service",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/components/schemas/itemId"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get extended info from DL back barcode (vin-decoder)",
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactInfo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/mobile": {
             "post": {
                 "summary": "login to backend",
@@ -1092,6 +1188,130 @@
         "/api/v1/mobile/validate": {
             "post": {
                 "summary": "validate values or combination of parameters",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/barcode": {
+            "post": {
+                "summary": "decode barcode from image, returns taskuid",
+                "requestBody": {
+                    "description": "",
+                        "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Info"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The actual data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Info"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data or invalid endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/mobile/vindecoder": {
+            "post": {
+                "summary": "decode barcode from image, returns taskuid",
                 "requestBody": {
                     "description": "",
                         "content": {
@@ -1767,6 +1987,10 @@
                         "type": "string"
                     },
                     "dluidback": {
+                        "type": "string"
+                    }
+                    ,
+                    "dlisvalid": {
                         "type": "string"
                     }
                 }
