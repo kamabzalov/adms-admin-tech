@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useCallback } from "react";
+import CardMenu from "./CardMenu";
+import { Button } from "@mui/material";
 
-interface LayoutProps {
+interface CardLayoutProps {
   name: string;
   description: string;
-  state: boolean;
+  ipv4: string;
+  port: string;
+  index: number;
+  uid: string;
+  onRestartSerice: (id: number) => void;
 }
 
-export const Card: React.FC<LayoutProps> = ({ name, description, state }) => {
+export const Card: React.FC<CardLayoutProps> = ({
+  name,
+  description,
+  onRestartSerice,
+  index,
+  ipv4,
+  port,
+  uid,
+}) => {
+  const restart = useCallback(() => {
+    onRestartSerice(index);
+  }, []);
   return (
     <>
       <div className="card mc-cards">
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
           <p className="card-text">{description}</p>
-          <div className="form-check form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={state}
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
+          <p className="card-text">{ipv4}</p>
+          <p className="card-text">{port}</p>
+          <CardMenu id={index} uid={uid} />
+          <Button onClick={restart}>Restart</Button>
         </div>
       </div>
     </>

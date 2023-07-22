@@ -2,28 +2,32 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./styles/microservices.css";
 import { Card } from "./small-components/CardComponent";
 import * as MicroservicesService from "./../services/microservices.service";
-import { getAuthenticatedUser, listUsers } from "../services/user.service";
 
 //MC means microservices
 interface MCCardProps {
   services: any[];
+  onRestartSerice: (id: number) => void;
 }
 // Adding cards and names and descriptions for them
-function MCCard({ services }: MCCardProps) {
+function MCCard({ services, onRestartSerice }: MCCardProps) {
   return (
-    <>
+    <div>
       {services &&
         services.map((service, index) => {
           return (
             <Card
               key={index}
               name={service.name}
-              state={service.state}
-              description="Description of first microservice"
+              description={"Service started: " + service.started}
+              ipv4={"Ipv4: " + service.ipv4}
+              port={"Port: " + service.port}
+              index={service.index}
+              uid={service.uid}
+              onRestartSerice={onRestartSerice}
             />
           );
         })}
-    </>
+    </div>
   );
 }
 
@@ -53,19 +57,20 @@ const Microservices: React.FC = () => {
       );
     }
   }, [listOfServices]);
-  /*const onButtonPressed = useCallback(() => {
-    const response = getAuthenticatedUser().then((response) => {
-      console.warn(response);
-      console.warn(response.data);
-      return response.data;
-    });
-  }, []);*/
+
+  const onRestartSerice = useCallback((id: number) => {
+    const response = MicroservicesService.restartService(id).then(
+      (response) => {
+        return response.data;
+      }
+    );
+  }, []);
+
   return (
-    <>
+    <div>
       <h1>Here are microservices</h1>
-      {/*<button onClick={onButtonPressed}>Button</button>*/}
-      <MCCard services={listOfServices} />
-    </>
+      <MCCard onRestartSerice={onRestartSerice} services={listOfServices} />
+    </div>
   );
 };
 
