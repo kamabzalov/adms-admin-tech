@@ -1,21 +1,22 @@
 .authCard {
-    align-items: center;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
+  display: block;
+  width: 25rem;
+  text-align: left;
+  background-color: #fff;
+  margin: 50px auto;
+  padding: 20px;
 }
 
-.form-group {
-    margin: 5px;
+.group {
+  display: flex;
+  flex-direction: column;
+  column-gap: 10px;
 }
 
-.alert {
-    margin-top: 5px;
-    padding: 1%;
-}
-
-.col-md-12 {
-    width: 30%;
-    align-items: center;
-    margin:auto;
+.btn-login {
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }

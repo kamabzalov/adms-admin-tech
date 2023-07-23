@@ -68,7 +68,7 @@ const Microservices: React.FC = () => {
 
   return (
     <div>
-      <h1>Here are microservices</h1>
+      <p className="about">Kamil abzalov dolor sit amet consectetur adipisicing elit. Ullam officiis porro obcaecati repudiandae? Ipsum nobis neque tenetur consequatur perspiciatis non voluptatum, sapiente at nulla illo quae ducimus quasi asperiores culpa!</p>
       <MCCard onRestartSerice={onRestartSerice} services={listOfServices} />
     </div>
   );
