@@ -1,127 +1,137 @@
-import React, { useState } from "react";
+import { AxiosError } from "axios";
+import clsx from "clsx";
+import { useFormik } from "formik";
+import React, { useState } from 'react';
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import * as Yup from 'yup';
 
-import "./styles/login.css";
+import { login } from '../services/auth.service';
 
-import { login } from "../services/auth.service";
+const loginSchema = Yup.object().shape({
+    username: Yup.string().trim().required('Username is required'),
+    password: Yup.string().trim().required('Password is required'),
+})
 
-type Props = { onLogin: () => void };
+const initialValues = {
+    username: '',
+    password: '',
+}
 
-const Login: React.FC<Props> = ({ onLogin }) => {
-  let navigate: NavigateFunction = useNavigate();
+export default function Login() {
+    let navigate: NavigateFunction = useNavigate();
+    const [loading, setLoading] = useState(false)
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+    const formik = useFormik({
+        initialValues,
+        validationSchema: loginSchema,
+        onSubmit: async (values, { setStatus, setSubmitting }) => {
+            setLoading(true)
+            try {
+                const { data } = await login(values.username, values.password);
+                navigate('/microservices');
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    setStatus(error?.response?.data.error)
+                }
+                setSubmitting(false)
+                setLoading(false)
+            }
+        },
+    })
+    return (
+        <div className='d-flex flex-column flex-lg-row flex-column-fluid h-100'>
+            <div className='d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1'>
+                <div className='d-flex flex-center flex-column flex-lg-row-fluid'>
+                    <div className='w-lg-500px p-10'>
+                        <form
+                            className='form w-100'
+                            onSubmit={formik.handleSubmit}
+                            noValidate
+                        >
+                            <div className='text-center mb-11'>
+                                <h1 className='text-dark fw-bolder mb-3'>Sign In</h1>
+                            </div>
 
-  const initialValues: {
-    username: string;
-    password: string;
-  } = {
-    username: "",
-    password: "",
-  };
+                            {formik.status && (
+                                <div className='mb-lg-15 alert alert-danger'>
+                                    <div className='alert-text font-weight-bold'>{formik.status}</div>
+                                </div>
+                            )}
 
-  const validationSchema = Yup.object().shape({
-    username: Yup.string().required("This field is required!"),
-    password: Yup.string().required("This field is required!"),
-  });
+                            <div className='fv-row mb-8'>
+                                <label className='form-label fs-6 fw-bolder text-dark'>Username</label>
+                                <input
+                                    placeholder='Username'
+                                    {...formik.getFieldProps('username')}
+                                    className={clsx(
+                                        'form-control bg-transparent',
+                                        { 'is-invalid': formik.touched.username && formik.errors.username },
+                                        {
+                                            'is-valid': formik.touched.username && !formik.errors.username,
+                                        }
+                                    )}
+                                    type='text'
+                                    name='username'
+                                    autoComplete='off'
+                                />
+                                {formik.touched.username && formik.errors.username && (
+                                    <div className='fv-plugins-message-container'>
+                                        <span role='alert'>{formik.errors.username}</span>
+                                    </div>
+                                )}
+                            </div>
 
-  const handleLogin = (formValue: { username: string; password: string }) => {
-    const { username, password } = formValue;
+                            <div className='fv-row mb-3'>
+                                <label className='form-label fw-bolder text-dark fs-6 mb-0'>Password</label>
+                                <input
+                                    type='password'
+                                    placeholder='Password'
+                                    autoComplete='off'
+                                    {...formik.getFieldProps('password')}
+                                    className={clsx(
+                                        'form-control bg-transparent',
+                                        {
+                                            'is-invalid': formik.touched.password && formik.errors.password,
+                                        },
+                                        {
+                                            'is-valid': formik.touched.password && !formik.errors.password,
+                                        }
+                                    )}
+                                />
+                                {formik.touched.password && formik.errors.password && (
+                                    <div className='fv-plugins-message-container'>
+                                        <div className='fv-help-block'>
+                                            <span role='alert'>{formik.errors.password}</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
 
-    setMessage("");
-    setLoading(true);
-    const prms = login(username, password);
-    prms.then(
-      (response) => {
-        if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-        navigate("/");
-        onLogin();
-        return response.data;
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+                            <div className='d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8'>
+                                <div />
+                            </div>
 
-        setLoading(false);
-        setMessage(resMessage);
-      }
-    );
-  };
+                            <div className='d-grid mb-10'>
+                                <button
+                                    type='submit'
+                                    className='btn btn-primary'
+                                    disabled={formik.isSubmitting || !formik.isValid}
+                                >
+                                    {!loading && <span className='indicator-label'>Continue</span>}
+                                    {loading && (
+                                        <span className='indicator-progress' style={{ display: 'block' }}>
+                            Please wait...
+                            <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
+                        </span>
+                                    )}
+                                </button>
+                            </div>
 
-  return (
-    <div className="col-md-12">
-      <div className="card card-container">
-        <div className="authCard">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleLogin}
-          >
-            <Form>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Field name="username" type="text" className="form-control" />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-
-                <Field
-                  name="password"
-                  type="password"
-                  className="form-control"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="alert alert-danger"
-                />
-              </div>
-
-              <div className="form-group">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-block"
-                  disabled={loading}
-                >
-                  {loading && (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  )}
-                  <span>Login</span>
-                </button>
-              </div>
-
-              {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {message}
-                  </div>
+                            <div className='text-gray-500 text-center fw-semibold fs-6'></div>
+                        </form>
+                    </div>
                 </div>
-              )}
-            </Form>
-          </Formik>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default Login;
+    )
+}

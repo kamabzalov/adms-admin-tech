@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
-import CardMenu from "./CardMenu";
-import { Button } from "@mui/material";
+import React, { useCallback } from 'react';
+// import CardMenu from './CardMenu';
 
 interface CardLayoutProps {
   name: string;
@@ -12,15 +11,7 @@ interface CardLayoutProps {
   onRestartSerice: (id: number) => void;
 }
 
-export const Card: React.FC<CardLayoutProps> = ({
-  name,
-  description,
-  onRestartSerice,
-  index,
-  ipv4,
-  port,
-  uid,
-}) => {
+export const Card: React.FC<CardLayoutProps> = ({ name, description, onRestartSerice, index, ipv4, port, uid }) => {
   const restart = useCallback(() => {
     onRestartSerice(index);
   }, []);
@@ -32,8 +23,8 @@ export const Card: React.FC<CardLayoutProps> = ({
           <p className="card-text">{description}</p>
           <p className="card-text">{ipv4}</p>
           <p className="card-text">{port}</p>
-          <CardMenu id={index} uid={uid} />
-          <Button onClick={restart}>Restart</Button>
+          {/* <CardMenu id={index} uid={uid} /> */}
+          <button onClick={restart}>Restart</button>
         </div>
       </div>
     </>
