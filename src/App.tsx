@@ -6,7 +6,7 @@ import Microservices from './components/Microservices';
 
 const App: React.FC = () => {
     return (
-        <div className="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden w-100 min-vh-100">
+        <div className="d-flex flex-column flex-row-fluid position-relative overflow-hidden w-100 min-vh-100">
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/microservices" element={<Microservices />} />
