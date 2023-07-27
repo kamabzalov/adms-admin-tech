@@ -26,6 +26,7 @@ export default function Login() {
         validationSchema: loginSchema,
         onSubmit: async (values, { setStatus, setSubmitting }) => {
             setLoading(true)
+            setStatus(false);
             try {
                 const { data } = await login(values.username, values.password);
                 navigate('/microservices');

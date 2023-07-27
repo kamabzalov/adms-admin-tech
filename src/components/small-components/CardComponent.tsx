@@ -8,12 +8,12 @@ interface CardLayoutProps {
   port: string;
   index: number;
   uid: string;
-  onRestartSerice: (id: number) => void;
+  onRestartService: (id: number) => void;
 }
 
-export const Card: React.FC<CardLayoutProps> = ({ name, description, onRestartSerice, index, ipv4, port, uid }) => {
+export const Card: React.FC<CardLayoutProps> = ({ name, description, onRestartService, index, ipv4, port, uid }) => {
   const restart = useCallback(() => {
-    onRestartSerice(index);
+    onRestartService(index);
   }, []);
   return (
     <>
