@@ -1,11 +1,11 @@
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
 import clsx from "clsx";
-import { useFormik } from "formik";
-import React, { useState } from 'react';
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import {useFormik} from "formik";
+import React, {useState} from 'react';
+import {NavigateFunction, useNavigate} from "react-router-dom";
 import * as Yup from 'yup';
 
-import { login } from '../services/auth.service';
+import {login} from '../services/auth.service';
 
 const loginSchema = Yup.object().shape({
     username: Yup.string().trim().required('Username is required'),
@@ -24,12 +24,11 @@ export default function Login() {
     const formik = useFormik({
         initialValues,
         validationSchema: loginSchema,
-        onSubmit: async (values, { setStatus, setSubmitting }) => {
+        onSubmit: async (values, {setStatus, setSubmitting}) => {
             setLoading(true)
             setStatus(false);
             try {
-                const { data } = await login(values.username, values.password);
-                navigate('/microservices');
+                login(values.username, values.password).then(() => navigate('/dashboard'));
             } catch (error) {
                 if (error instanceof AxiosError) {
                     setStatus(error?.response?.data.error)
@@ -66,7 +65,7 @@ export default function Login() {
                                     {...formik.getFieldProps('username')}
                                     className={clsx(
                                         'form-control bg-transparent',
-                                        { 'is-invalid': formik.touched.username && formik.errors.username },
+                                        {'is-invalid': formik.touched.username && formik.errors.username},
                                         {
                                             'is-valid': formik.touched.username && !formik.errors.username,
                                         }
@@ -109,7 +108,7 @@ export default function Login() {
                             </div>
 
                             <div className='d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8'>
-                                <div />
+                                <div/>
                             </div>
 
                             <div className='d-grid mb-10'>
@@ -120,7 +119,7 @@ export default function Login() {
                                 >
                                     {!loading && <span className='indicator-label'>Continue</span>}
                                     {loading && (
-                                        <span className='indicator-progress' style={{ display: 'block' }}>
+                                        <span className='indicator-progress' style={{display: 'block'}}>
                             Please wait...
                             <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
                         </span>
