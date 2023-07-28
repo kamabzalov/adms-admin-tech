@@ -3,6 +3,7 @@
   "homepage": "./",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://app.admss.com/app",
   "dependencies": {
     "@fortawesome/fontawesome-free": "6.1.1",
     "@popperjs/core": "^2.11.6",
