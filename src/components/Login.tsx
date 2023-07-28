@@ -11,15 +11,6 @@ interface LoginCredentials {
   password: string;
 }
 
-export interface LoginResponse {
-  modified: string;
-  sessionuid: string;
-  started: string;
-  status: "OK";
-  token: string;
-  useruid: string;
-}
-
 const loginSchema = Yup.object().shape({
   username: Yup.string().trim().required("Username is required"),
   password: Yup.string().trim().required("Password is required"),

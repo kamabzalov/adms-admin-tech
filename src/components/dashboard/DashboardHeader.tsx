@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginResponse, logout } from "../../services/auth.service";
 
 export function DashboardHeader() {
-  const logout = () => {
-
+  const navigate = useNavigate();
+  const signOut = () => {
+    const user: LoginResponse = JSON.parse(
+      localStorage.getItem("admss-admin-user") ?? ""
+    );
+    if (user) {
+      logout(user.useruid, user.token).then((response) => {
+        if (response.status) {
+          navigate("/");
+          localStorage.removeItem("admss-admin-user");
+        }
+      });
+    }
   };
   return (
     <div id="kt_app_header" className="app-header">
@@ -21,9 +33,9 @@ export function DashboardHeader() {
                 </Link>
               </div>
               <div className="menu-item me-lg-1">
-                <a onClick={() => logout()} className="menu-link">
-                  <span className='menu-title'>Log out</span>
-                </a>
+                <span onClick={() => signOut()} className="menu-link">
+                  <span className="menu-title">Log out</span>
+                </span>
               </div>
             </div>
           </div>
