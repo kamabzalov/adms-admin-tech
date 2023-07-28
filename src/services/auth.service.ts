@@ -15,6 +15,12 @@ export interface LogoutResponse {
 
 const API_URL = "http://app.admss.com:8088/api/v1/";
 
+const user: LoginResponse = JSON.parse(
+  localStorage.getItem("admss-admin-user") ?? ""
+);
+
+const token = user?.token;
+
 export const login = (username: string, password: string) => {
   return axios
     .post<LoginResponse>(`${API_URL}user`, {
@@ -25,7 +31,7 @@ export const login = (username: string, password: string) => {
     .then((response) => response.data);
 };
 
-export const logout = (userId: string, token: string) => {
+export const logout = (userId: string) => {
   return axios
     .post<LogoutResponse>(`${API_URL}user/${userId}/logout`, null, {
       headers: { Authorization: `Bearer ${token}` },

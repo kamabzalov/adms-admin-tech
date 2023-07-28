@@ -8,7 +8,7 @@ export function DashboardHeader() {
       localStorage.getItem("admss-admin-user") ?? ""
     );
     if (user) {
-      logout(user.useruid, user.token).then((response) => {
+      logout(user.useruid).then((response) => {
         if (response.status) {
           navigate("/");
           localStorage.removeItem("admss-admin-user");

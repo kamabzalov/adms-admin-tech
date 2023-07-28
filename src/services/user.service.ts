@@ -1,200 +1,186 @@
-import axios from 'axios';
-import authHeader from './auth.header';
+import axios from "axios";
+import { LoginResponse } from "./auth.service";
 
-const API_URL = 'http://app.admss.com:8088/api/v1/';
+const API_URL = "http://app.admss.com:8088/api/v1/";
 
-// Create user
+const user: LoginResponse = JSON.parse(
+  localStorage.getItem("admss-admin-user") ?? ""
+);
+
+const token = user?.token;
+
 export const createUser = (loginname: string, loginpassword: string) => {
-    return axios.post(
-        API_URL + 'user/' + 0 + '/user',
-        {loginname: loginname, loginpassword: loginpassword},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + 0 + "/user",
+    { loginname: loginname, loginpassword: loginpassword },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Update user
-export const updateUser = (uid: string, loginname: string, loginpassword: string) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/user',
-        {loginname: loginname, loginpassword: loginpassword},
-        {
-            headers: authHeader(),
-        }
-    );
+export const updateUser = (
+  uid: string,
+  loginname: string,
+  loginpassword: string
+) => {
+  return axios.post(
+    API_URL + "user/" + uid + "/user",
+    { loginname: loginname, loginpassword: loginpassword },
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Update user
 export const setUserOptionalData = (uid: string, data: any) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/set',
-        {...data},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + uid + "/set",
+    { ...data },
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// List users
 export const listUsers = () => {
-    return axios.get(API_URL + 'user', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Move a user to the trash.
 export const deleteUser = (uid: string) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/delete',
-        {},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + uid + "/delete",
+    {},
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Restore a user from the trash.
 export const undeleteUser = (uid: string) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/undelete',
-        {},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + uid + "/undelete",
+    {},
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Set user permissions.
 export const setUserPermissions = (uid: string, data: any) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/permissions',
-        {...data},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + uid + "/permissions",
+    { ...data },
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Get user permissions.
 export const getUserPermissions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/permissions', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/permissions", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Get user extended user info.
 export const getUserExtendedInfo = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/info', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/info", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Get user related locations.
 export const getUserLocations = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/locations', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/locations", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Set user profile.
 export const setUserProfile = (uid: string, profile: any) => {
-    return axios.post(
-        API_URL + 'user/' + uid + '/profile',
-        {...profile},
-        {
-            headers: authHeader(),
-        }
-    );
+  return axios.post(
+    API_URL + "user/" + uid + "/profile",
+    { ...profile },
+    {
+        headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
-// Get user profile.
 export const getUserProfile = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/profile', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Set user settings.
 export const setUserSettings = (uid: string, data: any) => {
-    return axios.post(API_URL + 'user/' + uid + '/settings', data, {
-        headers: authHeader(),
-    });
+  return axios.post(API_URL + "user/" + uid + "/settings", data, {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Get user settings.
 export const getUserSettings = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/settings', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/settings", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Check if token is valid.
 export const checkToken = (token: string) => {
-    return axios.get(API_URL + 'user/' + token + '/token', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + token + "/token", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List user sessions.
 export const listUserSessions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/sessions', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/sessions", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Kill user's session.
 export const killSession = (id: number) => {
-    return axios.post(API_URL + 'user/' + id.toString() + '/session', {
-        headers: authHeader(),
-    });
+  return axios.post(API_URL + "user/" + id.toString() + "/session", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Check if session is valid.
 export const checkSession = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/session', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/session", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List user logins.
 export const listUserLogins = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/logins', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/logins", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List subusers.
 export const listSubusers = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/subusers', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/subusers", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List sales persons.
 export const listSalesPersons = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/salespersons', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/salespersons", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// Get user short info.
 export const getUserShortInfo = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/username', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/username", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List all available permissions for UI.
 export const getAllUIPermissions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/listpermissions', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/listpermissions", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// List all available user types for UI.
 export const getAllUITypes = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/listusertypes', {
-        headers: authHeader(),
-    });
+  return axios.get(API_URL + "user/" + uid + "/listusertypes", {
+      headers: { Authorization: `Bearer ${token}` },
+  });
 };

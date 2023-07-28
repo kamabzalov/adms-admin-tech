@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as MicroservicesService from "../../services/microservices.service";
+import { Microservice } from "../../services/microservices.service";
 
-interface MCCardProps {
-  services: any[];
-  onRestartService: (id: number) => void;
+interface MicroserviceCard {
+  services: Microservice[];
 }
 
-function MCCard({ services, onRestartService }: MCCardProps) {
+function MCCard({ services }: MicroserviceCard) {
   return (
     <div className="col-md-6 col-lg-6 col-xl-6 col-xxl-4">
       {services &&
-        services.map((service, index) => {
+        services.map((service) => {
           return (
             <div key={service.uid} className="card card-custom">
               <div className="card-header pt-5">
@@ -27,15 +27,6 @@ function MCCard({ services, onRestartService }: MCCardProps) {
                   Port: {service.port}
                 </span>
               </div>
-              <div className="card-footer">
-                <button className="btn btn-info me-2">Get Data</button>
-                <button
-                  onClick={() => onRestartService(service.index)}
-                  className="btn btn-warning"
-                >
-                  Restart
-                </button>
-              </div>
             </div>
           );
         })}
@@ -44,32 +35,22 @@ function MCCard({ services, onRestartService }: MCCardProps) {
 }
 
 function Microservices() {
-  const [listOfServices, setListOfServices] = useState<any[]>([]);
+  const [listOfServices, setListOfServices] = useState<Microservice[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
   useEffect(() => {
     if (!loaded) {
-      MicroservicesService.listServices().then(
-        (response) => {
-          setListOfServices(response.data);
-          setLoaded(true);
-          return response.data;
-        },
-        (error) => {}
-      );
+      MicroservicesService.listServices().then((response) => {
+        setListOfServices(response);
+        setLoaded(true);
+      });
     }
   });
-
-  const onRestartService = useCallback((id: number) => {
-    MicroservicesService.restartService(id).then((response) => {
-      return response.data;
-    });
-  }, []);
 
   return (
     <>
       <h1 className="mb-5">Microservices</h1>
       <div className="row g-5 g-xl-10 mb-5 mb-xl-10">
-        <MCCard onRestartService={onRestartService} services={listOfServices} />
+        <MCCard services={listOfServices} />
       </div>
     </>
   );
