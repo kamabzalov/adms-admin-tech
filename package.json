@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "homepage": "https://app.admss.com/app",
+  "homepage": "http://app.admss.com/adm",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
