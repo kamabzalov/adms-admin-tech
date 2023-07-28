@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "./utils";
 
 export interface LoginResponse {
   modified: string;
@@ -15,12 +16,6 @@ export interface LogoutResponse {
 
 const API_URL = "http://app.admss.com:8088/api/v1/";
 
-const user: LoginResponse = JSON.parse(
-  localStorage.getItem("admss-admin-user") ?? ""
-);
-
-const token = user?.token;
-
 export const login = (username: string, password: string) => {
   return axios
     .post<LoginResponse>(`${API_URL}user`, {
@@ -34,7 +29,7 @@ export const login = (username: string, password: string) => {
 export const logout = (userId: string) => {
   return axios
     .post<LogoutResponse>(`${API_URL}user/${userId}/logout`, null, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
     })
     .then((response) => response.data);
 };

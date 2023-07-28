@@ -11,7 +11,7 @@ export default function Users() {
         setLoaded(true);
       });
     }
-  }, [users]);
+  }, [users, loaded]);
   return (
     <>
       <h1 className="mb-5">Users</h1>
