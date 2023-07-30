@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getToken } from './utils'
-import { API_URL } from '../app-consts'
+import { API_URL } from './app-consts'
 
 export interface LoginResponse {
     modified: string
