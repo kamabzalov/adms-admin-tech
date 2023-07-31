@@ -45,7 +45,7 @@ export const setUserOptionalData = (uid: string, data: any) => {
 
 export const getUsers = () => {
     return axios
-        .get<User[]>(`${API_URL}user/list`, {
+        .get<User[]>(`${API_URL}user/0/list`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -53,7 +53,7 @@ export const getUsers = () => {
 
 export const getDeletedUsers = () => {
     return axios
-        .get<User[]>(`${API_URL}user/listdeleted`, {
+        .get<User[]>(`${API_URL}user/0/listdeleted`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -94,21 +94,27 @@ export const setUserPermissions = (uid: string, data: any) => {
 }
 
 export const getUserPermissions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/permissions', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/permissions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const getUserExtendedInfo = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/info', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/info`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const getUserLocations = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/locations', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/locations`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const setUserProfile = (uid: string, profile: any) => {
@@ -122,9 +128,11 @@ export const setUserProfile = (uid: string, profile: any) => {
 }
 
 export const getUserProfile = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/profile', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/profile`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const setUserSettings = (uid: string, data: any) => {
@@ -134,9 +142,11 @@ export const setUserSettings = (uid: string, data: any) => {
 }
 
 export const getUserSettings = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/settings', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get(`${API_URL}user/${uid}/settings`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const checkToken = (token: string) => {
@@ -146,9 +156,11 @@ export const checkToken = (token: string) => {
 }
 
 export const listUserSessions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/sessions', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/sessions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const killSession = (id: number) => {
@@ -164,37 +176,49 @@ export const checkSession = (uid: string) => {
 }
 
 export const listUserLogins = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/logins', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/logins`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const listSubusers = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/subusers', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/subusers`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const listSalesPersons = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/salespersons', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/salespersons`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const getUserShortInfo = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/username', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/username`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const getAllUIPermissions = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/listpermissions', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/listpermissions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
 
 export const getAllUITypes = (uid: string) => {
-    return axios.get(API_URL + 'user/' + uid + '/listusertypes', {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    })
+    return axios
+        .get<string>(`${API_URL}user/${uid}/listusertypes`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }

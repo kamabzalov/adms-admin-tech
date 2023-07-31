@@ -127,9 +127,7 @@ export function MicroserviceCard() {
                             >
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Heartbit
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Heartbit</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.heartbit}
                                         </span>
@@ -137,9 +135,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Index
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Index</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.index}
                                         </span>
@@ -147,9 +143,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            IP address
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>IP address</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.ipv4}
                                         </span>
@@ -157,9 +151,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Port
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Port</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.port}
                                         </span>
@@ -167,9 +159,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Started
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Started</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.started}
                                         </span>
@@ -177,9 +167,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Status
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Status</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.status}
                                         </span>
@@ -187,9 +175,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Type
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Type</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.type}
                                         </span>
@@ -197,9 +183,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Type i
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Type i</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.type_i}
                                         </span>
@@ -207,9 +191,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            UID
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>UID</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.uid}
                                         </span>
@@ -217,9 +199,7 @@ export function MicroserviceCard() {
                                 </div>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Version
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Version</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {microserviceData?.version}
                                         </span>
@@ -233,9 +213,7 @@ export function MicroserviceCard() {
                             >
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Status
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Status</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {logs?.status}
                                         </span>
@@ -249,9 +227,7 @@ export function MicroserviceCard() {
                             >
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Status
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Status</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {audit?.status}
                                         </span>
@@ -265,9 +241,7 @@ export function MicroserviceCard() {
                             >
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Status
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Status</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {alerts?.status}
                                         </span>
@@ -281,9 +255,7 @@ export function MicroserviceCard() {
                             >
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Status
-                                        </span>
+                                        <span className='text-dark fw-bold  fs-6'>Status</span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {counters?.status}
                                         </span>
