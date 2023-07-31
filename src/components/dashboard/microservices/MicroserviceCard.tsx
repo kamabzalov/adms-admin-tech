@@ -7,20 +7,17 @@ import {
     getServiceCounters,
     getServiceLogs,
     Microservice,
-    MicroserviceAlerts,
-    MicroserviceAudit,
-    MicroserviceCounters,
-    MicroserviceLogs,
 } from './service'
 import clsx from 'clsx'
+import { ActionStatus } from '../../../common/models'
 
 export function MicroserviceCard() {
     const { uid } = useParams()
     const [tab, setTab] = useState('State')
-    const [logs, setLogs] = useState<MicroserviceLogs | null>(null)
-    const [audit, setAudit] = useState<MicroserviceAudit | null>(null)
-    const [alerts, setAlerts] = useState<MicroserviceAlerts | null>(null)
-    const [counters, setCounters] = useState<MicroserviceCounters | null>(null)
+    const [logs, setLogs] = useState<ActionStatus | null>(null)
+    const [audit, setAudit] = useState<ActionStatus | null>(null)
+    const [alerts, setAlerts] = useState<ActionStatus | null>(null)
+    const [counters, setCounters] = useState<ActionStatus | null>(null)
     const [microserviceData, setMicroservice] = useState<Microservice | null>(null)
 
     useEffect(() => {
@@ -285,7 +282,7 @@ export function MicroserviceCard() {
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
                                         <span className='text-dark fw-bold text-hover-primary fs-6'>
-                                            Counters
+                                            Status
                                         </span>
                                         <span className='text-muted d-block fw-semibold'>
                                             {counters?.status}

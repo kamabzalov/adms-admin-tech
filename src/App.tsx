@@ -4,7 +4,8 @@ import { Login } from './components/Login'
 import { Dashboard } from './components/dashboard/Dashboard'
 import Microservices from './components/dashboard/microservices/Microservices'
 import { MicroserviceCard } from './components/dashboard/microservices/MicroserviceCard'
-import Users from './components/dashboard/Users'
+import Users from './components/dashboard/users/Users'
+import { UserCard } from './components/dashboard/users/UserCard'
 
 const App: React.FC = () => {
     return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
                     <Route path='' element={<Microservices />} />
                     <Route path='microservices/:uid' element={<MicroserviceCard />} />
                     <Route path='users' element={<Users />} />
+                    <Route path='users/:id' element={<UserCard />} />
                 </Route>
             </Routes>
         </div>

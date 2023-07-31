@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import * as MicroservicesService from './service'
-import { Microservice, MicroserviceStatus, stopService } from './service'
+import { Microservice, stopService } from './service'
 import { Link } from 'react-router-dom'
+import { ActionStatus } from '../../../common/models'
 
 interface MicroserviceCard {
     services: Microservice[]
@@ -9,7 +10,7 @@ interface MicroserviceCard {
 
 function MCCard({ services }: MicroserviceCard) {
     const stop = (uid: string) => {
-        stopService(uid).then((response: MicroserviceStatus) => {
+        stopService(uid).then((response: ActionStatus) => {
             if (response.status) {
             }
         })
