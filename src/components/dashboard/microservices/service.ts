@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { getToken } from '../../../services/utils'
-import { API_URL } from '../../../services/app-consts'
+import { getToken } from '../../../common/utils'
+import { API_URL } from '../../../common/app-consts'
+import { ActionStatus } from '../../../common/models'
 
 export interface Microservice {
     heartbit: string
@@ -14,26 +15,6 @@ export interface Microservice {
     type_i: number
     uid: string
     version: string
-}
-
-export interface MicroserviceStatus {
-    status: string
-}
-
-export interface MicroserviceLogs {
-    status: string
-}
-
-export interface MicroserviceAudit {
-    status: string
-}
-
-export interface MicroserviceAlerts {
-    status: string
-}
-
-export interface MicroserviceCounters {
-    status: string
 }
 
 export const getServiceById = (uid: string) => {
@@ -54,7 +35,7 @@ export const listServices = () => {
 
 export const getServiceLogs = (uid: string) => {
     return axios
-        .get<MicroserviceLogs>(`${API_URL}services/${uid}/logs`, {
+        .get<ActionStatus>(`${API_URL}services/${uid}/logs`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -62,7 +43,7 @@ export const getServiceLogs = (uid: string) => {
 
 export const getServiceAudit = (uid: string) => {
     return axios
-        .get<MicroserviceAudit>(`${API_URL}services/${uid}/audit`, {
+        .get<ActionStatus>(`${API_URL}services/${uid}/audit`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -70,7 +51,7 @@ export const getServiceAudit = (uid: string) => {
 
 export const getServiceAlerts = (uid: string) => {
     return axios
-        .get<MicroserviceAlerts>(`${API_URL}services/${uid}/alerts`, {
+        .get<ActionStatus>(`${API_URL}services/${uid}/allerts`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -78,7 +59,7 @@ export const getServiceAlerts = (uid: string) => {
 
 export const getServiceCounters = (uid: string) => {
     return axios
-        .get<MicroserviceLogs>(`${API_URL}services/${uid}/counters`, {
+        .get<ActionStatus>(`${API_URL}services/${uid}/counters`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
@@ -86,7 +67,7 @@ export const getServiceCounters = (uid: string) => {
 
 export const stopService = (id: string) => {
     return axios
-        .get<MicroserviceStatus>(API_URL + 'services/' + id + '/stop', {
+        .get<ActionStatus>(API_URL + 'services/' + id + '/stop', {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
