@@ -9,15 +9,14 @@ import {
     Microservice,
 } from './service'
 import clsx from 'clsx'
-import { ActionStatus } from '../../../common/models'
 
 export function MicroserviceCard() {
     const { uid } = useParams()
     const [tab, setTab] = useState('State')
-    const [logs, setLogs] = useState<ActionStatus | null>(null)
-    const [audit, setAudit] = useState<ActionStatus | null>(null)
-    const [alerts, setAlerts] = useState<ActionStatus | null>(null)
-    const [counters, setCounters] = useState<ActionStatus | null>(null)
+    const [logs, setLogs] = useState<string>('')
+    const [audit, setAudit] = useState<string>('')
+    const [alerts, setAlerts] = useState<string>('')
+    const [counters, setCounters] = useState<string>('')
     const [microserviceData, setMicroservice] = useState<Microservice | null>(null)
 
     useEffect(() => {
@@ -29,22 +28,22 @@ export function MicroserviceCard() {
             })
             getServiceLogs(uid).then((response) => {
                 if (response) {
-                    setLogs(response)
+                    setLogs(JSON.stringify(response, null, 2))
                 }
             })
             getServiceAudit(uid).then((response) => {
                 if (response) {
-                    setAudit(response)
+                    setAudit(JSON.stringify(response, null, 2))
                 }
             })
             getServiceAlerts(uid).then((response) => {
                 if (response) {
-                    setAlerts(response)
+                    setAlerts(JSON.stringify(response, null, 2))
                 }
             })
             getServiceCounters(uid).then((response) => {
                 if (response) {
-                    setCounters(response)
+                    setCounters(JSON.stringify(response, null, 2))
                 }
             })
         }
@@ -211,56 +210,28 @@ export function MicroserviceCard() {
                                 id='kt_tab_pane_2'
                                 role='tabpanel'
                             >
-                                <div className='d-flex align-items-center mb-7'>
-                                    <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold  fs-6'>Status</span>
-                                        <span className='text-muted d-block fw-semibold'>
-                                            {logs?.status}
-                                        </span>
-                                    </div>
-                                </div>
+                                <pre className='fs-4'>{logs}</pre>
                             </div>
                             <div
                                 className={clsx('tab-pane', { active: tab === 'Audit' })}
                                 id='kt_tab_pane_3'
                                 role='tabpanel'
                             >
-                                <div className='d-flex align-items-center mb-7'>
-                                    <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold  fs-6'>Status</span>
-                                        <span className='text-muted d-block fw-semibold'>
-                                            {audit?.status}
-                                        </span>
-                                    </div>
-                                </div>
+                                <pre className='fs-4'>{audit}</pre>
                             </div>
                             <div
                                 className={clsx('tab-pane', { active: tab === 'Alerts' })}
                                 id='kt_tab_pane_3'
                                 role='tabpanel'
                             >
-                                <div className='d-flex align-items-center mb-7'>
-                                    <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold  fs-6'>Status</span>
-                                        <span className='text-muted d-block fw-semibold'>
-                                            {alerts?.status}
-                                        </span>
-                                    </div>
-                                </div>
+                                <pre className='fs-4'>{alerts}</pre>
                             </div>
                             <div
                                 className={clsx('tab-pane', { active: tab === 'Counters' })}
                                 id='kt_tab_pane_3'
                                 role='tabpanel'
                             >
-                                <div className='d-flex align-items-center mb-7'>
-                                    <div className='flex-grow-1'>
-                                        <span className='text-dark fw-bold  fs-6'>Status</span>
-                                        <span className='text-muted d-block fw-semibold'>
-                                            {counters?.status}
-                                        </span>
-                                    </div>
-                                </div>
+                                <pre className='fs-4'>{counters}</pre>
                             </div>
                         </div>
                     </div>
