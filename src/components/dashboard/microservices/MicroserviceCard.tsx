@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     getServiceAlerts,
     getServiceAudit,
@@ -10,6 +10,88 @@ import {
 } from './service'
 import clsx from 'clsx'
 
+interface IServerData {
+    info: string
+    status: string
+    timestamp: string
+    value?: string
+}
+
+enum Tabs {
+    State = 'State',
+    Logs = 'Logs',
+    Audit = 'Audit',
+    Alerts = 'Alerts',
+    Counters = 'Counters',
+}
+
+interface ITabValues {
+    tabName: string
+    tabIndex: number
+    tabContent: string
+}
+
+const getColumns = (data: string): string[] => {
+    const parsedData = JSON.parse(data)
+    const columns = new Set()
+
+    parsedData.forEach((obj: IServerData) => {
+        Object.keys(obj).forEach((key: string): void => {
+            columns.add(key)
+        })
+    })
+    return [...columns] as string[]
+}
+
+const getRows = (data: string) => {
+    const parsedData = JSON.parse(data)
+    return (
+        <>
+            {parsedData.map((row: IServerData, index: number) => (
+                <tr key={index}>
+                    {Object.values(row).map((cell) => (
+                        <td key={cell}>{cell}</td>
+                    ))}
+                </tr>
+            ))}
+        </>
+    )
+}
+
+const renderTable = (data: string) => (
+    <div className='table-responsive'>
+        <table className='table table-row-dashed table-row-gray-300 gy-7'>
+            <thead>
+                <tr className='fw-bold fs-6 text-gray-800 border-bottom border-gray-200'>
+                    {getColumns(data).map((column: string) => (
+                        <th key={column}>{column}</th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>{getRows(data)}</tbody>
+        </table>
+    </div>
+)
+
+const dataWrapper = (title: string, data: string) => (
+    <>
+        <div className='card card-custom mb-6'>
+            <div className='card-header'>
+                <h3 className='card-title fw-bolder text-dark'>{title} as JSON view</h3>
+            </div>
+            <div className='card-body'>
+                <pre className='fs-4'>{data}</pre>
+            </div>
+        </div>
+        <div className='card card-custom '>
+            <div className='card-header'>
+                <h3 className='card-title fw-bolder text-dark'>{title}</h3>
+            </div>
+            <div className='card-body'>{renderTable(data)}</div>
+        </div>
+    </>
+)
+
 export function MicroserviceCard() {
     const { uid } = useParams()
     const [tab, setTab] = useState('State')
@@ -18,6 +100,16 @@ export function MicroserviceCard() {
     const [alerts, setAlerts] = useState<string>('')
     const [counters, setCounters] = useState<string>('')
     const [microserviceData, setMicroservice] = useState<Microservice | null>(null)
+
+    const TabContent = ({ tabName, tabIndex, tabContent }: ITabValues) => (
+        <div
+            className={clsx('tab-pane', { active: tab === tabName })}
+            id={`kt_tab_pane_${tabIndex}`}
+            role='tabpanel'
+        >
+            {tabContent && dataWrapper(tabName, tabContent)}
+        </div>
+    )
 
     useEffect(() => {
         if (uid) {
@@ -48,6 +140,7 @@ export function MicroserviceCard() {
             })
         }
     }, [uid])
+
     return (
         <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
             <div className='col-12'>
@@ -58,72 +151,89 @@ export function MicroserviceCard() {
                     <div className='card-body d-flex flex-column justify-content-end pb-0'>
                         <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
                             <li className='nav-item'>
-                                <a
+                                <button
                                     className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: tab === 'State',
+                                        active: tab === Tabs.State,
                                     })}
-                                    onClick={() => setTab('State')}
+                                    onClick={() => setTab(Tabs.State)}
                                     role='tab'
                                 >
-                                    State
-                                </a>
+                                    {Tabs.State}
+                                </button>
                             </li>
                             <li className='nav-item'>
-                                <a
+                                <button
                                     className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: tab === 'Logs',
+                                        active: tab === Tabs.Logs,
                                     })}
-                                    onClick={() => setTab('Logs')}
+                                    onClick={() => setTab(Tabs.Logs)}
                                     role='tab'
                                 >
-                                    Logs
-                                </a>
+                                    {Tabs.Logs}
+                                </button>
                             </li>
                             <li className='nav-item'>
-                                <a
+                                <button
                                     className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: tab === 'Audit',
+                                        active: tab === Tabs.Audit,
                                     })}
-                                    onClick={() => setTab('Audit')}
+                                    onClick={() => setTab(Tabs.Audit)}
                                     role='tab'
                                 >
-                                    Audit
-                                </a>
+                                    {Tabs.Audit}
+                                </button>
                             </li>
                             <li className='nav-item'>
-                                <a
+                                <button
                                     className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: tab === 'Alerts',
+                                        active: tab === Tabs.Alerts,
                                     })}
-                                    onClick={() => setTab('Alerts')}
+                                    onClick={() => setTab(Tabs.Alerts)}
                                     role='tab'
                                 >
-                                    Alerts
-                                </a>
+                                    {Tabs.Alerts}
+                                </button>
                             </li>
                             <li className='nav-item'>
-                                <a
+                                <button
                                     className={clsx(`nav-link cursor-pointer`, {
-                                        active: tab === 'Counters',
+                                        active: tab === Tabs.Counters,
                                     })}
-                                    onClick={() => setTab('Counters')}
+                                    onClick={() => setTab(Tabs.Counters)}
                                     role='tab'
                                 >
-                                    Counters
-                                </a>
+                                    {Tabs.Counters}
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div className='card card-custom'>
-                    <div className='card-body'>
-                        <div className='tab-content' id='myTabContent'>
-                            <div
-                                className={clsx('tab-pane', { active: tab === 'State' })}
-                                id='kt_tab_pane_1'
-                                role='tabpanel'
-                            >
+                <div className='tab-content' id='myTabContent'>
+                    <div
+                        className={clsx('tab-pane', { active: tab === Tabs.State })}
+                        id='kt_tab_pane_1'
+                        role='tabpanel'
+                    >
+                        <div className='card card-custom mb-6'>
+                            <div className='card-header'>
+                                <h3 className='card-title fw-bolder text-dark'>
+                                    {Tabs.State} as JSON view
+                                </h3>
+                            </div>
+                            <div className='card-body'>
+                                <div className='d-flex align-items-center mb-20'>
+                                    <pre className='fs-4'>
+                                        {JSON.stringify(microserviceData, null, 2)}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='card card-custom mb-6'>
+                            <div className='card-header'>
+                                <h3 className='card-title fw-bolder text-dark'>{Tabs.State}</h3>
+                            </div>
+                            <div className='card-body'>
                                 <div className='d-flex align-items-center mb-7'>
                                     <div className='flex-grow-1'>
                                         <span className='text-dark fw-bold  fs-6'>Heartbit</span>
@@ -205,36 +315,12 @@ export function MicroserviceCard() {
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                className={clsx('tab-pane', { active: tab === 'Logs' })}
-                                id='kt_tab_pane_2'
-                                role='tabpanel'
-                            >
-                                <pre className='fs-4'>{logs}</pre>
-                            </div>
-                            <div
-                                className={clsx('tab-pane', { active: tab === 'Audit' })}
-                                id='kt_tab_pane_3'
-                                role='tabpanel'
-                            >
-                                <pre className='fs-4'>{audit}</pre>
-                            </div>
-                            <div
-                                className={clsx('tab-pane', { active: tab === 'Alerts' })}
-                                id='kt_tab_pane_3'
-                                role='tabpanel'
-                            >
-                                <pre className='fs-4'>{alerts}</pre>
-                            </div>
-                            <div
-                                className={clsx('tab-pane', { active: tab === 'Counters' })}
-                                id='kt_tab_pane_3'
-                                role='tabpanel'
-                            >
-                                <pre className='fs-4'>{counters}</pre>
-                            </div>
                         </div>
                     </div>
+                    <TabContent tabName={Tabs.Logs} tabIndex={2} tabContent={logs} />
+                    <TabContent tabName={Tabs.Audit} tabIndex={3} tabContent={audit} />
+                    <TabContent tabName={Tabs.Alerts} tabIndex={4} tabContent={alerts} />
+                    <TabContent tabName={Tabs.Counters} tabIndex={5} tabContent={counters} />
                 </div>
             </div>
         </div>
