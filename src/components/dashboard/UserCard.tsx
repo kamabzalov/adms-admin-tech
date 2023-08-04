@@ -14,8 +14,8 @@ import {
     listSubusers,
     listUserLogins,
     listUserSessions,
-} from './user.service'
-import { TabContent } from '../helpers/helpers'
+} from '../../services/user.service'
+import { TabContent, mutateJson } from './helpers/helpers'
 
 enum Tabs {
     Profile = 'Profile',
@@ -88,25 +88,6 @@ export function UserCard() {
             })
         }
     }, [id])
-
-    const mutateJson = (jsonString: string, fieldName: string): string => {
-        try {
-            const jsonObject = JSON.parse(jsonString)
-
-            if (typeof jsonObject === 'object' && jsonObject !== null) {
-                const fieldValue = jsonObject[fieldName]
-                delete jsonObject[fieldName]
-
-                const updatedJsonObject = { [fieldName]: fieldValue, ...jsonObject }
-                return JSON.stringify(updatedJsonObject, null, 2)
-            }
-        } catch (error) {
-            console.error('Invalid JSON string:', error)
-        }
-
-        return jsonString
-    }
-
     return (
         <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
             <div className='col-12'>

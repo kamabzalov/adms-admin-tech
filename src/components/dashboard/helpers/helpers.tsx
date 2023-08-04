@@ -16,6 +16,24 @@ interface ITabValues {
     checkbox?: boolean
 }
 
+export const mutateJson = (jsonString: string, fieldName: string): string => {
+    try {
+        const jsonObject = JSON.parse(jsonString)
+
+        if (typeof jsonObject === 'object' && jsonObject !== null) {
+            const fieldValue = jsonObject[fieldName]
+            delete jsonObject[fieldName]
+
+            const updatedJsonObject = { [fieldName]: fieldValue, ...jsonObject }
+            return JSON.stringify(updatedJsonObject, null, 2)
+        }
+    } catch (error) {
+        console.error('Invalid JSON string:', error)
+    }
+
+    return jsonString
+}
+
 const CustomCheckbox = ({
     currentValue,
     id,
@@ -148,14 +166,6 @@ const dataWrapper = (title: string, data: string, checkbox: boolean = false) => 
 
     return (
         <>
-            <div className='card card-custom mb-6'>
-                <div className='card-header'>
-                    <h3 className='card-title fw-bolder text-dark'>{title} as JSON view</h3>
-                </div>
-                <div className='card-body'>
-                    <pre className='fs-4'>{data}</pre>
-                </div>
-            </div>
             <div className='card card-custom'>
                 <div className='card-header'>
                     <h3 className='card-title fw-bolder text-dark'>{title}</h3>

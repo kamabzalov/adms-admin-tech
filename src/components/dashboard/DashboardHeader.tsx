@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { LoginResponse, logout } from '../../common/auth.service'
+import { LoginResponse, logout } from '../../services/auth.service'
 
 export function DashboardHeader() {
     const navigate = useNavigate()
@@ -22,12 +22,17 @@ export function DashboardHeader() {
                         <div className='menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px 2 px-lg-0'>
                             <div className='menu-item me-lg-1'>
                                 <Link className='menu-link py-3' to={'/dashboard'}>
-                                    <span className='menu-title'>Microservices</span>
+                                    <span className='menu-title'>Users</span>
                                 </Link>
                             </div>
                             <div className='menu-item me-lg-1'>
-                                <Link className='menu-link py-3' to={'users'}>
-                                    <span className='menu-title'>Users</span>
+                                <Link className='menu-link py-3' to={'/dashboard/billing'}>
+                                    <span className='menu-title'>Billing</span>
+                                </Link>
+                            </div>
+                            <div className='menu-item me-lg-1'>
+                                <Link className='menu-link py-3' to={'/dashboard/reports'}>
+                                    <span className='menu-title'>Reports</span>
                                 </Link>
                             </div>
                             <div className='menu-item me-lg-1'>

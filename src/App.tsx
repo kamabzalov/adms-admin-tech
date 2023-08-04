@@ -2,10 +2,10 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Login } from './components/Login'
 import { Dashboard } from './components/dashboard/Dashboard'
-import Microservices from './components/dashboard/microservices/Microservices'
-import { MicroserviceCard } from './components/dashboard/microservices/MicroserviceCard'
-import Users from './components/dashboard/users/Users'
-import { UserCard } from './components/dashboard/users/UserCard'
+import Users from './components/dashboard/Users'
+import { Billing } from 'components/dashboard/Billing'
+import { Reports } from 'components/dashboard/Reports'
+import { UserCard } from 'components/dashboard/UserCard'
 
 const App: React.FC = () => {
     return (
@@ -13,10 +13,10 @@ const App: React.FC = () => {
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/dashboard' element={<Dashboard />}>
-                    <Route path='' element={<Microservices />} />
-                    <Route path='microservices/:uid' element={<MicroserviceCard />} />
-                    <Route path='users' element={<Users />} />
-                    <Route path='users/:id' element={<UserCard />} />
+                    <Route path='' element={<Users />} />
+                    <Route path='/dashboard/billing' element={<Billing />} />
+                    <Route path='/dashboard/reports' element={<Reports />} />
+                    <Route path='/dashboard/user/:id' element={<UserCard />} />
                 </Route>
             </Routes>
         </div>
