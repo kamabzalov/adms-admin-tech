@@ -100,9 +100,7 @@ export function UserCard() {
                 const updatedJsonObject = { [fieldName]: fieldValue, ...jsonObject }
                 return JSON.stringify(updatedJsonObject, null, 2)
             }
-        } catch (error) {
-            console.error('Invalid JSON string:', error)
-        }
+        } catch (err) {}
 
         return jsonString
     }
