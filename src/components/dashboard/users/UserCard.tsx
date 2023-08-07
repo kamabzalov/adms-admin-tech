@@ -106,7 +106,7 @@ export function UserCard() {
     }
 
     return (
-        <div className='app-container row g-5 g-xl-10 mb-5 mb-xl-10'>
+        <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
             <div className='col-12'>
                 <div className='card card-custom mb-5 vw-90 mx-auto'>
                     <div className='card-header'>
