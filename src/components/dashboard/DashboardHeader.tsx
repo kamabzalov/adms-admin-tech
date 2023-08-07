@@ -15,7 +15,7 @@ export function DashboardHeader() {
         }
     }
     return (
-        <div id='kt_app_header' className='app-header'>
+        <header className='app-header'>
             <div className='container flex-lg-grow-1 d-flex align-items-stretch justify-content-between'>
                 <div className='d-flex align-items-stretch justify-content-between flex-lg-grow-1'>
                     <div className='app-header-menu app-header-mobile-drawer align-items-stretch'>
@@ -39,6 +39,6 @@ export function DashboardHeader() {
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
