@@ -46,6 +46,20 @@ const renderList = (data: any, checkbox: boolean = false) => {
     })
 }
 
+export const TabNavigate = ({ activeTab, tab, onTabClick }: { activeTab: string; tab: string; onTabClick: (tab: string) => void }) => (
+    <li className='nav-item'>
+        <button
+            className={clsx(`nav-link text-active-primary cursor-pointer`, {
+                active: activeTab === tab,
+            })}
+            onClick={() => onTabClick(tab)}
+            role='tab'
+        >
+            {tab}
+        </button>
+    </li>
+)
+
 const TabDataWrapper = ({
     title,
     data,
@@ -107,7 +121,7 @@ const TabDataWrapper = ({
                                 className={clsx('tab-pane vw-90 mx-auto', {
                                     active: activeTab === 'JSON view',
                                 })}
-                                id={`kt_tab_pane_${1}`}
+                                id='kt_tab_pane_json'
                                 role='tabpanel'
                             >
                                 <div className='card-body'>
@@ -118,7 +132,7 @@ const TabDataWrapper = ({
                                 className={clsx('tab-pane vw-90 mx-auto', {
                                     active: activeTab === 'General view',
                                 })}
-                                id={`kt_tab_pane_${1}`}
+                                id='kt_tab_pane_general'
                                 role='tabpanel'
                             >
                                 <div className='card-body'>
