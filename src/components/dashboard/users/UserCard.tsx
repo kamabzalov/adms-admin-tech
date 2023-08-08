@@ -15,9 +15,9 @@ import {
     listUserLogins,
     listUserSessions,
 } from './user.service'
-import { TabContent } from '../helpers/helpers'
+import { TabContent, TabNavigate } from '../helpers/helpers'
 
-enum Tabs {
+enum UserCardTabs {
     Profile = 'Profile',
     ExtendedInfo = 'Extended info',
     ShortInfo = 'Short info',
@@ -31,6 +31,8 @@ enum Tabs {
     Permissions = 'Permissions',
     UserTypes = 'User types',
 }
+
+const userCardTabsArray: string[] = Object.values(UserCardTabs) as string[]
 
 export function UserCard() {
     const { id } = useParams()
@@ -100,10 +102,15 @@ export function UserCard() {
                 const updatedJsonObject = { [fieldName]: fieldValue, ...jsonObject }
                 return JSON.stringify(updatedJsonObject, null, 2)
             }
-        } catch (err) {}
+        } catch (err) { }
 
         return jsonString
     }
+
+
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+    };
 
     return (
         <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
@@ -114,138 +121,9 @@ export function UserCard() {
                     </div>
                     <div className='card-body d-flex flex-column justify-content-end pb-0'>
                         <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: activeTab === Tabs.Profile,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Profile)}
-                                    role='tab'
-                                >
-                                    {Tabs.Profile}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: activeTab === Tabs.ExtendedInfo,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.ExtendedInfo)}
-                                    role='tab'
-                                >
-                                    {Tabs.ExtendedInfo}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: activeTab === Tabs.ShortInfo,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.ShortInfo)}
-                                    role='tab'
-                                >
-                                    {Tabs.ShortInfo}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: activeTab === Tabs.Locations,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Locations)}
-                                    role='tab'
-                                >
-                                    {Tabs.Locations}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                                        active: activeTab === Tabs.UserPermissions,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.UserPermissions)}
-                                    role='tab'
-                                >
-                                    {Tabs.UserPermissions}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.Settings,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Settings)}
-                                    role='tab'
-                                >
-                                    {Tabs.Settings}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.Sessions,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Sessions)}
-                                    role='tab'
-                                >
-                                    {Tabs.Sessions}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.Logins,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Logins)}
-                                    role='tab'
-                                >
-                                    {Tabs.Logins}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.Subusers,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Subusers)}
-                                    role='tab'
-                                >
-                                    {Tabs.Subusers}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.SalesPersons,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.SalesPersons)}
-                                    role='tab'
-                                >
-                                    {Tabs.SalesPersons}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.Permissions,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.Permissions)}
-                                    role='tab'
-                                >
-                                    {Tabs.Permissions}
-                                </button>
-                            </li>
-                            <li className='nav-item'>
-                                <button
-                                    className={clsx(`nav-link cursor-pointer`, {
-                                        active: activeTab === Tabs.UserTypes,
-                                    })}
-                                    onClick={() => setActiveTab(Tabs.UserTypes)}
-                                    role='tab'
-                                >
-                                    {Tabs.UserTypes}
-                                </button>
-                            </li>
+                            {userCardTabsArray.map((tab) => (
+                                <TabNavigate key={tab} tab={tab} activeTab={activeTab} onTabClick={handleTabClick} />
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -253,74 +131,74 @@ export function UserCard() {
                 <div className='tab-content' id='myTabContent'>
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Profile}
+                        tabName={UserCardTabs.Profile}
                         tabIndex={0}
                         tabContent={profileJson}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.ExtendedInfo}
+                        tabName={UserCardTabs.ExtendedInfo}
                         tabIndex={1}
                         tabContent={extendedInfoJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.ShortInfo}
+                        tabName={UserCardTabs.ShortInfo}
                         tabIndex={2}
                         tabContent={shortInfoJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Locations}
+                        tabName={UserCardTabs.Locations}
                         tabIndex={3}
                         tabContent={mutateJson(locationsJSON, 'status')}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.UserPermissions}
+                        tabName={UserCardTabs.UserPermissions}
                         tabIndex={4}
                         tabContent={mutateJson(userPermissionsJSON, 'useruid')}
                         checkbox={true}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Settings}
+                        tabName={UserCardTabs.Settings}
                         tabIndex={5}
                         tabContent={mutateJson(userSettingsJSON, 'status')}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Sessions}
+                        tabName={UserCardTabs.Sessions}
                         tabIndex={6}
                         tabContent={userSessionsJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Logins}
+                        tabName={UserCardTabs.Logins}
                         tabIndex={7}
                         tabContent={userLoginsJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Subusers}
+                        tabName={UserCardTabs.Subusers}
                         tabIndex={8}
                         tabContent={userSubusersJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.SalesPersons}
+                        tabName={UserCardTabs.SalesPersons}
                         tabIndex={9}
                         tabContent={userSalesPersonsJSON}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.Permissions}
+                        tabName={UserCardTabs.Permissions}
                         tabIndex={10}
                         tabContent={mutateJson(permissionsJSON, 'status')}
                     />
                     <TabContent
                         activeTab={activeTab}
-                        tabName={Tabs.UserTypes}
+                        tabName={UserCardTabs.UserTypes}
                         tabIndex={11}
                         tabContent={userTypesJSON}
                     />
