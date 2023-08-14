@@ -2,22 +2,26 @@ import { useEffect, useState } from 'react'
 import { deleteUser, getDeletedUsers, getUsers, undeleteUser, User } from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { TabNavigate } from '../helpers/helpers'
+import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
+import { AddUserModal } from './UserModal/AddUserModal'
+import { Dropdown } from 'react-bootstrap'
 
 enum UsersTabs {
-    Users = "Users",
-    DeletedUsers = "Deleted users"
+    Users = 'Users',
+    DeletedUsers = 'Deleted users',
 }
-
 
 const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
 
 export default function Users() {
     const [users, setUsers] = useState<User[]>([])
+    const [modalEnabled, setModalEnabled] = useState<boolean>(false)
 
     const [activeTab, setActiveTab] = useState('Users')
     const [deletedUsers, setDeletedUsers] = useState<User[]>([])
     const [loaded, setLoaded] = useState<boolean>(false)
+
+    const handleModalOpen = () => setModalEnabled(!modalEnabled)
 
     useEffect(() => {
         if (!loaded) {
@@ -63,29 +67,41 @@ export default function Users() {
     }
 
     const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
-    };
+        setActiveTab(tab)
+    }
 
     return (
         <>
-            <div className="card">
+            {modalEnabled && <AddUserModal onClose={handleModalOpen} />}
+            <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
-                        {
-                            usersTabsArray.map(tab => <TabNavigate key={tab} activeTab={activeTab} tab={tab} onTabClick={handleTabClick} />)
-                        }
+                        {usersTabsArray.map((tab) => (
+                            <TabNavigate
+                                key={tab}
+                                activeTab={activeTab}
+                                tab={tab}
+                                onTabClick={handleTabClick}
+                            />
+                        ))}
                     </ul>
                 </div>
 
                 <div className='tab-content' id='myTabContentInner'>
-                    <div
-                        className={clsx('tab-pane vw-90 mx-auto', {
-                            active: activeTab === UsersTabs.Users,
-                        })}
-                        id={`kt_tab_pane_${1}`}
-                        role='tabpanel'
-                    >
+                    <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
                         <div className='card-body'>
+                            <div
+                                className='d-flex justify-content-end'
+                                data-kt-user-table-toolbar='base'
+                            >
+                                <button
+                                    type='button'
+                                    className='btn btn-primary'
+                                    onClick={handleModalOpen}
+                                >
+                                    Add User
+                                </button>
+                            </div>
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
@@ -110,12 +126,50 @@ export default function Users() {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className='btn btn-danger'
-                                                            onClick={() => moveToTrash(user.useruid)}
-                                                        >
-                                                            Delete user
-                                                        </button>
+                                                        <Dropdown>
+                                                            <Dropdown.Toggle
+                                                                variant='light'
+                                                                id='dropdown-basic'
+                                                            >
+                                                                Action
+                                                            </Dropdown.Toggle>
+
+                                                            <Dropdown.Menu>
+                                                                <Dropdown.Item
+                                                                    onClick={() =>
+                                                                        moveToTrash(user.useruid)
+                                                                    }
+                                                                >
+                                                                    Delete user
+                                                                </Dropdown.Item>
+                                                                <Dropdown.Item
+                                                                    onClick={() =>
+                                                                        console.log(
+                                                                            `${user.useruid} password changed`
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Change password
+                                                                </Dropdown.Item>
+                                                            </Dropdown.Menu>
+                                                        </Dropdown>
+                                                        {/* <CustomDropdown
+                                                            title='Action'
+                                                            items={[
+                                                                {
+                                                                    menuItemName: 'Delete user',
+                                                                    menuItemAction: () =>
+                                                                        moveToTrash(user.useruid),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Change password',
+                                                                    menuItemAction: () =>
+                                                                        console.log(
+                                                                            `${user.useruid} password changed`
+                                                                        ),
+                                                                },
+                                                            ]}
+                                                        /> */}
                                                     </td>
                                                 </tr>
                                             )
@@ -124,7 +178,7 @@ export default function Users() {
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </TabPanel>
                 </div>
 
                 <div className='tab-content' id='myTabContentInner'>
@@ -160,12 +214,23 @@ export default function Users() {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className='btn btn-success'
-                                                            onClick={() => restoreUser(user.useruid)}
-                                                        >
-                                                            Restore user
-                                                        </button>
+                                                        <CustomDropdown
+                                                            title='Action'
+                                                            items={[
+                                                                {
+                                                                    menuItemName: 'Restore user',
+                                                                    menuItemAction: () =>
+                                                                        restoreUser(user.useruid),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Change password',
+                                                                    menuItemAction: () =>
+                                                                        console.log(
+                                                                            `${user.useruid} password changed`
+                                                                        ),
+                                                                },
+                                                            ]}
+                                                        />
                                                     </td>
                                                 </tr>
                                             )
