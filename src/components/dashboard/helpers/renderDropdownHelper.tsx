@@ -51,7 +51,7 @@ export const CustomDropdown: FC<Props> = ({ title, items }) => {
             </button>
             <div
                 className={clsx(
-                    'dropdown-menu menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4 transition',
+                    'dropdown-menu menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4',
                     { show: dropdownOpen }
                 )}
                 onClick={(e) => e.stopPropagation()}
