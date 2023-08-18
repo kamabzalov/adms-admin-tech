@@ -5,7 +5,7 @@ const Loader = () => {
     document.getElementById('splash-screen')?.remove()
     return (
         <div id='splash-screen' className='splash-screen'>
-            <img src='logo/admss_logo-min.png' className='logo' alt='ADMS logo' />
+            <img src='/logo/admss_logo.png' className='logo' alt='ADMS' />
             <div>Loading ...</div>
         </div>
     )

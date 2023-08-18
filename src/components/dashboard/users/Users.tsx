@@ -130,16 +130,16 @@ export default function Users() {
                                                             title='Actions'
                                                             items={[
                                                                 {
-                                                                    menuItemName: 'Delete user',
-                                                                    menuItemAction: () =>
-                                                                        moveToTrash(user.useruid),
-                                                                },
-                                                                {
                                                                     menuItemName: 'Change password',
                                                                     menuItemAction: () =>
                                                                         console.log(
                                                                             `${user.useruid} password changed`
                                                                         ),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Delete user',
+                                                                    menuItemAction: () =>
+                                                                        moveToTrash(user.useruid),
                                                                 },
                                                             ]}
                                                         />
