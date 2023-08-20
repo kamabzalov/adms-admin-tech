@@ -1,23 +1,35 @@
 import { useEffect, useState } from 'react'
-import { deleteUser, getDeletedUsers, getUsers, undeleteUser, User } from './user.service'
+import {
+    deleteUser,
+    getDeletedUsers,
+    getUsers,
+    undeleteUser,
+    updateUser,
+    User,
+} from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { TabNavigate } from '../helpers/helpers'
+import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
+import { UserModal } from './UserModal/UserModal'
 
 enum UsersTabs {
-    Users = "Users",
-    DeletedUsers = "Deleted users"
+    Users = 'Users',
+    DeletedUsers = 'Deleted users',
 }
-
 
 const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
 
 export default function Users() {
+    const TEMP_PASSWORD = '654321'
+
     const [users, setUsers] = useState<User[]>([])
+    const [modalEnabled, setModalEnabled] = useState<boolean>(false)
 
     const [activeTab, setActiveTab] = useState('Users')
     const [deletedUsers, setDeletedUsers] = useState<User[]>([])
     const [loaded, setLoaded] = useState<boolean>(false)
+
+    const handleModalOpen = () => setModalEnabled(!modalEnabled)
 
     useEffect(() => {
         if (!loaded) {
@@ -62,30 +74,47 @@ export default function Users() {
         })
     }
 
+    const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
+        updateUser(uid, loginname, loginpassword)
+    }
+
     const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
-    };
+        setActiveTab(tab)
+    }
 
     return (
         <>
-            <div className="card">
+            {modalEnabled && <UserModal onClose={handleModalOpen} />}
+            <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
-                        {
-                            usersTabsArray.map(tab => <TabNavigate key={tab} activeTab={activeTab} tab={tab} onTabClick={handleTabClick} />)
-                        }
+                        {usersTabsArray.map((tab) => (
+                            <TabNavigate
+                                key={tab}
+                                activeTab={activeTab}
+                                tab={tab}
+                                onTabClick={handleTabClick}
+                            />
+                        ))}
                     </ul>
                 </div>
 
                 <div className='tab-content' id='myTabContentInner'>
-                    <div
-                        className={clsx('tab-pane vw-90 mx-auto', {
-                            active: activeTab === UsersTabs.Users,
-                        })}
-                        id={`kt_tab_pane_${1}`}
-                        role='tabpanel'
-                    >
+                    <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
                         <div className='card-body'>
+                            <div
+                                className='d-flex justify-content-end'
+                                data-kt-user-table-toolbar='base'
+                            >
+                                <button
+                                    type='button'
+                                    className='btn btn-primary'
+                                    onClick={handleModalOpen}
+                                >
+                                    <i className='ki-duotone ki-plus fs-2'></i>
+                                    Add User
+                                </button>
+                            </div>
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
@@ -110,12 +139,25 @@ export default function Users() {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className='btn btn-danger'
-                                                            onClick={() => moveToTrash(user.useruid)}
-                                                        >
-                                                            Delete user
-                                                        </button>
+                                                        <CustomDropdown
+                                                            title='Actions'
+                                                            items={[
+                                                                {
+                                                                    menuItemName: 'Change password',
+                                                                    menuItemAction: () =>
+                                                                        changePassword(
+                                                                            user.useruid,
+                                                                            user.username,
+                                                                            TEMP_PASSWORD
+                                                                        ),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Delete user',
+                                                                    menuItemAction: () =>
+                                                                        moveToTrash(user.useruid),
+                                                                },
+                                                            ]}
+                                                        />
                                                     </td>
                                                 </tr>
                                             )
@@ -124,7 +166,7 @@ export default function Users() {
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </TabPanel>
                 </div>
 
                 <div className='tab-content' id='myTabContentInner'>
@@ -136,6 +178,19 @@ export default function Users() {
                         role='tabpanel'
                     >
                         <div className='card-body'>
+                            <div
+                                className='d-flex justify-content-end'
+                                data-kt-user-table-toolbar='base'
+                            >
+                                <button
+                                    type='button'
+                                    className='btn btn-primary'
+                                    onClick={handleModalOpen}
+                                >
+                                    <i className='ki-duotone ki-plus fs-2'></i>
+                                    Add User
+                                </button>
+                            </div>
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
@@ -160,12 +215,25 @@ export default function Users() {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className='btn btn-success'
-                                                            onClick={() => restoreUser(user.useruid)}
-                                                        >
-                                                            Restore user
-                                                        </button>
+                                                        <CustomDropdown
+                                                            title='Actions'
+                                                            items={[
+                                                                {
+                                                                    menuItemName: 'Restore user',
+                                                                    menuItemAction: () =>
+                                                                        restoreUser(user.useruid),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Change password',
+                                                                    menuItemAction: () =>
+                                                                        changePassword(
+                                                                            user.useruid,
+                                                                            user.username,
+                                                                            TEMP_PASSWORD
+                                                                        ),
+                                                                },
+                                                            ]}
+                                                        />
                                                     </td>
                                                 </tr>
                                             )
