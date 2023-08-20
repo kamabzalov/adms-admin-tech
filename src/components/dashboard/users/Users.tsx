@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-    deleteUser,
-    getDeletedUsers,
-    getUsers,
-    undeleteUser,
-    updateUser,
-    User,
-} from './user.service'
+import { deleteUser, getDeletedUsers, getUsers, undeleteUser, user, User } from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
@@ -75,7 +68,7 @@ export default function Users() {
     }
 
     const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
-        updateUser(uid, loginname, loginpassword)
+        user(uid, loginname, loginpassword)
     }
 
     const handleTabClick = (tab: string) => {
