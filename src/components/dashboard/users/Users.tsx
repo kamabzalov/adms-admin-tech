@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { deleteUser, getDeletedUsers, getUsers, undeleteUser, User } from './user.service'
+import {
+    deleteUser,
+    getDeletedUsers,
+    getUsers,
+    undeleteUser,
+    updateUser,
+    User,
+} from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
@@ -13,6 +20,8 @@ enum UsersTabs {
 const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
 
 export default function Users() {
+    const TEMP_PASSWORD = '654321'
+
     const [users, setUsers] = useState<User[]>([])
     const [modalEnabled, setModalEnabled] = useState<boolean>(false)
 
@@ -63,6 +72,10 @@ export default function Users() {
                 })
             }
         })
+    }
+
+    const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
+        updateUser(uid, loginname, loginpassword)
     }
 
     const handleTabClick = (tab: string) => {
@@ -132,8 +145,10 @@ export default function Users() {
                                                                 {
                                                                     menuItemName: 'Change password',
                                                                     menuItemAction: () =>
-                                                                        console.log(
-                                                                            `${user.useruid} password changed`
+                                                                        changePassword(
+                                                                            user.useruid,
+                                                                            user.username,
+                                                                            TEMP_PASSWORD
                                                                         ),
                                                                 },
                                                                 {
@@ -211,8 +226,10 @@ export default function Users() {
                                                                 {
                                                                     menuItemName: 'Change password',
                                                                     menuItemAction: () =>
-                                                                        console.log(
-                                                                            `${user.useruid} password changed`
+                                                                        changePassword(
+                                                                            user.useruid,
+                                                                            user.username,
+                                                                            TEMP_PASSWORD
                                                                         ),
                                                                 },
                                                             ]}
