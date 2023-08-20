@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react'
-import { deleteUser, getDeletedUsers, getUsers, undeleteUser, user, User } from './user.service'
+import {
+    deleteUser,
+    getDeletedUsers,
+    getUsers,
+    undeleteUser,
+    updateUser,
+    User,
+} from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
-import { UserModal } from './UserModal/UserModal'
+import { AddUserModal } from './UserModal/AddUserModal'
 
 enum UsersTabs {
     Users = 'Users',
@@ -68,16 +75,25 @@ export default function Users() {
     }
 
     const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
-        user(uid, loginname, loginpassword)
+        updateUser(uid, loginname, loginpassword)
     }
 
     const handleTabClick = (tab: string) => {
         setActiveTab(tab)
     }
 
+    const UsersTableHead = (): JSX.Element => (
+        <thead>
+            <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
+                <th>User name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    )
+
     return (
         <>
-            {modalEnabled && <UserModal onClose={handleModalOpen} />}
+            {modalEnabled && <AddUserModal onClose={handleModalOpen} />}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
@@ -113,12 +129,7 @@ export default function Users() {
                                     id='kt_table_users'
                                     className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
                                 >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
+                                    <UsersTableHead />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {users.map((user) => {
                                             return (
@@ -189,12 +200,7 @@ export default function Users() {
                                     id='kt_table_users'
                                     className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
                                 >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
+                                    <UsersTableHead />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {deletedUsers.map((user) => {
                                             return (
