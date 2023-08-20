@@ -10,7 +10,7 @@ import {
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
-import { AddUserModal } from './UserModal/AddUserModal'
+import { UserModal } from './UserModal/UserModal'
 
 enum UsersTabs {
     Users = 'Users',
@@ -84,7 +84,7 @@ export default function Users() {
 
     return (
         <>
-            {modalEnabled && <AddUserModal onClose={handleModalOpen} />}
+            {modalEnabled && <UserModal onClose={handleModalOpen} />}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>

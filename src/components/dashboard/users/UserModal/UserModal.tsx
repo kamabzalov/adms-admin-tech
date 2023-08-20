@@ -1,12 +1,12 @@
 import { FC } from 'react'
-import { AddUserModalBody } from './parts/AddUserModalBody'
+import { UserModalBody } from './parts/UserModalBody'
 import { UserModalHeader } from './parts/UserModalHeader'
 
 interface AddUserModalProps {
     onClose: () => void
 }
 
-export const AddUserModal: FC<AddUserModalProps> = ({ onClose }) => {
+export const UserModal: FC<AddUserModalProps> = ({ onClose }) => {
     return (
         <>
             <div
@@ -20,7 +20,7 @@ export const AddUserModal: FC<AddUserModalProps> = ({ onClose }) => {
                     <div className='modal-content'>
                         <UserModalHeader onClose={onClose} title={'Add user'} />
                         <div className='modal-body scroll-y mx-5 mx-xl-15 my-7'>
-                            <AddUserModalBody />
+                            <UserModalBody />
                         </div>
                     </div>
                 </div>

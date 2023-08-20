@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import { useState, FormEvent } from 'react'
 import { IUserEdit } from '../../../interfaces/IUserData'
 
-export const AddUserModalBody = () => {
+export const UserModalBody = () => {
     const [userForEdit, setUserForEdit] = useState<IUserEdit>({
         username: '',
     })
