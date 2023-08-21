@@ -19,7 +19,7 @@ enum MicroserviceTabs {
 }
 
 const microserviceTabsArray: string[] = Object.values(MicroserviceTabs) as string[]
-
+const a = 10;
 export function MicroserviceCard() {
     const { uid } = useParams()
     const [activeTab, setActiveTab] = useState('State')
