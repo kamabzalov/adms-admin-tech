@@ -1,243 +1,236 @@
-import { useEffect, useState } from 'react'
-import { deleteUser, getDeletedUsers, getUsers, undeleteUser, user, User } from './user.service'
-import { Link } from 'react-router-dom'
-import clsx from 'clsx'
-import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
-import { UserModal } from './UserModal/UserModal'
+import axios from 'axios'
+import { getToken } from '../../../common/utils'
+import { API_URL } from '../../../common/app-consts'
+import { ActionStatus } from '../../../common/models'
 
-enum UsersTabs {
-    Users = 'Users',
-    DeletedUsers = 'Deleted users',
+export interface User {
+    created: string
+    createdbyuid: string
+    index: number
+    parentuid: string
+    updated: string
+    username: string
+    useruid: string
 }
 
-const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
-
-export default function Users() {
-    const TEMP_PASSWORD = '654321'
-
-    const [users, setUsers] = useState<User[]>([])
-    const [modalEnabled, setModalEnabled] = useState<boolean>(false)
-
-    const [activeTab, setActiveTab] = useState('Users')
-    const [deletedUsers, setDeletedUsers] = useState<User[]>([])
-    const [loaded, setLoaded] = useState<boolean>(false)
-
-    const handleModalOpen = () => setModalEnabled(!modalEnabled)
-
-    useEffect(() => {
-        if (!loaded) {
-            getUsers().then((response) => {
-                setUsers(response)
-                setLoaded(true)
-            })
-            getDeletedUsers().then((response) => {
-                setDeletedUsers(response)
-                setLoaded(true)
-            })
+export const createUser = (loginname: string, loginpassword: string) => {
+    return axios.post(
+        API_URL + 'user/' + 0 + '/user',
+        { loginname: loginname, loginpassword: loginpassword },
+        {
+            headers: { Authorization: `Bearer ${getToken()}` },
         }
-    }, [users, loaded])
-
-    const moveToTrash = (userId: string) => {
-        deleteUser(userId).then((response) => {
-            if (response.status === 'OK') {
-                getUsers().then((response) => {
-                    setUsers(response)
-                    setLoaded(true)
-                })
-                getDeletedUsers().then((response) => {
-                    setDeletedUsers(response)
-                    setLoaded(true)
-                })
-            }
-        })
-    }
-
-    const restoreUser = (userId: string) => {
-        undeleteUser(userId).then((response) => {
-            if (response.status === 'OK') {
-                getUsers().then((response) => {
-                    setUsers(response)
-                    setLoaded(true)
-                })
-                getDeletedUsers().then((response) => {
-                    setDeletedUsers(response)
-                    setLoaded(true)
-                })
-            }
-        })
-    }
-
-    const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
-        user(uid, loginname, loginpassword)
-    }
-
-    const handleTabClick = (tab: string) => {
-        setActiveTab(tab)
-    }
-
-    return (
-        <>
-            {modalEnabled && <UserModal onClose={handleModalOpen} />}
-            <div className='card'>
-                <div className='card-header d-flex flex-column justify-content-end pb-0'>
-                    <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
-                        {usersTabsArray.map((tab) => (
-                            <TabNavigate
-                                key={tab}
-                                activeTab={activeTab}
-                                tab={tab}
-                                onTabClick={handleTabClick}
-                            />
-                        ))}
-                    </ul>
-                </div>
-
-                <div className='tab-content' id='myTabContentInner'>
-                    <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
-                        <div className='card-body'>
-                            <div
-                                className='d-flex justify-content-end'
-                                data-kt-user-table-toolbar='base'
-                            >
-                                <button
-                                    type='button'
-                                    className='btn btn-primary'
-                                    onClick={handleModalOpen}
-                                >
-                                    <i className='ki-duotone ki-plus fs-2'></i>
-                                    Add User
-                                </button>
-                            </div>
-                            <div className='table-responsive'>
-                                <table
-                                    id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
-                                >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='text-gray-600 fw-bold'>
-                                        {users.map((user) => {
-                                            return (
-                                                <tr key={user.useruid}>
-                                                    <td>
-                                                        <Link
-                                                            to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1'
-                                                        >
-                                                            {user.username}
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        <CustomDropdown
-                                                            title='Actions'
-                                                            items={[
-                                                                {
-                                                                    menuItemName: 'Change password',
-                                                                    menuItemAction: () =>
-                                                                        changePassword(
-                                                                            user.useruid,
-                                                                            user.username,
-                                                                            TEMP_PASSWORD
-                                                                        ),
-                                                                },
-                                                                {
-                                                                    menuItemName: 'Delete user',
-                                                                    menuItemAction: () =>
-                                                                        moveToTrash(user.useruid),
-                                                                },
-                                                            ]}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </TabPanel>
-                </div>
-
-                <div className='tab-content' id='myTabContentInner'>
-                    <div
-                        className={clsx('tab-pane vw-90 mx-auto', {
-                            active: activeTab === UsersTabs.DeletedUsers,
-                        })}
-                        id={`kt_tab_pane_${2}`}
-                        role='tabpanel'
-                    >
-                        <div className='card-body'>
-                            <div
-                                className='d-flex justify-content-end'
-                                data-kt-user-table-toolbar='base'
-                            >
-                                <button
-                                    type='button'
-                                    className='btn btn-primary'
-                                    onClick={handleModalOpen}
-                                >
-                                    <i className='ki-duotone ki-plus fs-2'></i>
-                                    Add User
-                                </button>
-                            </div>
-                            <div className='table-responsive'>
-                                <table
-                                    id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
-                                >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='text-gray-600 fw-bold'>
-                                        {deletedUsers.map((user) => {
-                                            return (
-                                                <tr key={user.useruid}>
-                                                    <td>
-                                                        <Link
-                                                            to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1'
-                                                        >
-                                                            {user.username}
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        <CustomDropdown
-                                                            title='Actions'
-                                                            items={[
-                                                                {
-                                                                    menuItemName: 'Restore user',
-                                                                    menuItemAction: () =>
-                                                                        restoreUser(user.useruid),
-                                                                },
-                                                                {
-                                                                    menuItemName: 'Change password',
-                                                                    menuItemAction: () =>
-                                                                        changePassword(
-                                                                            user.useruid,
-                                                                            user.username,
-                                                                            TEMP_PASSWORD
-                                                                        ),
-                                                                },
-                                                            ]}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
     )
+}
+
+export const copyUser = (srcuid: string) => {
+    return axios
+        .post<ActionStatus>(
+            `${API_URL}user/${srcuid}/copyuser`,
+            {},
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        )
+        .then((response) => response.data)
+}
+
+export const updateUser = (uid: string, loginname: string, loginpassword: string) => {
+    return axios.post(
+        API_URL + 'user/' + uid + '/user',
+        { loginname: loginname, loginpassword: loginpassword },
+        {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }
+    )
+}
+
+export const setUserOptionalData = (uid: string, data: any) => {
+    return axios.post(
+        API_URL + 'user/' + uid + '/set',
+        { ...data },
+        {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }
+    )
+}
+
+export const getUsers = () => {
+    return axios
+        .get<User[]>(`${API_URL}user/0/list`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getDeletedUsers = () => {
+    return axios
+        .get<User[]>(`${API_URL}user/0/listdeleted`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const deleteUser = (uid: string) => {
+    return axios
+        .post<ActionStatus>(
+            `${API_URL}user/${uid}/delete`,
+            {},
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        )
+        .then((response) => response.data)
+}
+
+export const undeleteUser = (uid: string) => {
+    return axios
+        .post<ActionStatus>(
+            `${API_URL}user/${uid}/undelete`,
+            {},
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            }
+        )
+        .then((response) => response.data)
+}
+
+export const setUserPermissions = (uid: string, data: any) => {
+    return axios.post(
+        API_URL + 'user/' + uid + '/permissions',
+        { ...data },
+        {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }
+    )
+}
+
+export const getUserPermissions = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/permissions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getUserExtendedInfo = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/info`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getUserLocations = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/locations`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const setUserProfile = (uid: string, profile: any) => {
+    return axios.post(
+        API_URL + 'user/' + uid + '/profile',
+        { ...profile },
+        {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        }
+    )
+}
+
+export const getUserProfile = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/profile`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const setUserSettings = (uid: string, data: any) => {
+    return axios.post(API_URL + 'user/' + uid + '/settings', data, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+    })
+}
+
+export const getUserSettings = (uid: string) => {
+    return axios
+        .get(`${API_URL}user/${uid}/settings`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const checkToken = (token: string) => {
+    return axios.get(API_URL + 'user/' + token + '/token', {
+        headers: { Authorization: `Bearer ${getToken()}` },
+    })
+}
+
+export const listUserSessions = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/sessions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const killSession = (id: number) => {
+    return axios.post(API_URL + 'user/' + id.toString() + '/session', {
+        headers: { Authorization: `Bearer ${getToken()}` },
+    })
+}
+
+export const checkSession = (uid: string) => {
+    return axios.get(API_URL + 'user/' + uid + '/session', {
+        headers: { Authorization: `Bearer ${getToken()}` },
+    })
+}
+
+export const listUserLogins = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/logins`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const listSubusers = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/subusers`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const listSalesPersons = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/salespersons`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getUserShortInfo = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/username`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getAllUIPermissions = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/listpermissions`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
+}
+
+export const getAllUITypes = (uid: string) => {
+    return axios
+        .get<string>(`${API_URL}user/${uid}/listusertypes`, {
+            headers: { Authorization: `Bearer ${getToken()}` },
+        })
+        .then((response) => response.data)
 }
