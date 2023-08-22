@@ -1,11 +1,11 @@
-import { DashboardHeader } from "./DashboardHeader";
-import React from "react";
-import { Outlet } from "react-router-dom";
-import { ClearCache } from "../smailComponents/CleacrCache";
+import { DashboardHeader } from './DashboardHeader'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import { ClearCache } from '../smallComponents/ClearCache'
 
-export function Dashboard(){
-  return (
-      <div className='d-flex flex-column flex-root app-root'>
+export function Dashboard() {
+    return (
+        <div className='d-flex flex-column flex-root app-root'>
             <div className='app-page flex-column flex-column-fluid'>
                 <DashboardHeader />
                 <div className='app-wrapper flex-column flex-row-fluid'>
@@ -22,5 +22,5 @@ export function Dashboard(){
                 </div>
             </div>
         </div>
-  );
+    )
 }
