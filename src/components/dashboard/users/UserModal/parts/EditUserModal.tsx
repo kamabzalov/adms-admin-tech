@@ -2,12 +2,12 @@ import clsx from 'clsx'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { useState } from 'react'
-import { IUserAdd } from '../../../interfaces/IUserData'
-import { createUser } from '../../user.service'
+import { IUserEdit } from '../../../interfaces/IUserData'
+import { User, updateUser } from '../../user.service'
 
-export const AddUserModalBody = (): JSX.Element => {
-    const [userData] = useState<IUserAdd>({
-        username: '',
+export const EditUserModalBody = ({ user }: { user: User }): JSX.Element => {
+    const [userData] = useState<IUserEdit>({
+        username: user.username,
         password: '',
     })
 
@@ -19,10 +19,10 @@ export const AddUserModalBody = (): JSX.Element => {
     const formik = useFormik({
         initialValues: userData,
         validationSchema: addUserSchema,
-        onSubmit: async ({ username, password }: IUserAdd, { setSubmitting }) => {
+        onSubmit: async ({ username, password }, { setSubmitting }) => {
             setSubmitting(true)
             try {
-                await createUser(username, password)
+                await updateUser(user.useruid, username, password)
             } catch (ex) {
                 console.error(ex)
             } finally {
@@ -57,6 +57,7 @@ export const AddUserModalBody = (): JSX.Element => {
                             type='text'
                             name='username'
                             autoComplete='off'
+                            disabled
                         />
                         {formik.touched.username && formik.errors.username && (
                             <div className='fv-plugins-message-container'>
