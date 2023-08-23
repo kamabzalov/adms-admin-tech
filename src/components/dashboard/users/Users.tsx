@@ -1,28 +1,42 @@
 import { useEffect, useState } from 'react'
-import { deleteUser, getDeletedUsers, getUsers, undeleteUser, user, User } from './user.service'
+import {
+    copyUser,
+    deleteUser,
+    getDeletedUsers,
+    getUsers,
+    undeleteUser,
+    updateUser,
+    User,
+} from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
-import { UserModal } from './UserModal/UserModal'
+import { CustomDropdown, TableHead, TabNavigate, TabPanel } from '../helpers/helpers'
+import { AddUserModal } from './UserModal/AddUserModal'
 
 enum UsersTabs {
     Users = 'Users',
     DeletedUsers = 'Deleted users',
 }
 
+enum UsersColumns {
+    Microservice = 'User name',
+    Actions = 'Actions',
+}
+
 const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
+const usersColumnsArray: string[] = Object.values(UsersColumns) as string[]
 
 export default function Users() {
     const TEMP_PASSWORD = '654321'
 
     const [users, setUsers] = useState<User[]>([])
-    const [modalEnabled, setModalEnabled] = useState<boolean>(false)
+    const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false)
 
     const [activeTab, setActiveTab] = useState('Users')
     const [deletedUsers, setDeletedUsers] = useState<User[]>([])
     const [loaded, setLoaded] = useState<boolean>(false)
 
-    const handleModalOpen = () => setModalEnabled(!modalEnabled)
+    const handleAddUserModalOpen = () => setAddUserModalEnabled(!addUserModalEnabled)
 
     useEffect(() => {
         if (!loaded) {
@@ -36,6 +50,21 @@ export default function Users() {
             })
         }
     }, [users, loaded])
+
+    const handleCopyUser = (srcuid: string) => {
+        copyUser(srcuid).then((response) => {
+            if (response.status === 'OK') {
+                getUsers().then((response) => {
+                    setUsers(response)
+                    setLoaded(true)
+                })
+                getDeletedUsers().then((response) => {
+                    setDeletedUsers(response)
+                    setLoaded(true)
+                })
+            }
+        })
+    }
 
     const moveToTrash = (userId: string) => {
         deleteUser(userId).then((response) => {
@@ -68,7 +97,7 @@ export default function Users() {
     }
 
     const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
-        user(uid, loginname, loginpassword)
+        updateUser(uid, loginname, loginpassword)
     }
 
     const handleTabClick = (tab: string) => {
@@ -77,7 +106,9 @@ export default function Users() {
 
     return (
         <>
-            {modalEnabled && <UserModal onClose={handleModalOpen} />}
+            {addUserModalEnabled && (
+                <AddUserModal onClose={handleAddUserModalOpen} title={'Add user'} />
+            )}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
@@ -102,7 +133,7 @@ export default function Users() {
                                 <button
                                     type='button'
                                     className='btn btn-primary'
-                                    onClick={handleModalOpen}
+                                    onClick={handleAddUserModalOpen}
                                 >
                                     <i className='ki-duotone ki-plus fs-2'></i>
                                     Add User
@@ -113,12 +144,7 @@ export default function Users() {
                                     id='kt_table_users'
                                     className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
                                 >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
+                                    <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {users.map((user) => {
                                             return (
@@ -142,6 +168,13 @@ export default function Users() {
                                                                             user.useruid,
                                                                             user.username,
                                                                             TEMP_PASSWORD
+                                                                        ),
+                                                                },
+                                                                {
+                                                                    menuItemName: 'Copy user',
+                                                                    menuItemAction: () =>
+                                                                        handleCopyUser(
+                                                                            user.useruid
                                                                         ),
                                                                 },
                                                                 {
@@ -178,7 +211,7 @@ export default function Users() {
                                 <button
                                     type='button'
                                     className='btn btn-primary'
-                                    onClick={handleModalOpen}
+                                    onClick={handleAddUserModalOpen}
                                 >
                                     <i className='ki-duotone ki-plus fs-2'></i>
                                     Add User
@@ -189,12 +222,7 @@ export default function Users() {
                                     id='kt_table_users'
                                     className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
                                 >
-                                    <thead>
-                                        <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                            <th>User name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
+                                    <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {deletedUsers.map((user) => {
                                             return (

@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { CustomModal } from '../../helpers/modal/renderModalHelper'
-import { AddUserModalBody } from './parts/AddUserModalBody'
+import { AddUserModalBody } from './parts/UserModalBody'
+import { CustomModal } from './parts/UserModalHeader'
 
 type AddUserModalProps = {
     onClose: () => void
