@@ -1,18 +1,8 @@
-import { updateAll } from '../../users/user.service'
+import { clearCache } from '../../users/user.service'
 
 const ClearCache = () => (
     <div className='fixed-bottom d-flex justify-content-end m-3'>
-        <button
-            className='btn btn-primary font-weight-bold mr-2'
-            onClick={() => updateAll()}
-        >
-            <i className='ki-duotone ki-trash fs-1'>
-                <span className='path1'></span>
-                <span className='path2'></span>
-                <span className='path3'></span>
-                <span className='path4'></span>
-                <span className='path5'></span>
-            </i>
+        <button className='btn btn-warning font-weight-bold mr-2' onClick={() => clearCache()}>
             Clear server cache
         </button>
     </div>

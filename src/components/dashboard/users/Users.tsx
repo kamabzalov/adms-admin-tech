@@ -10,8 +10,9 @@ import {
 } from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { CustomDropdown, TableHead, TabNavigate, TabPanel } from '../helpers/helpers'
+import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
 import { AddUserModal } from './UserModal/AddUserModal'
+import { TableHead } from '../helpers/renderTableHelper'
 
 enum UsersTabs {
     Users = 'Users',
