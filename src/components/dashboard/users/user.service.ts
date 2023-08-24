@@ -225,9 +225,9 @@ export const getAllUITypes = (uid: string) => {
         .then((response) => response.data)
 }
 
-export const clearCache = () => {
+export const updateAll = () => {
     return axios
-        .get<string[]>(`${API_URL}user/updateall`, {
+        .get<string[]>(`${API_URL}user/updateAll`, {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
         .then((response) => response.data)
