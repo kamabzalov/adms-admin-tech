@@ -3,8 +3,7 @@ import * as MicroservicesService from './service'
 import { Microservice, stopService } from './service'
 import { Link } from 'react-router-dom'
 import { ActionStatus } from '../../../common/models'
-import { CustomDropdown } from '../helpers/helpers'
-import { TableHead } from '../helpers/renderTableHelper'
+import { CustomDropdown, TableHead } from '../helpers/helpers'
 
 enum MicroserviceColumns {
     Microservice = 'Microservice',
@@ -35,6 +34,9 @@ function Microservices() {
     return (
         <>
             <div className='card'>
+                <div className='card-header d-flex flex-column justify-content-end pb-0'>
+                    <h1 className='mb-5'>Microservices</h1>
+                </div>
                 <div className='card-body'>
                     <div className='table-responsive'>
                         <table
