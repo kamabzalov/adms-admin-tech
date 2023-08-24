@@ -1,12 +1,10 @@
-import { updateAll } from '../dashboard/users/user.service'
+import { clearCache } from '../dashboard/users/user.service'
 
-const clear = () => (
+export const ClearCache = () => (
     <div className='fixed-bottom d-flex justify-content-end m-4'>
-    <button className='btn btn-warning' onClick={() => updateAll()}>
-        Clear server cache
-    </button>
-</div>
+        <button className='btn btn-warning' onClick={() => clearCache()}>
+            Clear server cache
+        </button>
+    </div>
 )
-
-export { clear }
 
