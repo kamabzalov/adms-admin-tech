@@ -2,6 +2,7 @@ import { DashboardHeader } from './DashboardHeader'
 import { Outlet } from 'react-router-dom'
 import { ClearCache } from '../smallComponents/ClearCache'
 
+
 export function Dashboard() {
     return (
         <div className='d-flex flex-column flex-root app-root'>

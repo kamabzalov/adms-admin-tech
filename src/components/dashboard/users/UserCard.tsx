@@ -33,6 +33,7 @@ enum UserCardTabs {
 
 const userCardTabsArray: string[] = Object.values(UserCardTabs) as string[]
 
+
 export function UserCard() {
     const { id } = useParams()
     const [activeTab, setActiveTab] = useState('Profile')
