@@ -7,4 +7,3 @@ export const ClearCache = () => (
         </button>
     </div>
 )
-
