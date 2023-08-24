@@ -102,6 +102,7 @@ export const UserModalBody = ({ onClose, user }: UserModalBodyProps): JSX.Elemen
                         )}
                     </div>
                 </div>
+                
                 <div className='text-center pt-15'>
                     <button
                         type='submit'
