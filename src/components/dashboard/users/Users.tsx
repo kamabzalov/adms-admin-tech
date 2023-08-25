@@ -1,18 +1,10 @@
 import { useEffect, useState } from 'react'
-import {
-    copyUser,
-    deleteUser,
-    getDeletedUsers,
-    getUsers,
-    undeleteUser,
-    updateUser,
-    User,
-} from './user.service'
+import { copyUser, deleteUser, getDeletedUsers, getUsers, undeleteUser, User } from './user.service'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
+import { CustomDropdown, TableHead, TabNavigate, TabPanel } from '../helpers/helpers'
 import { AddUserModal } from './UserModal/AddUserModal'
-import { TableHead } from '../helpers/renderTableHelper'
+import { EditUserModal } from './UserModal/EditUserModal'
 
 enum UsersTabs {
     Users = 'Users',
@@ -28,23 +20,42 @@ const usersTabsArray: string[] = Object.values(UsersTabs) as string[]
 const usersColumnsArray: string[] = Object.values(UsersColumns) as string[]
 
 export default function Users() {
-    const TEMP_PASSWORD = '654321'
-
     const [users, setUsers] = useState<User[]>([])
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false)
+    const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false)
+
+    const initialUserState = {
+        created: '',
+        createdbyuid: '',
+        index: 0,
+        parentuid: '',
+        updated: '',
+        username: '',
+        useruid: '',
+    }
+
+    const [selectedUser, setSelectedUser] = useState<User>(initialUserState)
 
     const [activeTab, setActiveTab] = useState('Users')
     const [deletedUsers, setDeletedUsers] = useState<User[]>([])
     const [loaded, setLoaded] = useState<boolean>(false)
 
     const handleAddUserModalOpen = () => setAddUserModalEnabled(!addUserModalEnabled)
+    const handleEditUserModalOpen = ({ useruid, username }: User) => {
+        setSelectedUser({ ...selectedUser, useruid, username: username })
+        setEditUserModalEnabled(true)
+    }
+
+    const updateUsers = (): void => {
+        getUsers().then((response) => {
+            setUsers(response)
+            setLoaded(true)
+        })
+    }
 
     useEffect(() => {
         if (!loaded) {
-            getUsers().then((response) => {
-                setUsers(response)
-                setLoaded(true)
-            })
+            updateUsers()
             getDeletedUsers().then((response) => {
                 setDeletedUsers(response)
                 setLoaded(true)
@@ -97,10 +108,6 @@ export default function Users() {
         })
     }
 
-    const changePassword = (uid: string, loginname: string, loginpassword: string): void => {
-        updateUser(uid, loginname, loginpassword)
-    }
-
     const handleTabClick = (tab: string) => {
         setActiveTab(tab)
     }
@@ -108,7 +115,18 @@ export default function Users() {
     return (
         <>
             {addUserModalEnabled && (
-                <AddUserModal onClose={handleAddUserModalOpen} title={'Add user'} />
+                <AddUserModal
+                    onClose={handleAddUserModalOpen}
+                    title={'Add user'}
+                    updateData={updateUsers}
+                />
+            )}
+            {editUserModalEnabled && (
+                <EditUserModal
+                    onClose={() => setEditUserModalEnabled(false)}
+                    title={'Change password'}
+                    userData={selectedUser}
+                />
             )}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
@@ -125,21 +143,22 @@ export default function Users() {
                 </div>
 
                 <div className='tab-content' id='myTabContentInner'>
+                    <div className='d-flex w-100 justify-content-end px-8 mt-4'>
+                        <button
+                            type='button'
+                            className='btn btn-primary'
+                            onClick={handleAddUserModalOpen}
+                        >
+                            <i className='ki-duotone ki-plus fs-2'></i>
+                            Add User
+                        </button>
+                    </div>
                     <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
                         <div className='card-body'>
                             <div
                                 className='d-flex justify-content-end'
                                 data-kt-user-table-toolbar='base'
-                            >
-                                <button
-                                    type='button'
-                                    className='btn btn-primary'
-                                    onClick={handleAddUserModalOpen}
-                                >
-                                    <i className='ki-duotone ki-plus fs-2'></i>
-                                    Add User
-                                </button>
-                            </div>
+                            ></div>
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
@@ -147,7 +166,7 @@ export default function Users() {
                                 >
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
-                                        {users.map((user) => {
+                                        {users.map((user: User) => {
                                             return (
                                                 <tr key={user.useruid}>
                                                     <td>
@@ -165,10 +184,8 @@ export default function Users() {
                                                                 {
                                                                     menuItemName: 'Change password',
                                                                     menuItemAction: () =>
-                                                                        changePassword(
-                                                                            user.useruid,
-                                                                            user.username,
-                                                                            TEMP_PASSWORD
+                                                                        handleEditUserModalOpen(
+                                                                            user
                                                                         ),
                                                                 },
                                                                 {
@@ -194,38 +211,20 @@ export default function Users() {
                             </div>
                         </div>
                     </TabPanel>
-                </div>
-
-                <div className='tab-content' id='myTabContentInner'>
-                    <div
-                        className={clsx('tab-pane vw-90 mx-auto', {
-                            active: activeTab === UsersTabs.DeletedUsers,
-                        })}
-                        id={`kt_tab_pane_${2}`}
-                        role='tabpanel'
-                    >
+                    <TabPanel activeTab={activeTab} tabName={UsersTabs.DeletedUsers}>
                         <div className='card-body'>
                             <div
                                 className='d-flex justify-content-end'
                                 data-kt-user-table-toolbar='base'
-                            >
-                                <button
-                                    type='button'
-                                    className='btn btn-primary'
-                                    onClick={handleAddUserModalOpen}
-                                >
-                                    <i className='ki-duotone ki-plus fs-2'></i>
-                                    Add User
-                                </button>
-                            </div>
+                            ></div>
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
+                                    className='table align-middle table-row-dashed fs-6 gy-5 no-footer'
                                 >
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
-                                        {deletedUsers.map((user) => {
+                                        {deletedUsers.map((user: User) => {
                                             return (
                                                 <tr key={user.useruid}>
                                                     <td>
@@ -248,10 +247,8 @@ export default function Users() {
                                                                 {
                                                                     menuItemName: 'Change password',
                                                                     menuItemAction: () =>
-                                                                        changePassword(
-                                                                            user.useruid,
-                                                                            user.username,
-                                                                            TEMP_PASSWORD
+                                                                        handleEditUserModalOpen(
+                                                                            user
                                                                         ),
                                                                 },
                                                             ]}
@@ -264,7 +261,7 @@ export default function Users() {
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </TabPanel>
                 </div>
             </div>
         </>
