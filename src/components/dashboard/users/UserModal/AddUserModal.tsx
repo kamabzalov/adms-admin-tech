@@ -1,14 +1,14 @@
-import { FC } from 'react'
 import { CustomModal } from '../../helpers/modal/renderModalHelper'
-import { AddUserModalBody } from './parts/AddUserModalBody'
+import { UserModalBody } from './parts/UserModalBody'
 
 type AddUserModalProps = {
     onClose: () => void
     title: string
+    updateData?: () => void
 }
 
-export const AddUserModal: FC<AddUserModalProps> = ({ onClose, title }) => (
+export const AddUserModal = ({ onClose, title, updateData }: AddUserModalProps) => (
     <CustomModal onClose={onClose} title={title}>
-        <AddUserModalBody />
+        <UserModalBody onClose={onClose} updateData={updateData} />
     </CustomModal>
 )

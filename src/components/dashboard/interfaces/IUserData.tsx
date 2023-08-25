@@ -3,10 +3,7 @@ interface IUserData {
     password: string
 }
 
-export interface IUserAdd extends IUserData {}
-export interface IUserEdit extends IUserData {}
-
-export interface IUser {
+interface IUser {
     created: string
     createdbyuid: string
     index: number
@@ -15,3 +12,5 @@ export interface IUser {
     username: string
     useruid: string
 }
+
+export type { IUserData, IUser }
