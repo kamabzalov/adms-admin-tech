@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getToken } from '../../../common/utils'
 import { API_URL } from '../../../common/app-consts'
-import { ActionStatus } from '../../../common/models'
+import { ActionStatus } from '../../../common/interfaces/IActionStatus'
 
 export interface User {
     created: string
@@ -165,8 +165,8 @@ export const listUserSessions = (uid: string) => {
         .then((response) => response.data)
 }
 
-export const killSession = (id: number) => {
-    return axios.post(API_URL + 'user/' + id.toString() + '/session', {
+export const killSession = (uid: string) => {
+    return axios.post(`${API_URL}user/${uid}/session`, null, {
         headers: { Authorization: `Bearer ${getToken()}` },
     })
 }
