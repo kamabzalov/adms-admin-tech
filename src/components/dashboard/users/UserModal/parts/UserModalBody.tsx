@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { createOrUpdateUser, User } from '../../user.service'
 import { IUserData } from '../../../interfaces/interfaces'
 
+
 interface UserModalBodyProps {
     onClose: () => void
     user?: User
