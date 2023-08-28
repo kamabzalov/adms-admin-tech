@@ -1,11 +1,17 @@
 import clsx from 'clsx'
-import { useState } from 'react'
+import { PropsWithChildren, useState } from 'react'
 import { renderTable } from './renderTableHelper'
 import { CustomCheckbox } from './renderInputsHelper'
 import { CustomDropdown } from './renderDropdownHelper'
 import { ITabValues } from '../../../common/interfaces/ITabValues'
 
-const renderList = (data: any, checkbox: boolean = false) => {
+interface IRenderListArgs {
+    data: string[] | string
+    checkbox?: boolean
+    action?: (value: [string, number]) => void
+}
+
+export const renderList = ({ data, checkbox, action }: IRenderListArgs) => {
     if (typeof data !== 'object' || data === null) {
         return (
             <div>
@@ -30,10 +36,11 @@ const renderList = (data: any, checkbox: boolean = false) => {
             const activeCheckbox = checkbox && (Number(value) === 0 || Number(value) === 1)
             return activeCheckbox ? (
                 <CustomCheckbox
-                    key={`${key}-${index}`}
+                    key={key}
                     currentValue={value}
                     id={key}
-                    title={title}
+                    title={key}
+                    action={action}
                 />
             ) : (
                 <div key={`${key}-${index}`} className='d-flex align-items-center mb-4'>
@@ -83,11 +90,10 @@ export const TabPanel = ({ activeTab, tabName, children, tabId }: ITabValues) =>
 
 export const TabDataWrapper = ({
     data,
-    checkbox = false,
-}: {
-    data: string
-    checkbox?: boolean
-}) => {
+    checkbox,
+    action,
+    children,
+}: PropsWithChildren<IRenderListArgs>) => {
     enum ViewTypes {
         JSON = 'JSON view',
         GENERAL = 'General view',
@@ -102,10 +108,10 @@ export const TabDataWrapper = ({
     }
 
     if (!data) return <></>
-    const parsedData = JSON.parse(data)
+    const parsedData = typeof data === 'string' && JSON.parse(data)
     const renderContent = () => {
         if (typeof parsedData === 'object' && !Array.isArray(parsedData)) {
-            return renderList(parsedData, checkbox)
+            return renderList({ data: parsedData, checkbox, action })
         } else {
             return renderTable(parsedData)
         }
@@ -132,11 +138,13 @@ export const TabDataWrapper = ({
                             <TabPanel activeTab={activeTab} tabName={ViewTypes.JSON}>
                                 <div className='card-body'>
                                     <pre className='fs-4'>{data}</pre>
+                                    {children}
                                 </div>
                             </TabPanel>
                             <TabPanel activeTab={activeTab} tabName={ViewTypes.GENERAL}>
                                 <div className='card-body'>
                                     {parsedData ? renderContent() : 'No data available'}
+                                    {children}
                                 </div>
                             </TabPanel>
                         </div>

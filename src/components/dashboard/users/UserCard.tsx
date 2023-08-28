@@ -13,8 +13,10 @@ import {
     listSubusers,
     listUserLogins,
     listUserSessions,
+    setUserPermissions,
 } from './user.service'
-import { TabPanel, TabNavigate, TabDataWrapper } from '../helpers/helpers'
+import { TabDataWrapper, TabNavigate, TabPanel } from '../helpers/helpers'
+import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton'
 
 enum UserCardTabs {
     Profile = 'Profile',
@@ -49,6 +51,10 @@ export function UserCard() {
     const [permissionsJSON, setPermissionsJSON] = useState<string>('')
     const [userTypesJSON, setUserTypesJSON] = useState<string>('')
 
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
+    const [buttonPermissionsText, setButtonPermissionsText] = useState<string>('Save permissions')
+    const [initialUserPermissionsJSON, setInitialUserPermissionsJSON] = useState<string>('')
+
     useEffect(() => {
         if (id) {
             getUserProfile(id).then((response) => {
@@ -64,7 +70,9 @@ export function UserCard() {
                 setLocationsJSON(JSON.stringify(response, null, 2))
             })
             getUserPermissions(id).then((response) => {
-                setUserPermissionsJSON(JSON.stringify(response, null, 2))
+                const stringifiedResponse = JSON.stringify(response, null, 2)
+                setUserPermissionsJSON(stringifiedResponse)
+                setInitialUserPermissionsJSON(stringifiedResponse)
             })
             getUserSettings(id).then((response) => {
                 setUserSettingsJSON(JSON.stringify(response, null, 2))
@@ -104,6 +112,37 @@ export function UserCard() {
         } catch (err) {}
 
         return jsonString
+    }
+
+    useEffect(() => {
+        if (initialUserPermissionsJSON !== userPermissionsJSON) {
+            setIsButtonDisabled(false)
+        } else {
+            setIsButtonDisabled(true)
+        }
+    }, [userPermissionsJSON, initialUserPermissionsJSON])
+
+    const handleChangeUserPermissions = ([fieldName, fieldValue]: [string, number]): void => {
+        const parsedUserPermission = JSON.parse(userPermissionsJSON)
+        parsedUserPermission[fieldName] = fieldValue
+        setUserPermissionsJSON(JSON.stringify(parsedUserPermission, null, 2))
+    }
+
+    const handleSetUserPermissions = (): void => {
+        if (id) {
+            setUserPermissions(id, JSON.parse(userPermissionsJSON)).then((response) => {
+                try {
+                    setButtonPermissionsText('Success!')
+                    setIsButtonDisabled(true)
+                    setInitialUserPermissionsJSON(userPermissionsJSON)
+                    setButtonPermissionsText('Save permissions')
+                } catch (error) {
+                    setButtonPermissionsText('Error!')
+                    setIsButtonDisabled(true)
+                    setButtonPermissionsText('Save permissions')
+                }
+            })
+        }
     }
 
     const handleTabClick = (tab: string) => {
@@ -148,7 +187,15 @@ export function UserCard() {
                         <TabDataWrapper
                             data={mutateJson(userPermissionsJSON, 'useruid')}
                             checkbox={true}
-                        />
+                            action={handleChangeUserPermissions}
+                        >
+                            <PrimaryButton
+                                buttonText={buttonPermissionsText}
+                                icon='check'
+                                disabled={isButtonDisabled}
+                                buttonClickAction={handleSetUserPermissions}
+                            />
+                        </TabDataWrapper>
                     </TabPanel>
                     <TabPanel activeTab={activeTab} tabName={UserCardTabs.Settings}>
                         <TabDataWrapper data={mutateJson(userSettingsJSON, 'status')} />

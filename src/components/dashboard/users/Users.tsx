@@ -13,6 +13,8 @@ import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
 import { AddUserModal } from './UserModal/AddUserModal'
 import { EditUserModal } from './UserModal/EditUserModal'
 import { TableHead } from '../helpers/renderTableHelper'
+import { UserPermissonsModal } from './UserModal/UserPermissonsModal'
+import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton'
 
 enum UsersTabs {
     Users = 'Users',
@@ -31,6 +33,7 @@ export default function Users() {
     const [users, setUsers] = useState<User[]>([])
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false)
     const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false)
+    const [userPermissionsModalEnabled, setUserPermissionsModalEnabled] = useState<boolean>(false)
 
     const initialUserState = {
         created: '',
@@ -52,6 +55,10 @@ export default function Users() {
     const handleEditUserModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username })
         setEditUserModalEnabled(true)
+    }
+    const handleUserPermissonsModalOpen = ({ useruid, username }: User) => {
+        setSelectedUser({ ...selectedUser, useruid, username: username })
+        setUserPermissionsModalEnabled(true)
     }
 
     const updateUsers = (): void => {
@@ -136,6 +143,13 @@ export default function Users() {
                     userData={selectedUser}
                 />
             )}
+            {userPermissionsModalEnabled && (
+                <UserPermissonsModal
+                    onClose={() => setUserPermissionsModalEnabled(false)}
+                    title={`${selectedUser.username} user permissions: `}
+                    useruid={selectedUser.useruid}
+                />
+            )}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
                     <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
@@ -152,14 +166,11 @@ export default function Users() {
 
                 <div className='tab-content' id='myTabContentInner'>
                     <div className='d-flex w-100 justify-content-end px-8 mt-4'>
-                        <button
-                            type='button'
-                            className='btn btn-primary'
-                            onClick={handleAddUserModalOpen}
-                        >
-                            <i className='ki-duotone ki-plus fs-2'></i>
-                            Add User
-                        </button>
+                        <PrimaryButton
+                            buttonText='Add User'
+                            icon='plus'
+                            buttonClickAction={handleAddUserModalOpen}
+                        />
                     </div>
                     <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
                         <div className='card-body'>
@@ -201,6 +212,14 @@ export default function Users() {
                                                                     menuItemAction: () =>
                                                                         handleCopyUser(
                                                                             user.useruid
+                                                                        ),
+                                                                },
+                                                                {
+                                                                    menuItemName:
+                                                                        'Set user permissions',
+                                                                    menuItemAction: () =>
+                                                                        handleUserPermissonsModalOpen(
+                                                                            user
                                                                         ),
                                                                 },
                                                                 {
