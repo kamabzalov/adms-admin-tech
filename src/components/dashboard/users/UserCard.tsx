@@ -15,7 +15,7 @@ import {
     listUserSessions,
     setUserPermissions,
 } from './user.service'
-import { TabPanel, TabNavigate, TabDataWrapper } from '../helpers/helpers'
+import { TabDataWrapper, TabNavigate, TabPanel } from '../helpers/helpers'
 import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton'
 
 enum UserCardTabs {
@@ -132,19 +132,14 @@ export function UserCard() {
         if (id) {
             setUserPermissions(id, JSON.parse(userPermissionsJSON)).then((response) => {
                 try {
-                    response.status = 200
                     setButtonPermissionsText('Success!')
                     setIsButtonDisabled(true)
                     setInitialUserPermissionsJSON(userPermissionsJSON)
-                    setTimeout(() => {
-                        setButtonPermissionsText('Save permissions')
-                    }, 2000)
+                    setButtonPermissionsText('Save permissions')
                 } catch (error) {
                     setButtonPermissionsText('Error!')
                     setIsButtonDisabled(true)
-                    setTimeout(() => {
-                        setButtonPermissionsText('Save permissions')
-                    }, 2000)
+                    setButtonPermissionsText('Save permissions')
                 }
             })
         }

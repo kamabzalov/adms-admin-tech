@@ -66,7 +66,6 @@ export const UserPermissionsModalBody = ({
         if (useruid) {
             setUserPermissions(useruid, JSON.parse(userPermissionsJSON)).then((response) => {
                 try {
-                    response.status = 200
                     onClose()
                 } catch (error) {
                     console.log(error)
