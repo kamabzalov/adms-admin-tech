@@ -10,11 +10,13 @@ import {
 } from './user.service'
 import { Link } from 'react-router-dom'
 import { CustomDropdown, TabNavigate, TabPanel } from '../helpers/helpers'
-import { AddUserModal } from './UserModal/AddUserModal'
-import { EditUserModal } from './UserModal/EditUserModal'
 import { TableHead } from '../helpers/renderTableHelper'
-import { UserPermissonsModal } from './UserModal/UserPermissonsModal'
 import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton'
+import { CustomModal } from '../helpers/modal/renderModalHelper'
+import { UserModal } from './UserModal/parts/UserModal'
+import { UserPermissionsModal } from './UserModal/parts/UserPermissionsModal'
+import { UserSettingsModal } from './UserModal/parts/UserSettingsModal'
+import { UserOptionalModal } from './UserModal/parts/UserOptionalModal'
 
 enum UsersTabs {
     Users = 'Users',
@@ -34,6 +36,8 @@ export default function Users() {
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false)
     const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false)
     const [userPermissionsModalEnabled, setUserPermissionsModalEnabled] = useState<boolean>(false)
+    const [userSettingsModalEnabled, setUserSettingssModalEnabled] = useState<boolean>(false)
+    const [userOptionalModalEnabled, setUserOptionalsModalEnabled] = useState<boolean>(false)
 
     const initialUserState = {
         created: '',
@@ -59,6 +63,14 @@ export default function Users() {
     const handleUserPermissonsModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username })
         setUserPermissionsModalEnabled(true)
+    }
+    const handleUserSettingsModalOpen = ({ useruid, username }: User) => {
+        setSelectedUser({ ...selectedUser, useruid, username: username })
+        setUserSettingssModalEnabled(true)
+    }
+    const handleUserOptionalModalOpen = ({ useruid, username }: User) => {
+        setSelectedUser({ ...selectedUser, useruid, username: username })
+        setUserOptionalsModalEnabled(true)
     }
 
     const updateUsers = (): void => {
@@ -130,25 +142,50 @@ export default function Users() {
     return (
         <>
             {addUserModalEnabled && (
-                <AddUserModal
-                    onClose={handleAddUserModalOpen}
-                    title={'Add user'}
-                    updateData={updateUsers}
-                />
+                <CustomModal onClose={handleAddUserModalOpen} title={'Add user'}>
+                    <UserModal onClose={handleAddUserModalOpen} updateData={updateUsers} />
+                </CustomModal>
             )}
             {editUserModalEnabled && (
-                <EditUserModal
+                <CustomModal
                     onClose={() => setEditUserModalEnabled(false)}
                     title={'Change password'}
-                    userData={selectedUser}
-                />
+                >
+                    <UserModal onClose={() => setEditUserModalEnabled(false)} user={selectedUser} />
+                </CustomModal>
             )}
             {userPermissionsModalEnabled && (
-                <UserPermissonsModal
+                <CustomModal
                     onClose={() => setUserPermissionsModalEnabled(false)}
                     title={`${selectedUser.username} user permissions: `}
-                    useruid={selectedUser.useruid}
-                />
+                >
+                    <UserPermissionsModal
+                        onClose={() => setUserPermissionsModalEnabled(false)}
+                        useruid={selectedUser.useruid}
+                    />
+                </CustomModal>
+            )}
+            {userSettingsModalEnabled && (
+                <CustomModal
+                    onClose={() => setUserSettingssModalEnabled(false)}
+                    title={`${selectedUser.username} user settings: `}
+                >
+                    <UserSettingsModal
+                        onClose={() => setUserSettingssModalEnabled(false)}
+                        useruid={selectedUser.useruid}
+                    />
+                </CustomModal>
+            )}
+            {userOptionalModalEnabled && (
+                <CustomModal
+                    onClose={() => setUserOptionalsModalEnabled(false)}
+                    title={`${selectedUser.username} user settings: `}
+                >
+                    <UserOptionalModal
+                        onClose={() => setUserOptionalsModalEnabled(false)}
+                        useruid={selectedUser.useruid}
+                    />
+                </CustomModal>
             )}
             <div className='card'>
                 <div className='card-header d-flex flex-column justify-content-end pb-0'>
@@ -219,6 +256,22 @@ export default function Users() {
                                                                         'Set user permissions',
                                                                     menuItemAction: () =>
                                                                         handleUserPermissonsModalOpen(
+                                                                            user
+                                                                        ),
+                                                                },
+                                                                {
+                                                                    menuItemName:
+                                                                        'Set user settings',
+                                                                    menuItemAction: () =>
+                                                                        handleUserSettingsModalOpen(
+                                                                            user
+                                                                        ),
+                                                                },
+                                                                {
+                                                                    menuItemName:
+                                                                        'Set user optional data',
+                                                                    menuItemAction: () =>
+                                                                        handleUserOptionalModalOpen(
                                                                             user
                                                                         ),
                                                                 },
