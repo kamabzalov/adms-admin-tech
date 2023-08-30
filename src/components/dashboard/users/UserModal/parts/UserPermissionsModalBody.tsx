@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { getUserPermissions, setUserPermissions } from '../../user.service'
-import { renderList } from '../../../helpers/helpers'
-import { PrimaryButton } from '../../../smallComponents/buttons/PrimaryButton'
+import { getUserPermissions, setUserPermissions } from 'components/dashboard/users/user.service'
+import { renderList } from 'components/dashboard/helpers/helpers'
+import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton'
 
 interface UserPermissionsModalBodyProps {
     onClose: () => void
