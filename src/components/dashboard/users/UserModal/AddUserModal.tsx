@@ -1,5 +1,5 @@
-import { CustomModal } from '../../helpers/modal/renderModalHelper'
-import { UserModalBody } from './parts/UserModalBody'
+import { UserModalBody } from 'components/dashboard/users/UserModal/parts/UserModalBody'
+import { CustomModal } from 'components/dashboard/helpers/modal/renderModalHelper'
 
 type AddUserModalProps = {
     onClose: () => void

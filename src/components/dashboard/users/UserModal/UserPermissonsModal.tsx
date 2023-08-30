@@ -1,5 +1,5 @@
-import { CustomModal } from '../../helpers/modal/renderModalHelper'
-import { UserPermissionsModalBody } from './parts/UserPermissionsModalBody'
+import { CustomModal } from 'components/dashboard/helpers/modal/renderModalHelper'
+import { UserPermissionsModalBody } from 'components/dashboard/users/UserModal/parts/UserPermissionsModalBody'
 
 type UserPermissonsModalProps = {
     onClose: () => void
