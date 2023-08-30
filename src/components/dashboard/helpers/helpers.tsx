@@ -1,9 +1,8 @@
 import clsx from 'clsx'
 import { PropsWithChildren, useState } from 'react'
-import { renderTable } from './renderTableHelper'
-import { CustomCheckbox } from './renderInputsHelper'
-import { CustomDropdown } from './renderDropdownHelper'
-import { ITabValues } from '../../../common/interfaces/ITabValues'
+import { ITabValues } from 'common/interfaces/ITabValues'
+import { CustomCheckbox } from 'components/dashboard/helpers/renderInputsHelper'
+import { renderTable } from 'components/dashboard/helpers/renderTableHelper'
 
 interface IRenderListArgs {
     data: string[] | string
@@ -31,7 +30,7 @@ export const renderList = ({ data, checkbox, action }: IRenderListArgs) => {
             if (Array.isArray(value)) {
                 return <div key={`${key}-${index}`}>{renderTable(value)}</div>
             }
-            return <div key={`${key}-${index}`}>{renderList(value)}</div>
+            return <div key={`${key}-${index}`}>{renderList({ data: value })}</div>
         } else {
             const activeCheckbox = checkbox && (Number(value) === 0 || Number(value) === 1)
             return activeCheckbox ? (
@@ -154,5 +153,3 @@ export const TabDataWrapper = ({
         </>
     )
 }
-
-export { CustomDropdown }

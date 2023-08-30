@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import { CustomModal } from '../../helpers/modal/renderModalHelper'
-import { UserModalBody } from './parts/UserModalBody'
-import { User } from '../user.service'
+import { CustomModal } from 'components/dashboard/helpers/modal/renderModalHelper'
+import { User } from 'components/dashboard/users/user.service'
+import { UserModalBody } from 'components/dashboard/users/UserModal/parts/UserModalBody'
 
 type EditUserModalProps = {
     onClose: () => void

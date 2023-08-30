@@ -14,9 +14,9 @@ import {
     listUserLogins,
     listUserSessions,
     setUserPermissions,
-} from './user.service'
-import { TabDataWrapper, TabNavigate, TabPanel } from '../helpers/helpers'
-import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton'
+} from 'components/dashboard/users/user.service'
+import { TabDataWrapper, TabNavigate, TabPanel } from 'components/dashboard/helpers/helpers'
+import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton'
 
 enum UserCardTabs {
     Profile = 'Profile',
