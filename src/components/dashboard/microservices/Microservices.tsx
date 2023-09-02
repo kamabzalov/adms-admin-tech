@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import * as MicroservicesService from './service'
-import { Microservice, stopService } from './service'
-import { Link } from 'react-router-dom'
-import { TableHead } from 'components/dashboard/helpers/renderTableHelper'
-import { CustomDropdown } from 'components/dashboard/helpers/renderDropdownHelper'
+import { useEffect, useState } from 'react';
+import * as MicroservicesService from './service';
+import { Microservice, stopService } from './service';
+import { Link } from 'react-router-dom';
+import { TableHead } from 'components/dashboard/helpers/renderTableHelper';
+import { CustomDropdown } from 'components/dashboard/helpers/renderDropdownHelper';
 
 enum MicroserviceColumns {
     ID = 'Index',
@@ -11,23 +11,23 @@ enum MicroserviceColumns {
     Actions = 'Actions',
 }
 
-const microserviceColumnsArray: string[] = Object.values(MicroserviceColumns) as string[]
+const microserviceColumnsArray: string[] = Object.values(MicroserviceColumns) as string[];
 
 function Microservices() {
-    const [listOfServices, setListOfServices] = useState<Microservice[]>([])
-    const [loaded, setLoaded] = useState<boolean>(false)
+    const [listOfServices, setListOfServices] = useState<Microservice[]>([]);
+    const [loaded, setLoaded] = useState<boolean>(false);
     useEffect(() => {
         if (!loaded) {
             MicroservicesService.listServices().then((response) => {
-                setListOfServices(response)
-                setLoaded(true)
-            })
+                setListOfServices(response);
+                setLoaded(true);
+            });
         }
-    })
+    });
 
     const stop = (uid: string) => {
-        stopService(uid).then()
-    }
+        stopService(uid).then();
+    };
 
     return (
         <>
@@ -61,7 +61,7 @@ function Microservices() {
                                                 />
                                             </td>
                                         </tr>
-                                    )
+                                    );
                                 })}
                             </tbody>
                         </table>
@@ -69,7 +69,7 @@ function Microservices() {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
-export default Microservices
+export default Microservices;

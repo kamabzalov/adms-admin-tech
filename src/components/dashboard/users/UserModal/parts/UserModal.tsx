@@ -1,47 +1,47 @@
-import clsx from 'clsx'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
-import { useState } from 'react'
-import { IUserData } from 'common/interfaces/IUserData'
-import { createOrUpdateUser, User } from 'components/dashboard/users/user.service'
+import clsx from 'clsx';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import { IUserData } from 'common/interfaces/IUserData';
+import { createOrUpdateUser, User } from 'components/dashboard/users/user.service';
 
 interface UserModalProps {
-    onClose: () => void
-    user?: User
-    updateData?: () => void
+    onClose: () => void;
+    user?: User;
+    updateData?: () => void;
 }
 
 export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.Element => {
     const initialUserData: IUserData = {
         username: user?.username || '',
         password: '',
-    }
+    };
 
-    const [userData] = useState<IUserData>(initialUserData)
+    const [userData] = useState<IUserData>(initialUserData);
 
     const addUserSchema = Yup.object().shape({
         username: Yup.string().trim().required('Username is required'),
         password: Yup.string().trim().required('Password is required'),
-    })
+    });
 
     const formik = useFormik({
         initialValues: userData,
         validationSchema: addUserSchema,
         onSubmit: async ({ username, password }, { setSubmitting }) => {
-            setSubmitting(true)
+            setSubmitting(true);
             try {
-                const params: [string, string, string?] = [username, password]
-                if (user?.useruid) params.push(user.useruid)
-                await createOrUpdateUser(...params)
-                onClose()
-                updateData && updateData()
+                const params: [string, string, string?] = [username, password];
+                if (user?.useruid) params.push(user.useruid);
+                await createOrUpdateUser(...params);
+                onClose();
+                updateData && updateData();
             } catch (ex) {
-                console.error(ex)
+                console.error(ex);
             } finally {
-                setSubmitting(false)
+                setSubmitting(false);
             }
         },
-    })
+    });
 
     return (
         <>
@@ -117,5 +117,5 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
                 </div>
             </form>
         </>
-    )
-}
+    );
+};
