@@ -25,7 +25,7 @@ enum UsersTabs {
 }
 
 enum UsersColumns {
-    ID = 'User id',
+    ID = 'Index',
     Microservice = 'User name',
     Actions = 'Actions',
 }
@@ -227,14 +227,7 @@ export default function Users() {
                                         {users.map((user: User) => {
                                             return (
                                                 <tr key={user.useruid}>
-                                                    <td>
-                                                        <Link
-                                                            to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
-                                                        >
-                                                            {user.useruid}
-                                                        </Link>
-                                                    </td>
+                                                    <td className='text-gray-800'>{user.index}</td>
                                                     <td>
                                                         <Link
                                                             to={`${user.useruid}`}
