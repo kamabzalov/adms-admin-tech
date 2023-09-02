@@ -34,7 +34,6 @@ const usersTabsArray: string[] = Object.values(UsersTabs) as string[];
 const usersColumnsArray: string[] = Object.values(UsersColumns) as string[];
 
 export default function Users() {
-    console.log('call');
     const [users, setUsers] = useState<User[]>([]);
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false);
     const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false);

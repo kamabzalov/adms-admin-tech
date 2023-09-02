@@ -58,7 +58,6 @@ export const UserOptionalModal = ({ onClose, useruid }: UserOptionalModalProps):
                     onClose();
                 }
             } catch (error) {
-                console.log(error);
             } finally {
                 setIsLoading(false);
             }
