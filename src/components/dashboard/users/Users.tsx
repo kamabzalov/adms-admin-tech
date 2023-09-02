@@ -218,10 +218,7 @@ export default function Users() {
                                 data-kt-user-table-toolbar='base'
                             ></div>
                             <div className='table-responsive'>
-                                <table
-                                    id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-2 no-footer'
-                                >
+                                <table className='table align-middle table-row-dashed fs-6 gy-3 no-footer'>
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {users.map((user: User) => {
@@ -307,27 +304,17 @@ export default function Users() {
                                 data-kt-user-table-toolbar='base'
                             ></div>
                             <div className='table-responsive'>
-                                <table
-                                    id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-5 no-footer'
-                                >
+                                <table className='table align-middle table-row-dashed fs-6 gy-3 no-footer'>
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
                                         {deletedUsers.map((user: User) => {
                                             return (
                                                 <tr key={user.useruid}>
+                                                    <td className='text-gray-800'>{user.index}</td>
                                                     <td>
                                                         <Link
                                                             to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1'
-                                                        >
-                                                            {user.useruid}
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        <Link
-                                                            to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1'
+                                                            className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.username}
                                                         </Link>

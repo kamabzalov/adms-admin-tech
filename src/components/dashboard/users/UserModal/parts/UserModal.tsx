@@ -45,12 +45,7 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
 
     return (
         <>
-            <form
-                id='kt_modal_add_user_form'
-                className='form'
-                onSubmit={formik.handleSubmit}
-                noValidate
-            >
+            <form className='form' onSubmit={formik.handleSubmit} noValidate>
                 <div className='d-flex flex-column scroll-y me-n7 pe-7'>
                     <div className='fv-row mb-8'>
                         <label className='form-label fs-6 fw-bolder text-dark'>Username</label>

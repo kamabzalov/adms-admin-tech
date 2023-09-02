@@ -34,10 +34,7 @@ function Microservices() {
             <div className='card'>
                 <div className='card-body'>
                     <div className='table-responsive'>
-                        <table
-                            id='kt_table_users'
-                            className='table align-middle table-row-dashed fs-6 gy-2 no-footer'
-                        >
+                        <table className='table align-middle table-row-dashed fs-6 gy-3 no-footer'>
                             <TableHead columns={microserviceColumnsArray} />
                             <tbody className='text-gray-600 fw-bold'>
                                 {listOfServices.map((service) => {
