@@ -7,6 +7,7 @@ import { TableHead } from 'components/dashboard/helpers/renderTableHelper'
 import { CustomDropdown } from 'components/dashboard/helpers/renderDropdownHelper'
 
 enum MicroserviceColumns {
+    ID = 'Microservice ID',
     Microservice = 'Microservice',
     Actions = 'Actions',
 }
@@ -39,7 +40,7 @@ function Microservices() {
                     <div className='table-responsive'>
                         <table
                             id='kt_table_users'
-                            className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
+                            className='table align-middle table-row-dashed fs-6 gy-2 no-footer'
                         >
                             <TableHead columns={microserviceColumnsArray} />
                             <tbody className='text-gray-600 fw-bold'>
@@ -49,7 +50,15 @@ function Microservices() {
                                             <td>
                                                 <Link
                                                     to={`microservices/${service.uid}`}
-                                                    className='text-gray-800 text-hover-primary mb-1'
+                                                    className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
+                                                >
+                                                    {service.uid}
+                                                </Link>
+                                            </td>
+                                            <td>
+                                                <Link
+                                                    to={`microservices/${service.uid}`}
+                                                    className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                 >
                                                     {service.name}
                                                 </Link>

@@ -25,6 +25,7 @@ enum UsersTabs {
 }
 
 enum UsersColumns {
+    ID = 'User id',
     Microservice = 'User name',
     Actions = 'Actions',
 }
@@ -219,7 +220,7 @@ export default function Users() {
                             <div className='table-responsive'>
                                 <table
                                     id='kt_table_users'
-                                    className='table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer'
+                                    className='table align-middle table-row-dashed fs-6 gy-2 no-footer'
                                 >
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
@@ -229,7 +230,15 @@ export default function Users() {
                                                     <td>
                                                         <Link
                                                             to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1'
+                                                            className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
+                                                        >
+                                                            {user.useruid}
+                                                        </Link>
+                                                    </td>
+                                                    <td>
+                                                        <Link
+                                                            to={`${user.useruid}`}
+                                                            className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.username}
                                                         </Link>
@@ -314,6 +323,14 @@ export default function Users() {
                                         {deletedUsers.map((user: User) => {
                                             return (
                                                 <tr key={user.useruid}>
+                                                    <td>
+                                                        <Link
+                                                            to={`${user.useruid}`}
+                                                            className='text-gray-800 text-hover-primary mb-1'
+                                                        >
+                                                            {user.useruid}
+                                                        </Link>
+                                                    </td>
                                                     <td>
                                                         <Link
                                                             to={`${user.useruid}`}
