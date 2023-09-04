@@ -19,16 +19,25 @@ import { TableHead } from 'components/dashboard/helpers/renderTableHelper';
 import { TabNavigate, TabPanel } from 'components/dashboard/helpers/helpers';
 import { CustomDropdown } from 'components/dashboard/helpers/renderDropdownHelper';
 
+// eslint-disable-next-line no-unused-vars
 enum UsersTabs {
+    // eslint-disable-next-line no-unused-vars
     Users = 'Users',
+    // eslint-disable-next-line no-unused-vars
     DeletedUsers = 'Deleted users',
 }
 
+// eslint-disable-next-line no-unused-vars
 enum UsersColumns {
+    // eslint-disable-next-line no-unused-vars
     ID = 'Index',
+    // eslint-disable-next-line no-unused-vars
     Username = 'User name',
+    // eslint-disable-next-line no-unused-vars
     ParrentUser = 'Created by user',
+    // eslint-disable-next-line no-unused-vars
     isAdmin = 'Is admin',
+    // eslint-disable-next-line no-unused-vars
     Actions = 'Actions',
 }
 
@@ -40,7 +49,7 @@ export default function Users() {
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false);
     const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false);
     const [userPermissionsModalEnabled, setUserPermissionsModalEnabled] = useState<boolean>(false);
-    const [userSettingsModalEnabled, setUserSettingssModalEnabled] = useState<boolean>(false);
+    const [userSettingsModalEnabled, setUserSettingsModalEnabled] = useState<boolean>(false);
     const [userOptionalModalEnabled, setUserOptionalsModalEnabled] = useState<boolean>(false);
 
     const initialUsersState = {
@@ -72,7 +81,7 @@ export default function Users() {
     };
     const handleUserSettingsModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username });
-        setUserSettingssModalEnabled(true);
+        setUserSettingsModalEnabled(true);
     };
     const handleUserOptionalModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username });
@@ -173,11 +182,11 @@ export default function Users() {
             )}
             {userSettingsModalEnabled && (
                 <CustomModal
-                    onClose={() => setUserSettingssModalEnabled(false)}
+                    onClose={() => setUserSettingsModalEnabled(false)}
                     title={`${selectedUser.username} user settings: `}
                 >
                     <UserSettingsModal
-                        onClose={() => setUserSettingssModalEnabled(false)}
+                        onClose={() => setUserSettingsModalEnabled(false)}
                         useruid={selectedUser.useruid}
                     />
                 </CustomModal>
@@ -239,7 +248,7 @@ export default function Users() {
                                                     </td>
                                                     <td>
                                                         <Link
-                                                            to={`user/${user.parentuid}`}
+                                                            to={`${user.parentuid}`}
                                                             className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.parentusername}
