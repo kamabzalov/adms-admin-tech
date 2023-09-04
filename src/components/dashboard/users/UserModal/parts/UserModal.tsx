@@ -36,7 +36,6 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
                 onClose();
                 updateData && updateData();
             } catch (ex) {
-                console.error(ex);
             } finally {
                 setSubmitting(false);
             }

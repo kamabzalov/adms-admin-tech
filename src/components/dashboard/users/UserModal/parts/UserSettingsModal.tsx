@@ -58,7 +58,6 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
                     response.status = 200;
                     onClose();
                 } catch (error) {
-                    console.log(error);
                 } finally {
                     setIsLoading(false);
                 }
