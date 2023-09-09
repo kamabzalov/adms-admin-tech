@@ -1,5 +1,4 @@
 import { useQueryResponseData } from 'common/core/QueryResponseProvider';
-import { UsersListPagination } from 'components/dashboard/helpers/pagination/renderPagination';
 import { useMemo } from 'react';
 import { useTable, ColumnInstance, Row } from 'react-table';
 import { CustomHeaderColumn } from './columns/CustomHeaderColumn';
@@ -7,11 +6,11 @@ import { CustomRow } from './columns/CustomRow';
 import { usersColumns } from './columns/_columns';
 import { User, UsersListType } from '../types/Users.types';
 
-const UsersTable = ({ list }: { list: UsersListType }) => {
+export const UsersTable = ({ list }: { list: UsersListType }) => {
     let users = useQueryResponseData(list);
 
     const usersData = useMemo(() => users, [users]);
-    const columns = useMemo(() => usersColumns(list), []);
+    const columns = useMemo(() => usersColumns(list), [list]);
     const { getTableProps, getTableBodyProps, headers, rows, prepareRow } = useTable({
         columns,
         data: usersData,
@@ -50,9 +49,6 @@ const UsersTable = ({ list }: { list: UsersListType }) => {
                     </tbody>
                 </table>
             </div>
-            <UsersListPagination list={list} />
         </>
     );
 };
-
-export { UsersTable };

@@ -7,7 +7,7 @@ type Props = {
     column: ColumnInstance<User>;
 };
 
-const CustomHeaderColumn: FC<Props> = ({ column }) => (
+export const CustomHeaderColumn: FC<Props> = ({ column }) => (
     <>
         {column.Header && typeof column.Header === 'string' ? (
             <th {...column.getHeaderProps()}>{column.render('Header')}</th>
@@ -16,5 +16,3 @@ const CustomHeaderColumn: FC<Props> = ({ column }) => (
         )}
     </>
 );
-
-export { CustomHeaderColumn };

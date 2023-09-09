@@ -7,32 +7,11 @@ import { CustomModal } from '../helpers/modal/renderModalHelper';
 import { UserModal } from './UserModal/UserModal';
 import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton';
 import { UsersListType, UsersType } from './types/Users.types';
+import { UsersListSearchComponent } from './search/UsersListSearchComponent';
 
 const usersTabsArray: string[] = Object.values(UsersType) as string[];
 
-// const UsersList = () => {
-//     const [activeTab, setActiveTab] = useState('Users');
-//     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false);
-
-//     const handleAddUserModalOpen = () => setAddUserModalEnabled(!addUserModalEnabled);
-
-//     const handleTabClick = (tab: string) => {
-//         setActiveTab(tab);
-//     };
-
-//     return (
-//         <>
-//             <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
-//                 <UsersTable list='users' />
-//             </TabPanel>
-//             <TabPanel activeTab={activeTab} tabName={UsersTabs.DeletedUsers}>
-//                 deleted users
-//             </TabPanel>
-//         </>
-//     );
-// };
-
-const UsersListWrapper = () => {
+export const UsersListWrapper = () => {
     const [activeTab, setActiveTab] = useState<UsersListType>(UsersType.Users);
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false);
 
@@ -65,7 +44,8 @@ const UsersListWrapper = () => {
 
                     <div className='card-body'>
                         <div className='tab-content' id='myTabContentInner'>
-                            <div className='d-flex w-100 justify-content-end px-8 mt-4'>
+                            <div className='d-flex w-100 justify-content-between mt-4'>
+                                <UsersListSearchComponent />
                                 <PrimaryButton
                                     buttonText='Add User'
                                     icon='plus'
@@ -85,5 +65,3 @@ const UsersListWrapper = () => {
         </QueryRequestProvider>
     );
 };
-
-export { UsersListWrapper };
