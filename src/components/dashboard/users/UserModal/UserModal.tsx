@@ -2,22 +2,28 @@ import clsx from 'clsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { IUserData } from 'common/interfaces/IUserData';
-import { createOrUpdateUser, User } from 'components/dashboard/users/user.service';
+import { createOrUpdateUser } from 'components/dashboard/users/api/user.service';
+import { UserInputData } from '../types/Users.types';
 
 interface UserModalProps {
     onClose: () => void;
-    user?: User;
+    username?: string;
+    useruid?: string;
     updateData?: () => void;
 }
 
-export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.Element => {
-    const initialUserData: IUserData = {
-        username: user?.username || '',
+export const UserModal = ({
+    onClose,
+    username,
+    useruid,
+    updateData,
+}: UserModalProps): JSX.Element => {
+    const initialUserData: UserInputData = {
+        username: username || '',
         password: '',
     };
 
-    const [userData] = useState<IUserData>(initialUserData);
+    const [userData] = useState<UserInputData>(initialUserData);
 
     const addUserSchema = Yup.object().shape({
         username: Yup.string().trim().required('Username is required'),
@@ -31,12 +37,11 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
             setSubmitting(true);
             try {
                 const params: [string, string, string?] = [username, password];
-                if (user?.useruid) params.push(user.useruid);
+                if (useruid) params.push(useruid);
                 await createOrUpdateUser(...params);
                 onClose();
                 updateData && updateData();
             } catch (ex) {
-                console.error(ex);
             } finally {
                 setSubmitting(false);
             }
@@ -64,7 +69,7 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
                             type='text'
                             name='username'
                             autoComplete='off'
-                            disabled={Boolean(user)}
+                            disabled={Boolean(username)}
                         />
                         {formik.touched.username && formik.errors.username && (
                             <div className='fv-plugins-message-container'>

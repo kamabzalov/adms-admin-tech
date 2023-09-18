@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getUserPermissions, setUserPermissions } from 'components/dashboard/users/user.service';
+import {
+    getUserPermissions,
+    setUserPermissions,
+} from 'components/dashboard/users/api/user.service';
 import { renderList } from 'components/dashboard/helpers/helpers';
 import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
 
@@ -69,7 +72,6 @@ export const UserPermissionsModal = ({
                     response.status = 200;
                     onClose();
                 } catch (error) {
-                    console.log(error);
                 } finally {
                     setIsLoading(false);
                 }
