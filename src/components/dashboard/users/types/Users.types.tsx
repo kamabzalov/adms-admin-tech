@@ -3,6 +3,14 @@ export interface UserInputData {
     password: string;
 }
 
+export interface UserQuery {
+    skip?: number;
+    top?: number;
+    column?: string;
+    qry?: string;
+    type?: 'asc' | 'desc';
+}
+
 export enum UsersType {
     Users = 'Users',
     DeletedUsers = 'Deleted users',
