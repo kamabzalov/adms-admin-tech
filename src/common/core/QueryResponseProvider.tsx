@@ -7,12 +7,16 @@ import {
     initialQueryResponse,
     stringifyRequestQuery,
     QUERIES,
-    PaginationState,
-    initialQueryState,
     Response,
+    initialQueryState,
 } from '_metronic/helpers';
 import { getDeletedUsers, getUsers } from 'components/dashboard/users/api/user.service';
-import { User, UsersListType, UsersType } from 'components/dashboard/users/types/Users.types';
+import {
+    User,
+    UserQuery,
+    UsersListType,
+    UsersType,
+} from 'components/dashboard/users/types/Users.types';
 
 type QueryResponseProviderProps = {
     listType: UsersListType;
@@ -36,28 +40,37 @@ export const QueryResponseProvider = ({
         }
     };
 
-    useEffect(() => {
-        if (query !== updatedQuery) {
-            setQuery(updatedQuery);
-        }
-    }, [updatedQuery]);
-
     const {
         isFetching,
         refetch,
         data: axiosResponse,
     } = useQuery(
-        `${GET_LIST_TYPE()}-${query}`,
+        `${GET_LIST_TYPE()}`,
         () => {
+            const currentQuery: UserQuery = {
+                skip: state.currentpage || initialQueryState.currentpage,
+                top: state.count || initialQueryState.count,
+                column: state.sort || initialQueryState.sort,
+                qry: state.search || initialQueryState.search,
+                type: state.order || initialQueryState.order,
+            };
+
             switch (listType) {
                 case UsersType.Users:
-                    return getUsers(query);
+                    return getUsers(currentQuery);
                 case UsersType.DeletedUsers:
                     return getDeletedUsers(query);
             }
         },
         { cacheTime: 0, keepPreviousData: true, refetchOnWindowFocus: false }
     );
+
+    useEffect(() => {
+        if (query !== updatedQuery) {
+            setQuery(updatedQuery);
+            refetch();
+        }
+    }, [updatedQuery]);
 
     const response: Response<User[]> = {
         data: axiosResponse && axiosResponse.data,
@@ -79,20 +92,6 @@ export const useQueryResponseData = (dataType: UsersListType) => {
     }
 
     return response?.data || [];
-};
-
-export const useQueryResponsePagination = (dataType: UsersListType) => {
-    const defaultPaginationState: PaginationState = {
-        links: [],
-        ...initialQueryState,
-    };
-
-    const { response } = useQueryResponse(dataType);
-    if (!response || !response.payload || !response.payload.pagination) {
-        return defaultPaginationState;
-    }
-
-    return response.payload.pagination;
 };
 
 export const useQueryResponseLoading = (dataType: UsersListType): boolean => {
