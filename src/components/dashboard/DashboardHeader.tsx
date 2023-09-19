@@ -3,10 +3,12 @@ import { LoginResponse, logout } from 'common/auth.service';
 
 export function DashboardHeader() {
     const navigate = useNavigate();
+    const { useruid, loginname }: LoginResponse = JSON.parse(
+        localStorage.getItem('admss-admin-user') ?? ''
+    );
     const signOut = () => {
-        const user: LoginResponse = JSON.parse(localStorage.getItem('admss-admin-user') ?? '');
-        if (user) {
-            logout(user.useruid).then((response) => {
+        if (useruid) {
+            logout(useruid).then((response) => {
                 if (response.status) {
                     navigate('/');
                     localStorage.removeItem('admss-admin-user');
