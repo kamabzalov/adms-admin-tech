@@ -1,17 +1,15 @@
 import clsx from 'clsx';
 import { useFormik } from 'formik';
-import { HTMLInputTypeAttribute, useState } from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 
-import { useNavigate } from 'react-router-dom';
 import { login } from 'common/auth.service';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginCredentials {
     username: string;
     password: string;
 }
-
-type PasswordFieldIcon = 'ki-eye' | 'ki-eye-slash';
 
 const loginSchema = Yup.object().shape({
     username: Yup.string().trim().required('Username is required'),
@@ -25,26 +23,7 @@ const initialValues: LoginCredentials = {
 
 export function Login() {
     const [loading, setLoading] = useState(false);
-    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-    const [passwordFieldType, setPasswordFieldType] = useState<HTMLInputTypeAttribute>('password');
-    const [passwordFieldIcon, setPasswordFieldIcon] = useState<PasswordFieldIcon>('ki-eye');
-
     const navigate = useNavigate();
-
-    const handleChangePasswordField = () => {
-        switch (isPasswordVisible) {
-            case true:
-                setPasswordFieldType('password');
-                setPasswordFieldIcon('ki-eye-slash');
-                setIsPasswordVisible(false);
-                break;
-            case false:
-                setPasswordFieldType('text');
-                setPasswordFieldIcon('ki-eye');
-                setIsPasswordVisible(true);
-                break;
-        }
-    };
 
     const formik = useFormik({
         initialValues,
@@ -82,7 +61,7 @@ export function Login() {
                             </div>
                         )}
 
-                        <div className='fv-row mb-10 position-relative'>
+                        <div className='fv-row mb-8'>
                             <label className='form-label fs-6 fw-bolder text-dark'>Username</label>
                             <input
                                 placeholder='Username'
@@ -90,11 +69,11 @@ export function Login() {
                                 className={clsx(
                                     'form-control bg-transparent',
                                     {
-                                        'border-danger':
+                                        'is-invalid':
                                             formik.touched.username && formik.errors.username,
                                     },
                                     {
-                                        'border-success':
+                                        'is-valid':
                                             formik.touched.username && !formik.errors.username,
                                     }
                                 )}
@@ -103,48 +82,40 @@ export function Login() {
                                 autoComplete='off'
                             />
                             {formik.touched.username && formik.errors.username && (
-                                <div className='fv-plugins-message-container position-absolute'>
-                                    <div className='fv-help-block'>
-                                        <span role='alert'>{formik.errors.username}</span>
-                                    </div>
+                                <div className='fv-plugins-message-container'>
+                                    <span role='alert'>{formik.errors.username}</span>
                                 </div>
                             )}
                         </div>
 
-                        <div className='fv-row mb-10 position-relative'>
-                            <label className='form-label fw-bolder text-dark fs-6 mb-0 w-100'>
+                        <div className='fv-row mb-8'>
+                            <label className='form-label fw-bolder text-dark fs-6 mb-0'>
                                 Password
                             </label>
                             <input
-                                type={passwordFieldType}
+                                type='password'
                                 placeholder='Password'
                                 autoComplete='off'
                                 {...formik.getFieldProps('password')}
                                 className={clsx(
                                     'form-control bg-transparent',
                                     {
-                                        'border-danger':
+                                        'is-invalid':
                                             formik.touched.password && formik.errors.password,
                                     },
                                     {
-                                        'border-success':
+                                        'is-valid':
                                             formik.touched.password && !formik.errors.password,
                                     }
                                 )}
                             />
                             {formik.touched.password && formik.errors.password && (
-                                <div className='fv-plugins-message-container position-absolute'>
+                                <div className='fv-plugins-message-container'>
                                     <div className='fv-help-block'>
                                         <span role='alert'>{formik.errors.password}</span>
                                     </div>
                                 </div>
                             )}
-                            <i
-                                className={clsx(
-                                    `ki-outline fs-2 ${passwordFieldIcon} position-absolute end-0 top-50 px-3 cursor-pointer text-hover-primary`
-                                )}
-                                onClick={handleChangePasswordField}
-                            />
                         </div>
 
                         <div className='d-grid'>
