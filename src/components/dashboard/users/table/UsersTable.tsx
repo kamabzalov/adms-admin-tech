@@ -5,10 +5,9 @@ import { CustomHeaderColumn } from './columns/CustomHeaderColumn';
 import { CustomRow } from './columns/CustomRow';
 import { usersColumns } from './columns/_columns';
 import { User, UsersListType } from '../types/Users.types';
-import { UsersListPagination } from 'components/dashboard/helpers/pagination/renderPagination';
 
 export const UsersTable = ({ list }: { list: UsersListType }) => {
-    const users = useQueryResponseData(list);
+    let users = useQueryResponseData(list);
 
     const usersData = useMemo(() => users, [users]);
     const columns = useMemo(() => usersColumns(list), [list]);
@@ -49,7 +48,6 @@ export const UsersTable = ({ list }: { list: UsersListType }) => {
                         )}
                     </tbody>
                 </table>
-                <UsersListPagination list={list} />
             </div>
         </>
     );

@@ -1,10 +1,10 @@
 import { QueryRequestContextProps, WithChildren, initialQueryRequest } from '_metronic/helpers';
-import { useState, createContext, useContext } from 'react';
+import { FC, useState, createContext, useContext } from 'react';
 import { QueryState } from 'react-query/types/core/query';
 
 const QueryRequestContext = createContext<QueryRequestContextProps>(initialQueryRequest);
 
-export const QueryRequestProvider = ({ children }: WithChildren): JSX.Element => {
+export const QueryRequestProvider: FC<WithChildren> = ({ children }) => {
     const [state, setState] = useState<any>(initialQueryRequest.state);
 
     const updateState = (updates: Partial<any>) => {

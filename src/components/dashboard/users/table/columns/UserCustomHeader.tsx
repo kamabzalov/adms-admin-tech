@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { useQueryRequest } from 'common/core/QueryRequestProvider';
-import { PropsWithChildren, useMemo } from 'react';
+import { FC, PropsWithChildren, useMemo } from 'react';
 import { HeaderProps } from 'react-table';
-import { SortState } from '_metronic/helpers'; // Додайте імпорт QueryState
+import { initialQueryState } from '_metronic/helpers';
 import { User } from '../../types/Users.types';
 
 type Props = {
@@ -10,37 +10,47 @@ type Props = {
     title?: string;
     tableProps: PropsWithChildren<HeaderProps<User>>;
 };
-
-export const UserCustomHeader = ({ className, title, tableProps }: Props) => {
+export const UserCustomHeader: FC<Props> = ({ className, title, tableProps }) => {
     const id = tableProps.column.id;
     const { state, updateState } = useQueryRequest();
 
-    const order: SortState['order'] | undefined = useMemo(() => state.order, [state]);
+    const isSelectedForSorting = useMemo(() => {
+        return state.sort && state.sort === id;
+    }, [state, id]);
+    const order: 'asc' | 'desc' | undefined = useMemo(() => state.order, [state]);
 
     const sortColumn = () => {
+        // avoid sorting for these columns
         if (id === 'actions') {
             return;
         }
 
-        let newOrder: SortState['order'] = 'desc';
-        if (state.sort === id && state.order === 'desc') {
-            newOrder = 'asc';
+        if (!isSelectedForSorting) {
+            // enable sort asc
+            updateState({ sort: id, order: 'asc', ...initialQueryState });
+            return;
         }
 
-        updateState({
-            sort: id,
-            order: newOrder,
-            currentpage: 1,
-        });
+        if (isSelectedForSorting && order !== undefined) {
+            if (order === 'asc') {
+                // enable sort desc
+                updateState({ sort: id, order: 'desc', ...initialQueryState });
+                return;
+            }
+
+            // disable sort
+            updateState({ sort: undefined, order: undefined, ...initialQueryState });
+        }
     };
 
     return (
         <th
             {...tableProps.column.getHeaderProps()}
             className={clsx(
-                `${className} cursor-pointer`,
-                order !== undefined && `table-sort-${order}`
+                className,
+                isSelectedForSorting && order !== undefined && `table-sort-${order}`
             )}
+            style={{ cursor: 'pointer' }}
             onClick={sortColumn}
         >
             {title}

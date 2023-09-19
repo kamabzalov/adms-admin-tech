@@ -1,16 +1,15 @@
-import { useDebounce } from '_metronic/helpers';
+import { useDebounce, initialQueryState } from '_metronic/helpers';
 import { useQueryRequest } from 'common/core/QueryRequestProvider';
 import { useState, useEffect } from 'react';
 
 export const UsersListSearchComponent = () => {
-    const { state, updateState } = useQueryRequest();
+    const { updateState } = useQueryRequest();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const debouncedSearchTerm = useDebounce(searchTerm, 150);
     useEffect(() => {
         if (debouncedSearchTerm !== undefined && searchTerm !== undefined) {
-            updateState({ ...state, search: debouncedSearchTerm });
+            updateState({ search: debouncedSearchTerm, ...initialQueryState });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSearchTerm]);
 
     return (
