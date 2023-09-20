@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginResponse, logout } from 'common/auth.service';
+import { CustomDropdown } from './helpers/renderDropdownHelper';
 
 export function DashboardHeader() {
     const navigate = useNavigate();
@@ -38,13 +39,15 @@ export function DashboardHeader() {
                                 </Link>
                             </div>
                             <div className='menu-item me-lg-1'>
-                                <span
-                                    onClick={() => signOut()}
-                                    className='menu-link text-hover-primary'
-                                >
-                                    <i className='ki-outline ki-exit-right fs-2 m-2'></i>
-                                    <span className='menu-title'>Log out</span>
-                                </span>
+                                <CustomDropdown title={loginname}>
+                                    <span
+                                        onClick={() => signOut()}
+                                        className='menu-link text-hover-primary'
+                                    >
+                                        <i className='ki-outline ki-exit-right fs-2 m-2'></i>
+                                        <span className='menu-title'>Log out</span>
+                                    </span>
+                                </CustomDropdown>
                             </div>
                         </div>
                     </div>
