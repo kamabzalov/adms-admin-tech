@@ -3,18 +3,11 @@ import { getToken } from './utils';
 import { API_URL } from './app-consts';
 
 export interface LoginResponse {
-    companyname: string;
-    firstname: string;
-    isadmin: number;
-    islocaladmin: number;
-    ismanager: number;
-    issalesperson: number;
-    lastname: string;
-    loginname: string;
+    modified: string;
     sessionuid: string;
+    started: string;
     status: 'OK';
     token: string;
-    username: string;
     useruid: string;
 }
 
