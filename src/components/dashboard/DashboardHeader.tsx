@@ -38,8 +38,7 @@ export function DashboardHeader() {
                                     <span className='menu-title w-0'>Users</span>
                                 </Link>
                             </div>
-                            <div className='menu-item me-lg-1 flex-grow-1'></div>
-                            <div className='menu-item me-lg-1'>
+                            <div className='menu-item me-lg-1 ms-auto'>
                                 <CustomDropdown title={loginname}>
                                     <span
                                         onClick={() => signOut()}
