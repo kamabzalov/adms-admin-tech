@@ -28,13 +28,13 @@ export function DashboardHeader() {
                                     className='menu-link py-3 text-hover-primary'
                                     to={'/dashboard'}
                                 >
-                                    <i className='ki-outline ki-gear fs-2 m-2'></i>
+                                    <i className='ki-outline ki-gear fs-2 m-1'></i>
                                     <span className='menu-title'>Microservices</span>
                                 </Link>
                             </div>
                             <div className='menu-item me-lg-1 flex-grow-1'>
                                 <Link className='menu-link py-3 text-hover-primary' to={'users'}>
-                                    <i className='ki-outline ki-user-tick fs-2 m-2'></i>
+                                    <i className='ki-outline ki-user-tick fs-2 m-1'></i>
                                     <span className='menu-title'>Users</span>
                                 </Link>
                             </div>
