@@ -19,7 +19,7 @@ export function DashboardHeader() {
     };
     return (
         <header className='app-header'>
-            <div className='container flex-lg-grow-1 d-flex align-items-center justify-content-between'>
+            <div className='container d-flex align-items-center justify-content-between'>
                 <div className='d-flex align-items-center justify-content-between flex-lg-grow-1'>
                     <div className='app-header-menu app-header-mobile-drawer align-items-center w-100'>
                         <div className='menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-center fw-semibold px 2 px-lg-0 d-flex'>
