@@ -12,7 +12,7 @@ export interface User {
     updated: string;
     username: string;
     useruid: string;
-    isAdmin: number;
+    isadmin: number;
 }
 
 export const createOrUpdateUser = (loginname: string, loginpassword: string, uid: string = '0') => {
