@@ -39,7 +39,7 @@ enum UsersColumns {
     // eslint-disable-next-line no-unused-vars
     ParrentUser = 'Created by user',
     // eslint-disable-next-line no-unused-vars
-    isAdmin = 'Is admin',
+    isadmin = 'Is admin',
     // eslint-disable-next-line no-unused-vars
     Actions = 'Actions',
 }
@@ -66,7 +66,7 @@ export default function Users() {
         updated: '',
         username: '',
         useruid: '',
-        isAdmin: 0,
+        isadmin: 0,
     };
 
     const [selectedUser, setSelectedUser] = useState<User>(initialUsersState);
@@ -290,7 +290,7 @@ export default function Users() {
                                                             {user.parentusername}
                                                         </Link>
                                                     </td>
-                                                    <td>{user.isAdmin ? 'yes' : 'no'}</td>
+                                                    <td>{user.isadmin ? 'yes' : 'no'}</td>
 
                                                     <td>
                                                         <CustomDropdown
