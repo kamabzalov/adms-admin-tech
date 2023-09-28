@@ -1,12 +1,12 @@
+import { Billing } from 'components/dashboard/Billing';
+import { Reports } from 'components/dashboard/Reports';
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Dashboard } from 'components/dashboard/Dashboard';
-import { MicroserviceCard } from 'components/dashboard/microservices/MicroserviceCard';
-import { UserCard } from 'components/dashboard/users/UserCard';
+import { Routes, Route } from 'react-router-dom';
+import { Dashboard } from './components/dashboard/Dashboard';
+import { Login } from './components/Login';
+import { UserCard } from './components/dashboard/users/UserCard';
 import Users from './components/dashboard/users/Users';
-import { Login } from 'components/Login';
-import { MenuComponent } from '_metronic/assets/ts/components';
-import { Microservices } from 'components/dashboard/microservices/Microservices';
+import { MenuComponent } from '_metronic/assets/ts/components/MenuComponent';
 
 export function MasterInit() {
     const pluginsInitialization = () => {
@@ -28,10 +28,10 @@ const Content = () => (
         <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/dashboard' element={<Dashboard />}>
-                <Route path='' element={<Microservices />} />
-                <Route path='microservices/:uid' element={<MicroserviceCard />} />
-                <Route path='users' element={<Users />} />
-                <Route path='users/:id' element={<UserCard />} />
+                <Route path='' element={<Users />} />
+                <Route path='/dashboard/billing' element={<Billing />} />
+                <Route path='/dashboard/reports' element={<Reports />} />
+                <Route path='/dashboard/user/:id' element={<UserCard />} />
             </Route>
         </Routes>
     </div>
