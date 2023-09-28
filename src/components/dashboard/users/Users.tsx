@@ -1,58 +1,44 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    copyUser,
-    deleteUser,
-    getDeletedUsers,
-    getUsers,
-    killSession,
-    undeleteUser,
-    User,
-} from 'components/dashboard/users/user.service';
+import { Link, useNavigate } from 'react-router-dom';
 import { CustomModal } from 'components/dashboard/helpers/modal/renderModalHelper';
 import { UserModal } from 'components/dashboard/users/UserModal/parts/UserModal';
 import { UserPermissionsModal } from 'components/dashboard/users/UserModal/parts/UserPermissionsModal';
 import { UserSettingsModal } from 'components/dashboard/users/UserModal/parts/UserSettingsModal';
 import { UserOptionalModal } from 'components/dashboard/users/UserModal/parts/UserOptionalModal';
-import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
 import { TableHead } from 'components/dashboard/helpers/renderTableHelper';
-import { TabNavigate, TabPanel } from 'components/dashboard/helpers/helpers';
 import { CustomDropdown } from 'components/dashboard/helpers/renderDropdownHelper';
+import { User, getUsers, copyUser, deleteUser, killSession, Status } from 'services/user.service';
+import { useToast } from '../helpers/renderToastHelper';
+import { AxiosError } from 'axios';
+import { UserConfirmModal } from './UserModal/parts/UserConfirmModal';
+import { PrimaryButton } from '../smallComponents/buttons/PrimaryButton';
 
-// eslint-disable-next-line no-unused-vars
-enum UsersTabs {
-    // eslint-disable-next-line no-unused-vars
-    Users = 'Users',
-    // eslint-disable-next-line no-unused-vars
-    DeletedUsers = 'Deleted users',
-}
-
-// eslint-disable-next-line no-unused-vars
 enum UsersColumns {
-    // eslint-disable-next-line no-unused-vars
     ID = 'Index',
-    // eslint-disable-next-line no-unused-vars
     Username = 'User name',
-    // eslint-disable-next-line no-unused-vars
     ParrentUser = 'Created by user',
-    // eslint-disable-next-line no-unused-vars
-    isadmin = 'Is admin',
-    // eslint-disable-next-line no-unused-vars
+    isAdmin = 'Is admin',
     Actions = 'Actions',
 }
 
-const usersTabsArray: string[] = Object.values(UsersTabs) as string[];
 const usersColumnsArray: string[] = Object.values(UsersColumns) as string[];
 
 export default function Users() {
+    const { useruid: currentUseruid } = JSON.parse(localStorage.getItem('admss-admin-user') ?? '');
     const [users, setUsers] = useState<User[]>([]);
     const [addUserModalEnabled, setAddUserModalEnabled] = useState<boolean>(false);
     const [editUserModalEnabled, setEditUserModalEnabled] = useState<boolean>(false);
+    const [confirmModalEnabled, setConfirmModalEnabled] = useState<boolean>(false);
     const [userPermissionsModalEnabled, setUserPermissionsModalEnabled] = useState<boolean>(false);
-    const [userSettingsModalEnabled, setUserSettingsModalEnabled] = useState<boolean>(false);
+    const [userSettingsModalEnabled, setUserSettingssModalEnabled] = useState<boolean>(false);
     const [userOptionalModalEnabled, setUserOptionalsModalEnabled] = useState<boolean>(false);
 
-    const initialUsersState = {
+    const navigate = useNavigate();
+
+    const { handleShowToast } = useToast();
+
+    const initialUserState = {
         created: '',
         createdbyuid: '',
         index: 0,
@@ -61,13 +47,11 @@ export default function Users() {
         updated: '',
         username: '',
         useruid: '',
-        isadmin: 0,
+        isAdmin: 0,
     };
 
-    const [selectedUser, setSelectedUser] = useState<User>(initialUsersState);
+    const [selectedUser, setSelectedUser] = useState<User>(initialUserState);
 
-    const [activeTab, setActiveTab] = useState('Users');
-    const [deletedUsers, setDeletedUsers] = useState<User[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     const handleAddUserModalOpen = () => setAddUserModalEnabled(!addUserModalEnabled);
@@ -75,13 +59,17 @@ export default function Users() {
         setSelectedUser({ ...selectedUser, useruid, username: username });
         setEditUserModalEnabled(true);
     };
+    const handleConfirmModalOpen = ({ useruid, username }: User) => {
+        setSelectedUser({ ...selectedUser, useruid, username: username });
+        setConfirmModalEnabled(true);
+    };
     const handleUserPermissonsModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username });
         setUserPermissionsModalEnabled(true);
     };
     const handleUserSettingsModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username });
-        setUserSettingsModalEnabled(true);
+        setUserSettingssModalEnabled(true);
     };
     const handleUserOptionalModalOpen = ({ useruid, username }: User) => {
         setSelectedUser({ ...selectedUser, useruid, username: username });
@@ -90,68 +78,80 @@ export default function Users() {
 
     const updateUsers = (): void => {
         getUsers().then((response) => {
-            setUsers(response);
-            setLoaded(true);
+            if (response.length) {
+                const filteredUsers = response.filter((user) => user?.useruid !== currentUseruid);
+                setUsers(filteredUsers);
+                setLoaded(true);
+            }
         });
     };
 
     useEffect(() => {
         if (!loaded) {
             updateUsers();
-            getDeletedUsers().then((response) => {
-                setDeletedUsers(response);
-                setLoaded(true);
-            });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [users, loaded]);
 
-    const handleCopyUser = (srcuid: string) => {
-        copyUser(srcuid).then((response) => {
-            if (response.status === 'OK') {
-                getUsers().then((response) => {
-                    setUsers(response);
-                    setLoaded(true);
-                });
-                getDeletedUsers().then((response) => {
-                    setDeletedUsers(response);
-                    setLoaded(true);
-                });
+    const handleCopyUser = async (srcuid: string): Promise<void> => {
+        setLoaded(false);
+        try {
+            if (srcuid) {
+                const response: any = await copyUser(srcuid);
+                if (response.status === 'OK') {
+                    const newUseruid = response.useruid;
+                    navigate(`user/${newUseruid}`);
+                    handleShowToast({
+                        message: 'User successfully copied',
+                        type: 'success',
+                    });
+                    updateUsers();
+                }
             }
-        });
+        } catch (err) {
+            const { message } = err as Error | AxiosError;
+            handleShowToast({ message, type: 'danger' });
+        }
     };
 
-    const moveToTrash = (userId: string) => {
-        deleteUser(userId).then((response) => {
-            if (response.status === 'OK') {
-                getUsers().then((response) => {
-                    setUsers(response);
-                    setLoaded(true);
-                });
-                getDeletedUsers().then((response) => {
-                    setDeletedUsers(response);
-                    setLoaded(true);
-                });
+    const handleMoveToTrash = async (userId: string, username: string): Promise<void> => {
+        try {
+            if (userId) {
+                const response = await deleteUser(userId);
+                if (response.status === Status.OK) {
+                    handleShowToast({
+                        message: `${username} successfully deleted`,
+                        type: 'success',
+                    });
+                    setConfirmModalEnabled(false);
+                    updateUsers();
+                }
             }
-        });
+        } catch (err) {
+            const { message } = err as Error | AxiosError;
+            handleShowToast({ message, type: 'danger' });
+        } finally {
+            setLoaded(false);
+        }
     };
 
-    const restoreUser = (userId: string) => {
-        undeleteUser(userId).then((response) => {
-            if (response.status === 'OK') {
-                getUsers().then((response) => {
-                    setUsers(response);
-                    setLoaded(true);
-                });
-                getDeletedUsers().then((response) => {
-                    setDeletedUsers(response);
-                    setLoaded(true);
-                });
+    const handleKillSession = async (userId: string): Promise<void> => {
+        setLoaded(false);
+        try {
+            if (userId) {
+                const response = await killSession(userId);
+                if (response.status === Status.OK) {
+                    handleShowToast({
+                        message: 'User session successfully closed',
+                        type: 'success',
+                    });
+                    updateUsers();
+                }
             }
-        });
-    };
-
-    const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
+        } catch (err) {
+            const { message } = err as Error | AxiosError;
+            handleShowToast({ message, type: 'danger' });
+        }
     };
 
     return (
@@ -159,6 +159,17 @@ export default function Users() {
             {addUserModalEnabled && (
                 <CustomModal onClose={handleAddUserModalOpen} title={'Add user'}>
                     <UserModal onClose={handleAddUserModalOpen} updateData={updateUsers} />
+                </CustomModal>
+            )}
+            {confirmModalEnabled && (
+                <CustomModal
+                    onClose={() => setConfirmModalEnabled(false)}
+                    title={'Confirm user delete'}
+                    footerAction={() =>
+                        handleMoveToTrash(selectedUser.useruid, selectedUser.username)
+                    }
+                >
+                    <UserConfirmModal username={selectedUser.username} />
                 </CustomModal>
             )}
             {editUserModalEnabled && (
@@ -182,11 +193,11 @@ export default function Users() {
             )}
             {userSettingsModalEnabled && (
                 <CustomModal
-                    onClose={() => setUserSettingsModalEnabled(false)}
+                    onClose={() => setUserSettingssModalEnabled(false)}
                     title={`${selectedUser.username} user settings: `}
                 >
                     <UserSettingsModal
-                        onClose={() => setUserSettingsModalEnabled(false)}
+                        onClose={() => setUserSettingssModalEnabled(false)}
                         useruid={selectedUser.useruid}
                     />
                 </CustomModal>
@@ -194,7 +205,7 @@ export default function Users() {
             {userOptionalModalEnabled && (
                 <CustomModal
                     onClose={() => setUserOptionalsModalEnabled(false)}
-                    title={`${selectedUser.username} user settings: `}
+                    title={`${selectedUser.username} user optional data: `}
                 >
                     <UserOptionalModal
                         onClose={() => setUserOptionalsModalEnabled(false)}
@@ -203,19 +214,6 @@ export default function Users() {
                 </CustomModal>
             )}
             <div className='card'>
-                <div className='card-header d-flex flex-column justify-content-end pb-0'>
-                    <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
-                        {usersTabsArray.map((tab) => (
-                            <TabNavigate
-                                key={tab}
-                                activeTab={activeTab}
-                                tab={tab}
-                                onTabClick={handleTabClick}
-                            />
-                        ))}
-                    </ul>
-                </div>
-
                 <div className='tab-content' id='myTabContentInner'>
                     <div className='d-flex w-100 justify-content-end px-8 mt-4'>
                         <PrimaryButton
@@ -224,23 +222,19 @@ export default function Users() {
                             buttonClickAction={handleAddUserModalOpen}
                         />
                     </div>
-                    <TabPanel activeTab={activeTab} tabName={UsersTabs.Users}>
-                        <div className='card-body'>
-                            <div
-                                className='d-flex justify-content-end'
-                                data-kt-user-table-toolbar='base'
-                            ></div>
+                    <div className='card-body'>
+                        {Array.isArray(users) ? (
                             <div className='table-responsive'>
                                 <table className='table align-middle table-row-dashed fs-6 gy-3 no-footer'>
                                     <TableHead columns={usersColumnsArray} />
                                     <tbody className='text-gray-600 fw-bold'>
-                                        {users.map((user: User) => {
-                                            return (
+                                        {users.map((user: User, index: number): JSX.Element => {
+                                            return user?.useruid ? (
                                                 <tr key={user.useruid}>
                                                     <td className='text-gray-800'>{user.index}</td>
                                                     <td>
                                                         <Link
-                                                            to={`${user.useruid}`}
+                                                            to={`user/${user.useruid}`}
                                                             className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.username}
@@ -248,14 +242,13 @@ export default function Users() {
                                                     </td>
                                                     <td>
                                                         <Link
-                                                            to={`${user.parentuid}`}
+                                                            to={`user/${user.parentuid}`}
                                                             className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.parentusername}
                                                         </Link>
                                                     </td>
-                                                    <td>{user.isadmin ? 'yes' : 'no'}</td>
-
+                                                    <td>{user.isAdmin ? 'yes' : 'no'}</td>
                                                     <td>
                                                         <CustomDropdown
                                                             title='Actions'
@@ -301,74 +294,53 @@ export default function Users() {
                                                                 {
                                                                     menuItemName: 'Delete user',
                                                                     menuItemAction: () =>
-                                                                        moveToTrash(user.useruid),
+                                                                        handleConfirmModalOpen(
+                                                                            user
+                                                                        ),
                                                                 },
                                                                 {
                                                                     menuItemName:
                                                                         'Kill user session',
                                                                     menuItemAction: () =>
-                                                                        killSession(user.useruid),
-                                                                },
-                                                            ]}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </TabPanel>
-                    <TabPanel activeTab={activeTab} tabName={UsersTabs.DeletedUsers}>
-                        <div className='card-body'>
-                            <div
-                                className='d-flex justify-content-end'
-                                data-kt-user-table-toolbar='base'
-                            ></div>
-                            <div className='table-responsive'>
-                                <table className='table align-middle table-row-dashed fs-6 gy-3 no-footer'>
-                                    <TableHead columns={usersColumnsArray} />
-                                    <tbody className='text-gray-600 fw-bold'>
-                                        {deletedUsers.map((user: User) => {
-                                            return (
-                                                <tr key={user.useruid}>
-                                                    <td className='text-gray-800'>{user.index}</td>
-                                                    <td>
-                                                        <Link
-                                                            to={`${user.useruid}`}
-                                                            className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
-                                                        >
-                                                            {user.username}
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        <CustomDropdown
-                                                            title='Actions'
-                                                            items={[
-                                                                {
-                                                                    menuItemName: 'Restore user',
-                                                                    menuItemAction: () =>
-                                                                        restoreUser(user.useruid),
-                                                                },
-                                                                {
-                                                                    menuItemName: 'Change password',
-                                                                    menuItemAction: () =>
-                                                                        handleEditUserModalOpen(
-                                                                            user
+                                                                        handleKillSession(
+                                                                            user.useruid
                                                                         ),
                                                                 },
                                                             ]}
                                                         />
                                                     </td>
                                                 </tr>
+                                            ) : (
+                                                <tr key={index}>
+                                                    <td>
+                                                        <div
+                                                            className='alert alert-danger fs-6 w-100'
+                                                            role='alert'
+                                                        >
+                                                            <div className='bold'>Error: </div>
+                                                            <span>
+                                                                {JSON.parse(JSON.stringify(users))
+                                                                    ?.error ||
+                                                                    'Incorrect type of data received from the server'}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             );
                                         })}
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </TabPanel>
+                        ) : (
+                            <div className='alert alert-danger fs-6' role='alert'>
+                                <div className='bold'>Error: </div>
+                                <span>
+                                    {JSON.parse(JSON.stringify(users))?.error ||
+                                        'Incorrect type of data received from the server'}
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>
