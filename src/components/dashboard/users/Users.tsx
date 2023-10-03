@@ -123,7 +123,7 @@ export default function Users() {
                 const response: any = await copyUser(useruid);
                 if (response.status === 'OK') {
                     const newUseruid = response.useruid;
-                    navigate(newUseruid);
+                    navigate(`/dashboard/user/${newUseruid}`);
                     handleShowToast({
                         message: `${username} successfully copied`,
                         type: 'success',
@@ -284,7 +284,7 @@ export default function Users() {
                                                     <td className='text-gray-800'>{user.index}</td>
                                                     <td>
                                                         <Link
-                                                            to={`${user.useruid}`}
+                                                            to={`/dashboard/user/${user.useruid}`}
                                                             className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.username}
@@ -292,7 +292,7 @@ export default function Users() {
                                                     </td>
                                                     <td>
                                                         <Link
-                                                            to={`${user.parentuid}`}
+                                                            to={`/dashboard/user/${user.parentuid}`}
                                                             className='text-gray-800 text-hover-primary mb-1 text-decoration-underline'
                                                         >
                                                             {user.parentusername}
