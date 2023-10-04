@@ -68,7 +68,7 @@ export function UserCard() {
                 setExtendedInfoJSON(JSON.stringify(response, null, 2));
             });
             getUserShortInfo(id).then((response) => {
-                setUsername(response?.toString);
+                setUsername(response?.loginname);
                 setShortInfoJSON(JSON.stringify(response, null, 2));
             });
             getUserLocations(id).then((response) => {
