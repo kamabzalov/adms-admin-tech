@@ -67,10 +67,6 @@ export const undeleteUser = (uid: string): Promise<ActionStatus> => {
     return fetchApiData<ActionStatus>('POST', `user/${uid}/undelete`);
 };
 
-export const setUserProfile = (uid: string, data: unknown): Promise<ActionStatus> => {
-    return fetchApiData('POST', `user/${uid}/profile`, { data });
-};
-
 export const copyUser = (uid: string): Promise<ActionStatus> => {
     return fetchApiData<ActionStatus>('POST', `user/${uid}/copyuser`);
 };
