@@ -1,3 +1,4 @@
+import { OffsetModel } from './models/OffsetModel';
 import { ViewPortModel } from './models/ViewPortModel';
 import { ElementStyleUtil } from './_ElementStyleUtil';
 import { DataUtil } from './_DataUtil';
@@ -19,8 +20,6 @@ export function getElementActualCss(el: HTMLElement, prop: any, cache: boolean) 
     if (!el.getAttribute('kt-hidden-' + prop) || !cache) {
         let value;
 
-        // the element is hidden so:
-        // making the el block so we can meassure its height but still be hidden
         css = el.style.cssText;
         el.style.cssText = 'position: absolute; visibility: hidden; display: block;';
 
@@ -32,14 +31,12 @@ export function getElementActualCss(el: HTMLElement, prop: any, cache: boolean) 
 
         el.style.cssText = css;
 
-        // store it in cache
         if (value !== undefined) {
             el.setAttribute('kt-hidden-' + prop, value.toString());
             return parseFloat(value.toString());
         }
         return 0;
     } else {
-        // store it in cache
         const attributeValue = el.getAttribute('kt-hidden-' + prop);
         if (attributeValue || attributeValue === '0') {
             return parseFloat(attributeValue);
@@ -62,19 +59,56 @@ export function getElementMatches(element: HTMLElement, selector: string) {
     }
 }
 
+export function getElementOffset(el: HTMLElement): OffsetModel {
+    if (!el.getClientRects().length) {
+        return { top: 0, left: 0 };
+    }
+
+    const rect = el.getBoundingClientRect();
+    const win = el.ownerDocument.defaultView;
+    if (win) {
+        return {
+            top: rect.top + win.pageYOffset,
+            left: rect.left + win.pageXOffset,
+        };
+    }
+
+    return rect;
+}
+
+export function getElementParents(element: Element, selector: string) {
+    if (!Element.prototype.matches) {
+        Element.prototype.matches = function (s) {
+            const matches = (document || this.ownerDocument).querySelectorAll(s);
+            let i = matches.length;
+            while (--i >= 0 && matches.item(i) !== this) {}
+            return i > -1;
+        };
+    }
+
+    const parents: Array<Element> = [];
+
+    let el: Element | null = element;
+
+    for (; el && el !== document.body; el = el.parentElement) {
+        if (selector) {
+            if (el.matches(selector)) {
+                parents.push(el);
+            }
+            continue;
+        }
+        parents.push(el);
+    }
+
+    return parents;
+}
+
 export function getHighestZindex(el: HTMLElement) {
     let bufferNode: Node | null = el as Node;
     let buffer = el;
     while (bufferNode && bufferNode !== document) {
-        // Ignore z-index if position is set to a value where z-index is ignored by the browser
-        // This makes behavior of this function consistent across browsers
-        // WebKit always returns auto if the element is positioned
         const position = buffer.style.getPropertyValue('position');
         if (position === 'absolute' || position === 'relative' || position === 'fixed') {
-            // IE returns 0 when zIndex is not specified
-            // other browsers return a string
-            // we ignore the case of nested elements with an explicit value of 0
-            // <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
             const value = parseInt(buffer.style.getPropertyValue('z-index'));
             if (!isNaN(value) && value !== 0) {
                 return value;
@@ -98,22 +132,29 @@ export function insertAfterElement(el: HTMLElement, referenceNode: HTMLElement) 
     return referenceNode.parentNode?.insertBefore(el, referenceNode.nextSibling);
 }
 
+export function isElementHasClasses(element: HTMLElement, classesStr: string): boolean {
+    const classes = classesStr.split(' ');
+    for (let i = 0; i < classes.length; i++) {
+        if (!element.classList.contains(classes[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export function isVisibleElement(element: HTMLElement): boolean {
     return !(element.offsetWidth === 0 && element.offsetHeight === 0);
 }
 
 export function throttle(timer: number | undefined, func: Function, delay?: number) {
-    // If setTimeout is already scheduled, no need to do anything
     if (timer) {
         return;
     }
 
-    // Schedule a setTimeout after delay seconds
     timer = window.setTimeout(function () {
         func();
 
-        // Once setTimeout function execution is finished, timerId = undefined so that in <br>
-        // the next scroll event function execution can be scheduled by the setTimeout
         timer = undefined;
     }, delay);
 }
@@ -129,7 +170,6 @@ export function getElementChildren(
     const result: Array<HTMLElement> = [];
     for (let i = 0; i < element.childNodes.length; i++) {
         const child = element.childNodes[i];
-        // child.nodeType == 1 => Element, Text, Comment, ProcessingInstruction, CDATASection, EntityReference
         if (child.nodeType === 1 && getElementMatches(child as HTMLElement, selector)) {
             result.push(child as HTMLElement);
         }
@@ -141,6 +181,16 @@ export function getElementChildren(
 export function getElementChild(element: HTMLElement, selector: string): HTMLElement | null {
     const children = getElementChildren(element, selector);
     return children ? children[0] : null;
+}
+
+export function isMobileDevice(): boolean {
+    let test = getViewPort().width < +getBreakpoint('lg') ? true : false;
+
+    if (test === false) {
+        test = navigator.userAgent.match(/iPad/i) != null;
+    }
+
+    return test;
 }
 
 export function slide(el: HTMLElement, dir: string, speed: number, callback: any) {
@@ -176,7 +226,6 @@ export function slide(el: HTMLElement, dir: string, speed: number, callback: any
     }
 
     if (dir === 'up') {
-        // up
         el.style.cssText = 'display: block; overflow: hidden;';
 
         if (calcPaddingTop) {
@@ -208,7 +257,6 @@ export function slide(el: HTMLElement, dir: string, speed: number, callback: any
             }
         );
     } else if (dir === 'down') {
-        // down
         el.style.cssText = 'display: block; overflow: hidden;';
 
         if (calcPaddingTop) {
