@@ -2,10 +2,11 @@ import { AxiosError } from 'axios';
 import { convertToNumberIfNumeric, deepEqual } from 'components/dashboard/helpers/common';
 import { useToast } from 'components/dashboard/helpers/renderToastHelper';
 import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
-import { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { renamedKeys } from 'common/app-consts';
 import { Status } from 'common/interfaces/ActionStatus';
 import { getUserSettings, setUserSettings } from 'components/dashboard/users/user.service';
+import { CustomCheckbox, CustomTextInput } from 'components/dashboard/helpers/renderInputsHelper';
 
 interface UserSettingsModalProps {
     onClose: () => void;
@@ -44,12 +45,11 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
     }, [settings, initialUserSettings, isLoading]);
 
     const handleChangeUserSettings = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const { name, value } = event.target;
-
+        (inputData: [string, number | string]) => {
+            const [name, value] = inputData;
             setSettings({
                 ...settings,
-                [name]: convertToNumberIfNumeric(value),
+                [name]: convertToNumberIfNumeric(value as string),
             });
         },
         [settings]
@@ -82,6 +82,7 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
     }
 
     const disabledKeys = ['useruid', 'created', 'updated'];
+    const checkboxInputKeys = ['stocknumPrefix', 'stocknumSuffix', 'stocknumFixedDigits'];
     return (
         <>
             {settings &&
@@ -90,20 +91,28 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
                         const settingName = renamedKeys[setting] || setting;
                         return (
                             <div className='fv-row mb-8' key={setting}>
-                                <label
-                                    htmlFor={setting}
-                                    className='form-label fs-6 fw-bolder text-dark'
-                                >
-                                    {settingName}
-                                </label>
-                                <input
-                                    disabled={disabledKeys.includes(setting)}
-                                    className='form-control bg-transparent'
-                                    name={setting}
-                                    type={'text'}
-                                    value={value}
-                                    onChange={handleChangeUserSettings}
-                                />
+                                {checkboxInputKeys.includes(setting) ? (
+                                    <CustomCheckbox
+                                        currentValue={value as number}
+                                        id={setting}
+                                        name={setting}
+                                        title={settingName}
+                                        action={(newValue: [string, number]) =>
+                                            handleChangeUserSettings(newValue)
+                                        }
+                                    />
+                                ) : (
+                                    <CustomTextInput
+                                        currentValue={value as number}
+                                        id={setting}
+                                        name={setting}
+                                        title={settingName}
+                                        disabled={disabledKeys.includes(setting)}
+                                        action={(event) =>
+                                            handleChangeUserSettings([setting, event.target.value])
+                                        }
+                                    />
+                                )}
                             </div>
                         );
                     }
