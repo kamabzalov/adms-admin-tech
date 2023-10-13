@@ -123,7 +123,7 @@ export const CustomRadioButton = ({
 
     return (
         <div className='mb-4'>
-            <span className='mb-4 form-check-label'>{title}</span>
+            <span className='mb-4 form-check-label d-inline-block'>{title}</span>
             <div className='form-check form-check-custom form-check-solid'>
                 {options.map((option, key) => (
                     <div key={id + key}>
