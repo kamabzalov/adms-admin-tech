@@ -32,6 +32,15 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
             getUserSettings(useruid).then(async (response) => {
                 setAllSettings(response);
                 const responseSettings = response.settings;
+                // const sortedSettings = [...checkboxInputKeys, ...radioButtonsKeys].reduce(
+                //     (acc: Record<string, string | number>, key) => {
+                //         if (responseSettings[key] !== undefined) {
+                //             acc[key] = responseSettings[key];
+                //         }
+                //         return acc;
+                //     },
+                //     {}
+                // );
                 setSettings(responseSettings);
                 setInitialUserSettings(responseSettings);
                 setIsLoading(false);
@@ -123,7 +132,7 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
                 orderedSettings.map(([setting, value]) => {
                     const settingName = renamedKeys[setting] || setting;
                     return (
-                        <div className='fv-row mb-8' key={setting}>
+                        <div className='fv-row mb-4' key={setting}>
                             {checkboxInputKeys.includes(setting) ? (
                                 <CustomCheckbox
                                     currentValue={value as number}
@@ -141,8 +150,8 @@ export const UserSettingsModal = ({ onClose, useruid }: UserSettingsModalProps):
                                     name={setting}
                                     title={settingName}
                                     options={[
-                                        { value: '1', label: 'Include' },
-                                        { value: '0', label: "Don't include" },
+                                        { value: 1, label: 'Include' },
+                                        { value: 0, label: "Don't include" },
                                     ]}
                                     action={(newValue: [string, string]) =>
                                         handleChangeUserSettings(newValue)
