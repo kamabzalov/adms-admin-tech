@@ -15,6 +15,16 @@ interface CustomTextInputProps extends CustomInputProps {
     action?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
+interface CustomRadioButtonProps extends CustomInputProps {
+    options: RadioButtonOption[];
+    action: (value: [string, string]) => void;
+}
+
+interface RadioButtonOption {
+    value: string;
+    label: string;
+}
+
 export const CustomCheckbox = ({ currentValue, id, name, title, action }: CustomCheckboxProps) => {
     const [value, setValue] = useState<number>(currentValue);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,6 +92,59 @@ export const CustomTextInput = ({
                 value={currentValue}
                 onChange={handleInputAction}
             />
+        </div>
+    );
+};
+
+export const CustomRadioButton = ({
+    currentValue,
+    id,
+    name,
+    title,
+    options,
+    action,
+}: CustomRadioButtonProps) => {
+    const [selectedValue, setSelectedValue] = useState<string | number>(currentValue);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setSelectedValue(newValue);
+
+        if (action) {
+            setIsLoading(true);
+            action([name, newValue]);
+        }
+    };
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [name, selectedValue, action]);
+
+    return (
+        <div className='mb-4'>
+            <span className='mb-4 form-check-label'>{title}</span>
+            <div className='form-check form-check-custom form-check-solid'>
+                {options.map((option, key) => (
+                    <div key={id + key}>
+                        <input
+                            className='form-check-input cursor-pointer'
+                            type='radio'
+                            value={option.value}
+                            checked={selectedValue === option.value}
+                            onChange={handleRadioChange}
+                            id={`radio-${id}-${option.value}`}
+                            disabled={isLoading}
+                        />
+                        <label
+                            className='form-check-label cursor-pointer px-6'
+                            htmlFor={`radio-${id}-${option.value}`}
+                        >
+                            {option.label}
+                        </label>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
