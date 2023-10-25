@@ -1,9 +1,7 @@
-export function getToken(): string {
-    const userJson = localStorage.getItem('admss-admin-user');
-    let token = '';
+import { LOC_STORAGE_USER } from './app-consts';
 
-    if (userJson) {
-        token = JSON.parse(userJson).token;
-    }
-    return token;
+export function getToken(): string | null {
+    const userLocalStorage = localStorage.getItem(LOC_STORAGE_USER);
+
+    return !!userLocalStorage ? JSON.parse(userLocalStorage)?.token : null;
 }
