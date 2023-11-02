@@ -45,11 +45,11 @@ export const QueryResponseProvider = ({
         `${GET_LIST_TYPE()}`,
         () => {
             const getPage = () => {
-                if (state.search) {
-                    return state.currentpage;
-                }
                 if (getLocalState().usersPage) {
                     return getLocalState().usersPage * initialQueryState.count;
+                }
+                if (state.search) {
+                    return state.currentpage;
                 }
             };
 
@@ -61,7 +61,6 @@ export const QueryResponseProvider = ({
                 type: state.order,
             };
 
-            // debugger;
             switch (listType) {
                 case UsersType.ACTIVE:
                     return getUsers(currentQuery);
