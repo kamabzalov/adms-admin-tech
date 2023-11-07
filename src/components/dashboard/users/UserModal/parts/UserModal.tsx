@@ -1,16 +1,16 @@
+import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import * as Yup from 'yup';
+import { TOAST_DURATION, useToast } from 'components/dashboard/helpers/renderToastHelper';
 import { useFormik } from 'formik';
 import { HTMLInputTypeAttribute, useState } from 'react';
-import { createOrUpdateUser } from 'components/dashboard/users/user.service';
-import { TOAST_DURATION, useToast } from 'components/dashboard/helpers/renderToastHelper';
-import { AxiosError } from 'axios';
+import { createOrUpdateUser } from 'services/user.service';
 import { User, UserInputData } from 'common/interfaces/UserData';
+import { useQueryResponse } from 'common/core/QueryResponseProvider';
 
 interface UserModalProps {
     onClose: () => void;
     user?: User;
-    updateData?: () => void;
 }
 
 interface UserModalData extends UserInputData {
@@ -25,13 +25,13 @@ enum PassIcon {
     HIDDEN = 'ki-eye-slash',
 }
 
-export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.Element => {
+export const UserModal = ({ onClose, user }: UserModalProps): JSX.Element => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [passwordFieldType, setPasswordFieldType] = useState<HTMLInputTypeAttribute>('password');
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState<boolean>(false);
     const [confirmPasswordFieldType, setConfirmPasswordFieldType] =
         useState<HTMLInputTypeAttribute>('password');
-    const [, setHasServerError] = useState<boolean>(false);
+    const { refetch } = useQueryResponse();
 
     const initialUserData: UserModalData = {
         username: user?.username || '',
@@ -91,31 +91,27 @@ export const UserModal = ({ onClose, user, updateData }: UserModalProps): JSX.El
 
             setSubmitting(true);
             try {
-                const params: [string, string, string?] = [username, password];
-                if (user?.useruid) params.push(user.useruid);
-                const responseData = await createOrUpdateUser(...params);
+                const userData = user?.useruid ? { uid: user.useruid } : { loginname: username };
+                const reqData = { ...userData, loginpassword: password };
 
-                const message =
-                    params.length > 2
-                        ? `<strong>${username}</strong> password successfully updated`
-                        : `User <strong>${username}</strong> successfully created`;
+                const responseData = await createOrUpdateUser(reqData);
+                const message = user?.useruid
+                    ? `<strong>${username}</strong> password successfully updated`
+                    : `User <strong>${username}</strong> successfully created`;
 
-                if (!responseData.error) {
+                if (!responseData.error && !responseData.warning) {
                     handleShowToast({
                         message,
                         type: 'success',
                     });
                     onClose();
-                    updateData && updateData();
+                    refetch();
                 } else {
-                    setHasServerError(responseData.error);
-                    setTimeout(() => {
-                        setHasServerError(false);
-                    }, TOAST_DURATION);
-                    throw new Error(responseData.error);
+                    throw new Error(responseData);
                 }
             } catch (err) {
-                const { message } = err as Error | AxiosError;
+                const { data } = err as { status: number; data: Record<string, string> };
+                const message = data.warning || data.error;
                 handleShowToast({ message, type: 'danger' });
             } finally {
                 setSubmitting(false);
