@@ -1,11 +1,11 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { getUserLocations, setUserOptionalData } from 'components/dashboard/users/user.service';
 import { deepEqual } from 'components/dashboard/helpers/common';
 import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
+import { Status, getUserLocations, setUserOptionalData } from 'services/user.service';
 import { useToast } from 'components/dashboard/helpers/renderToastHelper';
 import { AxiosError } from 'axios';
-import { renamedKeys } from 'common/app-consts';
-import { Status } from 'common/interfaces/ActionStatus';
+import { renamedKeys } from 'app-consts';
+import { TabPanel } from 'components/dashboard/helpers/helpers';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import clsx from 'clsx';
@@ -16,31 +16,60 @@ interface UserOptionalModalProps {
     username: string;
 }
 
+const TabSwitcher = ({ tabs, activeTab, handleTabClick }) => {
+    return (
+        <div className='d-flex justify-content-center mb-3'>
+            <div className='btn-group' role='group'>
+                {tabs.map((_, idx) => (
+                    <button
+                        key={idx}
+                        type='button'
+                        className={`btn btn-secondary ${activeTab === `${idx}` ? 'active' : ''}`}
+                        onClick={() => handleTabClick(`${idx}`)}
+                    >
+                        {idx + 1}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const hiddenKeys: readonly ['locationuid', ...string[]] = ['locationuid', 'useruid', 'index'];
+const disabledKeys: readonly string[] = ['useruid', 'created', 'updated'];
+
+const [locationuid] = hiddenKeys;
 export const UserOptionalModal = ({
     onClose,
     useruid,
     username,
 }: UserOptionalModalProps): JSX.Element => {
-    const [optional, setOptional] = useState<any[]>([]);
-    const [initialUserOptional, setInitialUserOptional] = useState<any>([]);
-    const [allOptional, setAllOptional] = useState<any>({});
+    const [optional, setOptional] = useState<Record<string, string | number>[]>([]);
+    const [activeTab, setActiveTab] = useState<string>('0');
+    const [initialUserOptional, setInitialUserOptional] = useState<
+        Record<string, string | number>[]
+    >([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+    const [locationKeys, setLocationKeys] = useState<string[]>([]);
 
     const { handleShowToast } = useToast();
 
     const UserOptionalSchema = Yup.object().shape({
         locEmail1: Yup.string().email('Please enter valid email address'),
         locEmail2: Yup.string().email('Please enter valid email address'),
-        locPhone1: Yup.string().matches(/^\+?\d{5,15}$/, {
-            message: 'Please enter valid number.',
+        locPhone1: Yup.string().matches(/^[\d-]{10,16}$/, {
+            message: 'Please enter a valid number with only digits/dashes.',
             excludeEmptyString: false,
         }),
-        locPhone2: Yup.string().matches(/^\+?\d{5,15}$/, {
-            message: 'Please enter valid number.',
+        locPhone2: Yup.string().matches(/^[\d-]{10,16}$/, {
+            message: 'Please enter a valid number with only digits/dashes.',
             excludeEmptyString: false,
         }),
-        locZIP: Yup.string().min(5, 'Too short ZIP!').max(10, 'Too long ZIP!'),
+        locZIP: Yup.string()
+            .matches(/^[0-9]+$/, 'ZIP should only contain digits')
+            .min(5, 'Too short ZIP!')
+            .max(10, 'Too long ZIP!'),
     });
 
     const userOptionalValidateFields = Object.keys(UserOptionalSchema.fields);
@@ -49,10 +78,23 @@ export const UserOptionalModal = ({
         setIsLoading(true);
         if (useruid) {
             getUserLocations(useruid).then(async (response: any) => {
-                setAllOptional(response);
                 const responseOptional: any[] = response.locations;
-                setOptional(responseOptional);
-                const deepClone = JSON.parse(JSON.stringify(responseOptional));
+
+                const filteredOptional = responseOptional.map((option) => {
+                    const filteredOption = Object.keys(option).reduce((acc, key) => {
+                        if (key === locationuid) {
+                            setLocationKeys((keys) => [...keys, option[key]]);
+                        }
+                        if (!hiddenKeys.includes(key)) {
+                            acc[key] = option[key];
+                        }
+                        return acc;
+                    }, {});
+
+                    return filteredOption;
+                });
+                setOptional(filteredOptional);
+                const deepClone = JSON.parse(JSON.stringify(filteredOptional));
                 setInitialUserOptional(deepClone);
                 setIsLoading(false);
             });
@@ -81,7 +123,16 @@ export const UserOptionalModal = ({
     const handleSetUserOptional = async (): Promise<void> => {
         setIsLoading(true);
         if (useruid) {
-            const newOptional = { ...allOptional[0], locations: optional };
+            const filteredOptional = optional.map((item, index) => {
+                const filteredItem = { ...item };
+                disabledKeys.forEach((key) => {
+                    delete filteredItem[key];
+                });
+                filteredItem[locationuid] = locationKeys[index];
+
+                return filteredItem;
+            });
+            const newOptional = { locations: filteredOptional };
             try {
                 const response = await setUserOptionalData(useruid, newOptional);
                 if (response.status === Status.OK) {
@@ -100,22 +151,26 @@ export const UserOptionalModal = ({
         }
     };
 
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+    };
+
     if (!optional) {
         return <></>;
     }
 
-    const disabledKeys = ['useruid', 'created', 'updated'];
     return (
         <>
-            {optional &&
-                optional.map((option: any, index: number) => {
-                    return (
-                        <Formik
-                            initialValues={option}
-                            onSubmit={handleSetUserOptional}
-                            validationSchema={UserOptionalSchema}
-                        >
-                            {({ errors, touched }) => (
+            <TabSwitcher tabs={optional} activeTab={activeTab} handleTabClick={handleTabClick} />
+            {optional.map((option: any, index: number) => (
+                <div key={index} className='tab-content' id='myTabPanel'>
+                    <Formik
+                        initialValues={option}
+                        onSubmit={handleSetUserOptional}
+                        validationSchema={UserOptionalSchema}
+                    >
+                        {({ errors, touched }) => (
+                            <TabPanel activeTab={activeTab} tabName={`${index}`}>
                                 <Form>
                                     {(Object.entries(option) as [string, string | number][]).map(
                                         ([setting]) => {
@@ -170,9 +225,7 @@ export const UserOptionalModal = ({
                                                                     }
                                                                 )}
                                                                 name={setting}
-                                                                onChange={(
-                                                                    event: ChangeEvent<HTMLInputElement>
-                                                                ) =>
+                                                                onChange={(event) =>
                                                                     handleChangeUserOptional(
                                                                         event,
                                                                         index
@@ -193,14 +246,15 @@ export const UserOptionalModal = ({
                                             }
                                             type='submit'
                                         >
-                                            Save {username} optional data
+                                            Save user optional data
                                         </PrimaryButton>
                                     </div>
                                 </Form>
-                            )}
-                        </Formik>
-                    );
-                })}
+                            </TabPanel>
+                        )}
+                    </Formik>
+                </div>
+            ))}
         </>
     );
 };
