@@ -43,7 +43,7 @@ export const usersColumns = (list: UsersListType): ReadonlyArray<Column<User>> =
     const userColumns = [
         {
             Header: 'Created by user',
-            accessor: 'parentusername',
+            accessor: 'creatorusername',
         },
         {
             Header: 'Is admin',
