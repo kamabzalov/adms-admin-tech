@@ -8,6 +8,7 @@ import {
     getUserProfile,
     getUserSettings,
     getUserShortInfo,
+    getUserStatistics,
     listSalesPersons,
     listSubusers,
     listUserLogins,
@@ -17,8 +18,11 @@ import {
 import { TabDataWrapper, TabNavigate, TabPanel } from 'components/dashboard/helpers/helpers';
 import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
 import { AxiosError } from 'axios';
-import { useToast } from '../helpers/renderToastHelper';
+import { useToast } from '../../helpers/renderToastHelper';
 import { Status } from 'common/interfaces/ActionStatus';
+import { UserStatistics } from './UserStatistics';
+import { TemplatesReports } from './TemplatesReports';
+import { TemplatesPrintedForm } from './TemplatesPrintedForm';
 
 enum UserCardTabs {
     Profile = 'Profile',
@@ -31,13 +35,16 @@ enum UserCardTabs {
     Logins = 'Logins',
     Subusers = 'Subusers',
     SalesPersons = 'Sales persons',
+    Statistics = 'Statistics',
+    TemplatesForReports = 'Templates for reports',
+    TemplatesForPrintedForms = 'Templates for printed forms',
 }
 
 const userCardTabsArray: string[] = Object.values(UserCardTabs) as string[];
 
 export function UserCard() {
     const { id } = useParams();
-    const [activeTab, setActiveTab] = useState('Profile');
+    const [activeTab, setActiveTab] = useState('Statistics');
     const [profileJson, setProfileJson] = useState<string>('');
     const [extendedInfoJSON, setExtendedInfoJSON] = useState<string>('');
     const [shortInfoJSON, setShortInfoJSON] = useState<string>('');
@@ -48,6 +55,7 @@ export function UserCard() {
     const [userLoginsJSON, setUserLoginsJSON] = useState<string>('');
     const [userSubusersJSON, setUserSubusersJSON] = useState<string>('');
     const [userSalesPersonsJSON, setSalesPersonsJSON] = useState<string>('');
+    const [userStatisticsJSON, setUserStatisticsJSON] = useState<string>('');
 
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
     const [username, setUsername] = useState<string>('');
@@ -87,6 +95,9 @@ export function UserCard() {
             });
             listSalesPersons(id).then((response) => {
                 setSalesPersonsJSON(JSON.stringify(response, null, 2));
+            });
+            getUserStatistics(id).then((response) => {
+                setUserStatisticsJSON(JSON.stringify(response, null, 2));
             });
         }
     }, [id]);
@@ -154,15 +165,15 @@ export function UserCard() {
 
     return (
         <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
-            <div className='col-12'>
-                <div className='card card-custom mb-5 vw-90 mx-auto'>
+            <div className='col-12 d-flex flex-lg-column'>
+                <div className='col-lg-12 col-3 card card-custom mb-5'>
                     <div className='card-header'>
                         <h3 className='card-title fw-bolder text-dark'>
                             {username && `${username}'s User Card`}
                         </h3>
                     </div>
-                    <div className='card-body d-flex flex-column justify-content-end pb-0'>
-                        <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
+                    <div className='card-body d-flex flex-column pb-0'>
+                        <ul className='nav nav-stretch nav-line-tabs flex-column flex-lg-row border-transparent fs-5 fw-bolder flex-nowrap'>
                             {userCardTabsArray.map((tab) => (
                                 <TabNavigate
                                     key={tab}
@@ -175,7 +186,7 @@ export function UserCard() {
                     </div>
                 </div>
 
-                <div className='tab-content' id='myTabPanel'>
+                <div className='col-lg-12 col-9 tab-content' id='myTabPanel'>
                     <TabPanel activeTab={activeTab} tabName={UserCardTabs.Profile}>
                         <TabDataWrapper data={profileJson} />
                     </TabPanel>
@@ -217,6 +228,15 @@ export function UserCard() {
                     </TabPanel>
                     <TabPanel activeTab={activeTab} tabName={UserCardTabs.SalesPersons}>
                         <TabDataWrapper data={userSalesPersonsJSON} />
+                    </TabPanel>
+                    <TabPanel activeTab={activeTab} tabName={UserCardTabs.Statistics}>
+                        <UserStatistics data={userStatisticsJSON} />
+                    </TabPanel>
+                    <TabPanel activeTab={activeTab} tabName={UserCardTabs.TemplatesForReports}>
+                        <TemplatesReports data={''} />
+                    </TabPanel>
+                    <TabPanel activeTab={activeTab} tabName={UserCardTabs.TemplatesForPrintedForms}>
+                        <TemplatesPrintedForm data={''} />
                     </TabPanel>
                 </div>
             </div>

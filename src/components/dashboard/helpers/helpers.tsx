@@ -6,10 +6,11 @@ import { renderTable } from 'components/dashboard/helpers/renderTableHelper';
 import { renamedKeys } from 'common/app-consts';
 
 interface RenderListArgs {
-    data: string[] | string;
+    data?: string[] | string;
     checkbox?: boolean;
     action?: (value: [string, number]) => void;
     isCard?: boolean;
+    headerElement?: JSX.Element;
 }
 
 interface TabValues {
@@ -71,9 +72,12 @@ export const TabNavigate = ({
 }) => (
     <li className='nav-item'>
         <button
-            className={clsx(`nav-link text-active-primary cursor-pointer`, {
-                active: activeTab === tab,
-            })}
+            className={clsx(
+                'nav-link ms-0 pb-4 text-start align-items-end fs-md-7 fs-xl-6 text-lg-center text-active-primary cursor-pointer',
+                {
+                    active: activeTab === tab,
+                }
+            )}
             onClick={() => onTabClick(tab)}
             role='tab'
         >
@@ -84,7 +88,7 @@ export const TabNavigate = ({
 
 export const TabPanel = ({ activeTab, tabName, children, tabId }: TabValues) => (
     <div
-        className={clsx('tab-pane vw-90 mx-auto', {
+        className={clsx('tab-pane', {
             active: activeTab === tabName,
         })}
         role='tabpanel'
@@ -100,6 +104,7 @@ export const TabDataWrapper = ({
     action,
     children,
     isCard = true,
+    headerElement,
 }: PropsWithChildren<RenderListArgs>) => {
     enum ViewTypes {
         JSON = 'JSON view',
@@ -129,7 +134,7 @@ export const TabDataWrapper = ({
             {isCard && (
                 <div className='row g-5 g-xl-10 mb-5 mb-xl-10'>
                     <div className='col-12'>
-                        <div className='card card-custom mb-5 vw-90 mx-auto'>
+                        <div className='card card-custom mb-5'>
                             <div className='card-header d-flex flex-column justify-content-end pb-0'>
                                 <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
                                     {viewTypesArray.map((tab) => (
@@ -140,12 +145,13 @@ export const TabDataWrapper = ({
                                             onTabClick={handleTabClick}
                                         />
                                     ))}
+                                    {headerElement}
                                 </ul>
                             </div>
                             <div className='tab-content' id='myTabContentInner'>
                                 <TabPanel activeTab={activeTab} tabName={ViewTypes.JSON}>
                                     <div className='card-body'>
-                                        <pre className='fs-4'>{data}</pre>
+                                        <pre className='fs-md-4 fs-6'>{data}</pre>
                                         {children}
                                     </div>
                                 </TabPanel>
@@ -175,7 +181,7 @@ export const TabDataWrapper = ({
                     <div className='tab-content' id='myTabContentInner'>
                         <TabPanel activeTab={activeTab} tabName={ViewTypes.JSON}>
                             <div className='card-body'>
-                                <pre className='fs-4'>{data}</pre>
+                                <pre className='fs-md-4 fs-6'>{data}</pre>
                                 {children}
                             </div>
                         </TabPanel>
