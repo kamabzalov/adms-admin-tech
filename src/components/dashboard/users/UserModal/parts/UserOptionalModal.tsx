@@ -54,36 +54,6 @@ export const UserOptionalModal = ({
     const userOptionalValidateFields = Object.keys(UserOptionalSchema.fields);
 
     useEffect(() => {
-        setIsLoading(true);
-        if (useruid) {
-            getUserLocations(useruid).then(async (response: any) => {
-                const responseOptional: any[] = response.locations.slice(0, 1);
-
-                const filteredOptional = responseOptional.map((option) => {
-                    const filteredOption = Object.keys(option).reduce(
-                        (acc: Record<string, string>, key) => {
-                            if (key === locationuid) {
-                                setLocationKeys((keys) => [...keys, option[key]]);
-                            }
-                            if (!hiddenKeys.includes(key)) {
-                                acc[key] = option[key];
-                            }
-                            return acc;
-                        },
-                        {}
-                    );
-
-                    return filteredOption;
-                });
-                setOptional(filteredOptional);
-                const deepClone = JSON.parse(JSON.stringify(filteredOptional));
-                setInitialUserOptional(deepClone);
-                setIsLoading(false);
-            });
-        }
-    }, [useruid]);
-
-    useEffect(() => {
         const isEqual = deepEqual(initialUserOptional, optional);
         if (!isEqual && !isLoading) {
             setIsButtonDisabled(false);
