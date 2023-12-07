@@ -203,7 +203,7 @@ export const UserOptionalModal = ({
                                     );
                                 }
                             )}
-                            <div className='text-center mt-8'>
+                            <div className='text-center mb-0'>
                                 <PrimaryButton
                                     icon='check'
                                     disabled={isButtonDisabled || !!Object.keys(errors).length}
