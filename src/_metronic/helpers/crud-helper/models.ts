@@ -1,4 +1,6 @@
+import { getLocalState } from '_metronic/helpers';
 import { SortType } from 'common/interfaces/QueriesParams';
+import { DefaultRecordsPerPage, RecordsPerPage } from 'common/settings/settings';
 import { ReactNode } from 'react';
 
 export type WithChildren = {
@@ -9,7 +11,7 @@ export type ID = undefined | null | number;
 
 export type PaginationState = {
     currentpage: number;
-    count: 10 | 30 | 50 | 100;
+    count: RecordsPerPage;
 };
 
 export type SortState = {
@@ -39,9 +41,11 @@ export type QueryRequestContextProps = {
     updateState: (updates: Partial<QueryState>) => void;
 };
 
+const getCurrentPage = (): number => getLocalState().currentpage || 0;
+
 export const initialQueryState: QueryState = {
-    currentpage: 0,
-    count: 10,
+    currentpage: getCurrentPage(),
+    count: getLocalState().count || DefaultRecordsPerPage,
     sort: 'username',
     order: 'asc',
     search: '',

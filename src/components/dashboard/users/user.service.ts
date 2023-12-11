@@ -1,22 +1,14 @@
 import { fetchApiData } from 'common/api/fetchAPI';
-import { ActionStatus, Status } from 'common/interfaces/ActionStatus';
+import { ActionStatus } from 'common/interfaces/ActionStatus';
 import { UserQuery } from 'common/interfaces/QueriesParams';
-import {
-    ShortUserInfo,
-    User,
-    UserErrorResponse,
-    UserSuccessResponse,
-} from 'common/interfaces/UserData';
-import { UserSettingsResponse, UserSettingDeals } from 'common/interfaces/users/UserSettings';
+import { ShortUserInfo, User, UserSettingsResponse } from 'common/interfaces/UserData';
 
 export const createOrUpdateUser = (
     loginname: string,
     loginpassword: string,
     uid: string = '0'
-): Promise<UserSuccessResponse | UserErrorResponse> => {
-    return fetchApiData<UserSuccessResponse | UserErrorResponse>('POST', `user/${uid}/user`, {
-        data: { loginname, loginpassword },
-    });
+): Promise<any> => {
+    return fetchApiData('POST', `user/${uid}/user`, { data: { loginname, loginpassword } });
 };
 
 export const undeleteUser = (uid: string): Promise<ActionStatus> => {
@@ -33,11 +25,11 @@ export const setUserOptionalData = (uid: string, data: unknown): Promise<ActionS
 
 export const getUsers = (params?: UserQuery): Promise<User[]> => {
     const initialParams: UserQuery = {
-        column: params?.column || 'username',
-        type: params?.type || 'asc',
-        skip: params?.skip || 0,
-        qry: params?.qry || '',
-        top: params?.top || 10,
+        column: params?.column,
+        type: params?.type,
+        skip: params?.skip,
+        qry: params?.qry,
+        top: params?.top,
     };
 
     return fetchApiData<User[]>('GET', `user/0/list`, { params: initialParams });
@@ -117,25 +109,6 @@ export const clearCache = (): Promise<string[]> => {
 
 export const getTotalUsersRecords = (
     list: 'list' | 'listdeleted'
-): Promise<{ status: Status; total: number }> => {
-    return fetchApiData<{ status: Status; total: number }>('GET', `user/0/${list}?total=1`);
-};
-
-export const getDealsOptions = (deal: UserSettingDeals) => {
-    return fetchApiData<{ status: Status; [key: string]: string[] | unknown }>(
-        'GET',
-        `deals/${deal}`
-    );
-};
-
-export const getUserStatistics = (useruid: string): Promise<string> => {
-    return fetchApiData<string>('GET', `user/${useruid}/statistics`);
-};
-
-export const getUserReports = (useruid: string): Promise<string> => {
-    return fetchApiData<string>('GET', `reports/${useruid}/list`);
-};
-
-export const getUserPrinted = (useruid: string): Promise<string> => {
-    return fetchApiData<string>('GET', `user/${useruid}/statistics`);
+): Promise<{ status: string; total: number }> => {
+    return fetchApiData<{ status: string; total: number }>('GET', `user/0/${list}?total=1`);
 };
