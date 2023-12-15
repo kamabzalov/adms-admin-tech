@@ -14,6 +14,8 @@ interface ApiKeyModalProps {
     updateAction?: () => void;
 }
 
+const defaultDate = new Date().getTime();
+
 export const ApiKeyModal = ({ apiKey, onClose, updateAction }: ApiKeyModalProps): JSX.Element => {
     const { id: useruid } = useParams();
     const [apiKeyTypes, setApiKeyTypes] = useState<ApiTypes[] | null>(null);
@@ -21,8 +23,10 @@ export const ApiKeyModal = ({ apiKey, onClose, updateAction }: ApiKeyModalProps)
         apiKey?.apitype || ApiTypeName.DEFAULT
     );
     const [apiKeyValue, setApiKeyValue] = useState<string>(apiKey?.apikey || '');
-    const [apiKeyIssue, setApiKeyIssue] = useState<string>(apiKey?.issuedate || '');
-    const [apiKeyExpiration, setApiKeyExpiration] = useState<string>(apiKey?.expirationdate || '');
+    const [apiKeyIssue, setApiKeyIssue] = useState<number | Date>(apiKey?.issuedate || defaultDate);
+    const [apiKeyExpiration, setApiKeyExpiration] = useState<number | Date>(
+        apiKey?.expirationdate || defaultDate
+    );
     const [apiKeyNotes, setApiKeyNotes] = useState<string>(apiKey?.notes || '');
     const [apiKeyEnabled, setApiKeyEnabled] = useState<ApiKeyEnabled | 0>(apiKey?.enabled || 0);
 
@@ -49,8 +53,8 @@ export const ApiKeyModal = ({ apiKey, onClose, updateAction }: ApiKeyModalProps)
     const handleSave = () => {
         setUserApiKey(useruid as string, {
             ...apiKey,
-            issuedate: apiKeyIssue,
-            expirationdate: apiKeyExpiration,
+            issuedate: Number(apiKeyIssue),
+            expirationdate: Number(apiKeyExpiration),
             enabled: apiKeyEnabled,
             apitype: apiKeyType,
             notes: apiKeyNotes,
@@ -94,20 +98,26 @@ export const ApiKeyModal = ({ apiKey, onClose, updateAction }: ApiKeyModalProps)
                 </Form.Group>
                 <Form.Group>
                     <label className='form-label mb-0'>Issue date API key</label>
-                    <Form.Control
-                        value={apiKeyIssue}
-                        id={apiKeyIssue}
-                        onChange={({ target }) => setApiKeyIssue(target.value)}
+                    <input
+                        type='date'
+                        className='form-control'
                         name='Issue API key'
+                        value={new Date(apiKeyIssue).toISOString().split('T')[0]}
+                        onChange={({ target }) =>
+                            setApiKeyIssue(target.valueAsNumber || defaultDate)
+                        }
                     />
                 </Form.Group>
                 <Form.Group>
                     <label className='form-label mb-0'>Expiration date API key</label>
-                    <Form.Control
-                        value={apiKeyExpiration}
-                        id={apiKeyExpiration}
-                        onChange={({ target }) => setApiKeyExpiration(target.value)}
+                    <input
+                        type='date'
+                        className='form-control'
                         name='Expiration API key'
+                        value={new Date(apiKeyExpiration).toISOString().split('T')[0]}
+                        onChange={({ target }) =>
+                            setApiKeyExpiration(target.valueAsNumber || defaultDate)
+                        }
                     />
                 </Form.Group>
                 <Form.Group>

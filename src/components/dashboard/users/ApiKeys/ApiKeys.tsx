@@ -9,13 +9,15 @@ import { getUserApiKeysList } from './apiKeys.service';
 import { ApiKeyModal } from './ApiKeysModal/ApiKeyModal';
 import { PrimaryButton } from 'components/dashboard/smallComponents/buttons/PrimaryButton';
 
-const initialApiKeysState = [
+const defaultDate = new Date().getTime();
+
+const initialApiKeysState: ApiKeyRecord[] = [
     {
         created: '',
         deleted: '',
         updated: '',
-        issuedate: '',
-        expirationdate: '',
+        issuedate: defaultDate,
+        expirationdate: defaultDate,
         lastused: '',
         flags: 0,
         enabled: 0,
@@ -29,7 +31,7 @@ const initialApiKeysState = [
 ];
 
 export const ApiKeys = ({ useruid }: { useruid: string }): JSX.Element => {
-    const [apiKeys, setApiKeys] = useState<ApiKeyRecord[]>(initialApiKeysState as ApiKeyRecord[]);
+    const [apiKeys, setApiKeys] = useState<ApiKeyRecord[]>(initialApiKeysState);
     const [addKeyModalEnabled, setAddKeyModalEnabled] = useState<boolean>(false);
 
     const updateApiKeys = (): void => {
@@ -58,7 +60,7 @@ export const ApiKeys = ({ useruid }: { useruid: string }): JSX.Element => {
             <div className='card-body'>
                 <div className='table-responsive position-relative '>
                     <table
-                        id='kt_table_users'
+                        id='kt_table_api_keys'
                         className='table align-middle table-row-dashed fs-6 gy-3 no-footer'
                         {...getTableProps()}
                     >
