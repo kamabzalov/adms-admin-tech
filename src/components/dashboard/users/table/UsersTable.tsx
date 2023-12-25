@@ -1,8 +1,4 @@
-import {
-    useQueryResponse,
-    useQueryResponseData,
-    useQueryResponseLoading,
-} from 'common/core/QueryResponseProvider';
+import { useQueryResponseData, useQueryResponseLoading } from 'common/core/QueryResponseProvider';
 import { useEffect, useMemo, useState } from 'react';
 import { useTable, ColumnInstance, Row } from 'react-table';
 import { CustomHeaderColumn } from './columns/CustomHeaderColumn';
@@ -12,6 +8,7 @@ import { UsersListType, User, UsersType } from 'common/interfaces/UserData';
 import { CustomPagination } from 'components/dashboard/helpers/pagination/renderPagination';
 import { getTotalUsersRecords } from '../user.service';
 import { useQueryRequest } from 'common/core/QueryRequestProvider';
+import { DefaultRecordsPerPage, RecordsPerPage } from 'common/settings/settings';
 
 interface UsersTableProps {
     list: UsersListType;
@@ -19,6 +16,8 @@ interface UsersTableProps {
 
 export const UsersTable = ({ list }: UsersTableProps) => {
     const [listLength, setListLength] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [currentCount, setCurrentCount] = useState<RecordsPerPage>(DefaultRecordsPerPage);
     const users = useQueryResponseData(list);
 
     const { state, updateState } = useQueryRequest();
@@ -32,11 +31,14 @@ export const UsersTable = ({ list }: UsersTableProps) => {
         );
     }, [list, state.search, users.length]);
 
-    const handlePageChange = (page: number) => {
-        updateState({ ...state, currentpage: page * state.count });
+    const handlePageChange = async (page: number) => {
+        await setCurrentPage(page);
+        updateState({ ...state, count: currentCount, currentpage: page * currentCount });
     };
-    const handleCountChange = (count: number) => {
-        updateState({ ...state, count });
+
+    const handleCountChange = async (count: RecordsPerPage) => {
+        await setCurrentCount(count);
+        updateState({ ...state, count, currentpage: (Math.ceil(currentPage / count) + 1) * count });
     };
 
     const isLoading = useQueryResponseLoading(list);
