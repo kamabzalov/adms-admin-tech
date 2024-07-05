@@ -99,3 +99,4 @@ export const TemplatesReports = ({ useruid }: { useruid?: string }): JSX.Element
         </div>
     );
 };
+

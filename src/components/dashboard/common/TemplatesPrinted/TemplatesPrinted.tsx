@@ -1,45 +1,36 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getTemplatePrints, uploadPrintFile } from '../common.service';
+import { getTemplateReports, uploadPrintFile } from '../common.service';
 import { AxiosError } from 'axios';
 import { Status } from 'common/interfaces/ActionStatus';
 import { ColumnInstance, Row, useTable } from 'react-table';
-import { PrintedHeaderColumn } from './TemplatesPrintedTable/PrintedHeaderColumn';
-import { TemplatesPrintedRecord } from 'common/interfaces/TemplatesPrintedData';
-import { PrintedColumns } from './TemplatesPrintedTable/PrintedColumns';
 import { CustomUploadInput } from 'components/dashboard/helpers/renderInputsHelper';
 import { useToast } from 'components/dashboard/helpers/renderToastHelper';
-import { PrintedRow } from './TemplatesPrintedTable/PrintedRow';
+import {
+    TemplatesReportsRecord,
+    initialReportsState,
+} from 'common/interfaces/TemplatesReportsData';
+import { ReportsColumns } from './TemplatesReporsTable/ReportsColumns';
+import { ReportsRow } from './TemplatesReporsTable/ReportsRow';
+import { ReportsHeaderColumn } from './TemplatesReporsTable/ReportsHeaderColumn';
 
-const initialPrintedState = [
-    {
-        description: '',
-        index: 0,
-        itemuid: '',
-        name: '',
-        state: '',
-        type: '',
-        version: '',
-    },
-];
-
-export const TemplatesPrinted = ({ useruid }: { useruid?: string }): JSX.Element => {
-    const [templatesPrinted, setTemplatesPrinted] =
-        useState<TemplatesPrintedRecord[]>(initialPrintedState);
+export const TemplatesReports = ({ useruid }: { useruid?: string }): JSX.Element => {
+    const [templatesReports, setTemplatesReports] =
+        useState<TemplatesReportsRecord[]>(initialReportsState);
 
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
     const { handleShowToast } = useToast();
 
-    const updateTemplatesPrinted = (): void => {
-        getTemplatePrints(useruid).then((response) => {
+    const updateTemplatesReports = (): void => {
+        getTemplateReports(useruid).then((response) => {
             if (response.status === Status.OK) {
-                setTemplatesPrinted(response.documents);
+                setTemplatesReports(response.documents);
             }
         });
     };
 
     useEffect(() => {
-        updateTemplatesPrinted();
+        updateTemplatesReports();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -52,7 +43,7 @@ export const TemplatesPrinted = ({ useruid }: { useruid?: string }): JSX.Element
                         message: `<strong>${file.name}</strong> successfully uploaded`,
                         type: 'success',
                     });
-                    updateTemplatesPrinted();
+                    updateTemplatesReports();
                 }
             })
             .catch((err) => {
@@ -65,10 +56,10 @@ export const TemplatesPrinted = ({ useruid }: { useruid?: string }): JSX.Element
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const columns = useMemo(() => PrintedColumns(updateTemplatesPrinted), []);
+    const columns = useMemo(() => ReportsColumns(updateTemplatesReports), []);
     const { getTableProps, getTableBodyProps, headers, rows, prepareRow } = useTable({
         columns,
-        data: templatesPrinted,
+        data: templatesReports,
     });
 
     return (
@@ -91,15 +82,15 @@ export const TemplatesPrinted = ({ useruid }: { useruid?: string }): JSX.Element
                     >
                         <thead>
                             <tr className='text-start text-muted fw-bolder fs-7 text-uppercase gs-0'>
-                                {headers.map((column: ColumnInstance<TemplatesPrintedRecord>) => (
-                                    <PrintedHeaderColumn key={column.id} column={column} />
+                                {headers.map((column: ColumnInstance<TemplatesReportsRecord>) => (
+                                    <ReportsHeaderColumn key={column.id} column={column} />
                                 ))}
                             </tr>
                         </thead>
                         <tbody className='text-gray-600 fw-bold' {...getTableBodyProps()}>
                             {rows.map((row: Row<any>) => {
                                 prepareRow(row);
-                                return <PrintedRow row={row} key={`${row.id}`} />;
+                                return <ReportsRow row={row} key={`${row.id}`} />;
                             })}
                         </tbody>
                     </table>
@@ -108,3 +99,4 @@ export const TemplatesPrinted = ({ useruid }: { useruid?: string }): JSX.Element
         </div>
     );
 };
+
